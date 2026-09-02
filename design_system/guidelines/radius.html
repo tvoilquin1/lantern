@@ -1,0 +1,23 @@
+<!-- @dsCard group="Spacing" viewport="700x175" subtitle="Nothing in Lantern has a square corner" name="Radii" -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; font-family: var(--font-sans); background: var(--paper-app); }
+  .wrap { padding: 18px 20px; box-sizing: border-box; }
+  .sw { display: flex; flex-direction: column; gap: 6px; }
+  .chip { height: 46px; border-radius: 12px; box-shadow: inset 0 0 0 1px rgba(42,39,36,0.06); }
+  .nm { font-size: 11.5px; font-weight: 600; color: var(--text-primary); }
+  .hx { font-size: 10.5px; color: var(--text-body); letter-spacing: 0.02em; }
+  .row { display: grid; gap: 10px; }
+</style>
+</head>
+<body><div class="wrap">
+
+<div style="display:flex;gap:10px;align-items:flex-end">
+  <div class="sw" style="flex:1"><div style="height:62px;background:var(--paper-card);border-radius:8px;box-shadow:var(--shadow-card)"></div><div class="nm">chip</div><div class="hx">8px</div></div><div class="sw" style="flex:1"><div style="height:62px;background:var(--paper-card);border-radius:16px;box-shadow:var(--shadow-card)"></div><div class="nm">inset</div><div class="hx">16px</div></div><div class="sw" style="flex:1"><div style="height:62px;background:var(--paper-card);border-radius:24px;box-shadow:var(--shadow-card)"></div><div class="nm">bubble</div><div class="hx">24px</div></div><div class="sw" style="flex:1"><div style="height:62px;background:var(--paper-card);border-radius:28px;box-shadow:var(--shadow-card)"></div><div class="nm">card</div><div class="hx">28px</div></div><div class="sw" style="flex:1"><div style="height:62px;background:var(--paper-card);border-radius:42px;box-shadow:var(--shadow-card)"></div><div class="nm">device</div><div class="hx">42px</div></div><div class="sw" style="flex:1"><div style="height:62px;background:var(--paper-card);border-radius:999px;box-shadow:var(--shadow-card)"></div><div class="nm">pill</div><div class="hx">999px</div></div>
+</div>
+</div></body>
+</html>

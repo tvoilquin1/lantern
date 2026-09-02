@@ -1,0 +1,43 @@
+<!-- @dsCard group="Components" viewport="700x300" name="Surfaces" subtitle="Card variants, inset panel and section label" -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Surfaces</title>
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+  body { margin: 0; background: var(--paper-desk); font-family: var(--font-sans); }
+  #root { padding: 18px 20px; box-sizing: border-box; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+(function(){
+  var e = React.createElement;
+  var L = window.Lantern;
+
+  var Card = L.Card, InsetPanel = L.InsetPanel, SectionLabel = L.SectionLabel;
+  var body = { fontSize: 14, color: "var(--text-body)" };
+  ReactDOM.createRoot(document.getElementById("root")).render(
+    e("div", { style: { display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "12px" } },
+      e(Card, { variant: "paper" },
+        e(SectionLabel, null, "Paper"),
+        e("div", { style: body }, "Raised default. Hairline ring plus a 1px lift.")),
+      e(Card, { variant: "muted" },
+        e(SectionLabel, null, "Muted"),
+        e("div", { style: body }, "Flat secondary weight. No ring.")),
+      e(Card, { variant: "dark" },
+        e(SectionLabel, { onDark: true }, "Dark"),
+        e("div", { style: { fontSize: 14, color: "var(--text-on-dark)" } }, "One per screen, for what's in front of you.")),
+      e(Card, { variant: "panel" },
+        e(SectionLabel, null, "Panel"),
+        e(InsetPanel, { label: "Inset panel" },
+          e("div", { style: { fontSize: 13, color: "var(--text-body)" } }, "Recessed read-back surface.")))));
+})();
+</script>
+</body>
+</html>

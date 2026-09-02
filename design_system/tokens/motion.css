@@ -1,0 +1,10 @@
+:root {
+  /* Nothing bounces, nothing springs. Lantern fades and settles. */
+  --ease-settle: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 320ms;
+
+  --press-scale: 0.985;
+  --hover-tint: rgba(42, 39, 36, 0.035);
+}

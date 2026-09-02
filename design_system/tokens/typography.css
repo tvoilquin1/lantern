@@ -1,0 +1,38 @@
+:root {
+  /* One family, four weights. Hierarchy comes from weight, size and tracking — never from a second face. */
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* Display — bold, negatively tracked. Reserved for the one sentence that matters on a screen. */
+  --text-display-size: 26px;
+  --text-display-weight: var(--weight-bold);
+  --text-display-tracking: -0.015em;
+  --text-display-leading: 1.15;
+
+  --text-headline-size: 22px;   /* screen title, greeting */
+  --text-title-size: 25px;      /* transition brief headline, leading 1.18 */
+
+  /* Body — the conversational tier */
+  --text-message-size: 15.5px;  /* chat bubbles */
+  --text-body-size: 14px;
+  --text-body-leading: 1.55;
+  --text-body-lg-size: 14.5px;
+  --text-supporting-size: 13.5px;
+
+  /* Micro — labels, chips, meta */
+  --text-meta-size: 12.5px;
+  --text-chip-size: 12px;
+  --text-caption-size: 11.5px;
+
+  /* Eyebrow — uppercase section labels. Always semibold + wide tracking. */
+  --text-eyebrow-size: 11px;
+  --text-eyebrow-size-sm: 10.5px;
+  --text-eyebrow-weight: var(--weight-semibold);
+  --text-eyebrow-tracking: 0.12em;
+  --text-eyebrow-tracking-wide: 0.14em;
+  --text-eyebrow-transform: uppercase;
+}

@@ -1,0 +1,51 @@
+<!-- @dsCard group="Components" viewport="700x330" name="Status & gauges" subtitle="State pills, tracks, trends, sparkline, stage headline" -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Status</title>
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+  body { margin: 0; background: var(--paper-desk); font-family: var(--font-sans); }
+  #root { padding: 18px 20px; box-sizing: border-box; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+(function(){
+  var e = React.createElement;
+  var L = window.Lantern;
+
+  var Card = L.Card, StatePill = L.StatePill, StateTrack = L.StateTrack, TrendRow = L.TrendRow;
+  var Sparkline = L.Sparkline, StageHeadline = L.StageHeadline, SectionLabel = L.SectionLabel;
+  ReactDOM.createRoot(document.getElementById("root")).render(
+    e("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" } },
+      e(Card, null,
+        e("div", { style: { display: "flex", gap: 6, flexWrap: "wrap" } },
+          e(StatePill, { tone: "steady" }, "Steady"),
+          e(StatePill, { tone: "caution" }, "Stretched"),
+          e(StatePill, { tone: "risk" }, "Needs attention"),
+          e(StatePill, { tone: "neutral" }, "Today \u203A")),
+        e(StageHeadline, { stage: "Stage 5", qualifier: "moderately severe" }),
+        e(Sparkline, { values: [40, 52, 44, 60, 55, 70, 66] }),
+        e(TrendRow, { items: [
+          { label: "Sleep", value: "Worsening", tone: "caution" },
+          { label: "Eating", value: "Steady" },
+          { label: "Mobility", value: "Steady" }
+        ] })),
+      e(Card, null,
+        e(SectionLabel, null, "Segmented track"),
+        e("div", { style: { fontSize: 22, fontWeight: 700, letterSpacing: "-0.015em", color: "var(--ochre-700)" } }, "Stretched thin"),
+        e(StateTrack, { segments: 4, value: 70, tone: "caution", labels: ["Coping", "Stretched", "At risk"] }),
+        e(SectionLabel, { style: { marginTop: 6 } }, "Continuous track"),
+        e(StateTrack, { value: 64, tone: "caution" }),
+        e("div", { style: { fontSize: 13, lineHeight: 1.5, color: "var(--text-body)" } },
+          "The word leads. Any clinical score stays in the sentence."))));
+})();
+</script>
+</body>
+</html>

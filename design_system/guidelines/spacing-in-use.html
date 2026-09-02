@@ -1,0 +1,28 @@
+<!-- @dsCard group="Spacing" viewport="700x230" subtitle="The rhythm applied — 17/20 padding, 11px internal gap, 9px between cards" name="Card anatomy" -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; font-family: var(--font-sans); background: var(--paper-app); }
+  .wrap { padding: 18px 20px; box-sizing: border-box; }
+  .sw { display: flex; flex-direction: column; gap: 6px; }
+  .chip { height: 46px; border-radius: 12px; box-shadow: inset 0 0 0 1px rgba(42,39,36,0.06); }
+  .nm { font-size: 11.5px; font-weight: 600; color: var(--text-primary); }
+  .hx { font-size: 10.5px; color: var(--text-body); letter-spacing: 0.02em; }
+  .row { display: grid; gap: 10px; }
+</style>
+</head>
+<body><div class="wrap">
+
+<div style="background:var(--paper-app);border-radius:20px;padding:14px 20px;display:flex;flex-direction:column;gap:9px">
+  <div style="background:var(--paper-card);border-radius:28px;padding:17px 20px;box-shadow:var(--shadow-card);display:flex;flex-direction:column;gap:11px">
+    <div style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-body)">Where Dad is</div>
+    <div style="font-weight:700;letter-spacing:-0.015em;font-size:26px;color:var(--text-primary)">Stage 5</div>
+    <div style="font-size:14px;line-height:1.55;color:var(--text-body)">Nothing has shifted in the last three weeks.</div>
+  </div>
+  <div style="background:var(--paper-card);border-radius:28px;padding:17px 20px;box-shadow:var(--shadow-card);font-size:14px;color:var(--text-body)">9px between stacked cards.</div>
+</div>
+</div></body>
+</html>

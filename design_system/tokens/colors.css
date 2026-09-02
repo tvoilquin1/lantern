@@ -1,0 +1,69 @@
+:root {
+  /* ---- Paper: the warm neutral ground. Lantern never uses pure white or pure grey. ---- */
+  --paper-desk: #E8E4DC;   /* outside the app frame */
+  --paper-app: #F6F2EA;    /* app background */
+  --paper-card: #FFFDFA;   /* raised card */
+  --paper-inset: #FAF7F1;  /* recessed panel inside a card */
+  --paper-muted: #EFEAE1;  /* flat secondary card, chip track */
+  --paper-hairline: #F0EBE2;
+
+  /* ---- Ink ---- */
+  --ink-900: #2A2724;
+  --ink-700: #3D3934;
+  --ink-500: #6E675E;
+  --ink-400: #8A8378;
+
+  /* ---- Sage: the only true accent. Steady, calm, affirmative. ---- */
+  --sage-900: #2F3A31;  /* dark card ground */
+  --sage-800: #3F5745;  /* link hover */
+  --sage-700: #4A5B4E;
+  --sage-650: #4F6A53;
+  --sage-600: #5F7A63;  /* primary accent */
+  --sage-400: #7C9280;  /* borders on dark */
+  --sage-300: #9CB09E;  /* labels on dark */
+  --sage-200: #C7D5C3;
+  --sage-150: #DCE5D9;
+  --sage-100: #E7EDE5;  /* tint fill */
+  --sage-050: #F2F5F1;  /* text on dark */
+
+  /* ---- Ochre: caution. Reads as "worth attention", never as an alarm. ---- */
+  --ochre-700: #9A6A2E;
+  --ochre-400: #D8AE68;
+  --ochre-100: #F5E9D6;
+
+  /* ---- Clay: the highest tier (at-risk, crisis). Muted brick, never a signal red. ---- */
+  --clay-700: #A0503F;
+  --clay-400: #C58374;
+  --clay-100: #F4E3DD;
+
+  /* ---- Semantic aliases: use these in components ---- */
+  --surface-app: var(--paper-app);
+  --surface-card: var(--paper-card);
+  --surface-inset: var(--paper-inset);
+  --surface-muted: var(--paper-muted);
+  --surface-dark: var(--sage-900);
+
+  --text-primary: var(--ink-900);
+  --text-secondary: var(--ink-700);
+  --text-body: var(--ink-500);
+  --text-faint: var(--ink-400);
+  --text-accent: var(--sage-600);
+  --text-on-dark: var(--sage-050);
+  --text-label-on-dark: var(--sage-300);
+
+  --accent: var(--sage-600);
+  --accent-tint: var(--sage-100);
+  --accent-contrast: var(--paper-card);
+
+  /* State tiers, in escalation order. Every gauge in Lantern uses these three. */
+  --state-steady-fg: var(--sage-600);
+  --state-steady-bg: var(--sage-100);
+  --state-caution-fg: var(--ochre-700);
+  --state-caution-bg: var(--ochre-100);
+  --state-risk-fg: var(--clay-700);
+  --state-risk-bg: var(--clay-100);
+
+  --border-hairline: rgba(42, 39, 36, 0.05);
+  --border-rule: var(--paper-hairline);
+  --border-quiet: rgba(95, 122, 99, 0.25);
+}

@@ -1,0 +1,8 @@
+:root {
+  /* Elevation is almost entirely a hairline ring. Real shadow appears only on the composer
+     (which floats over content) and the device frame. Cards are defined by edge, not by lift. */
+  --shadow-hairline: 0 0 0 1px rgba(42, 39, 36, 0.05);
+  --shadow-card: 0 1px 0 rgba(42, 39, 36, 0.04), 0 0 0 1px rgba(42, 39, 36, 0.05);
+  --shadow-raised: 0 8px 20px -10px rgba(42, 39, 36, 0.22), 0 0 0 1px rgba(42, 39, 36, 0.05);
+  --shadow-device: 0 30px 60px -24px rgba(42, 39, 36, 0.28), 0 0 0 1px rgba(42, 39, 36, 0.06);
+}

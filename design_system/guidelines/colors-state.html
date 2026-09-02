@@ -1,0 +1,35 @@
+<!-- @dsCard group="Colors" viewport="700x190" subtitle="Three escalation tiers. Every gauge uses these — and always names them in words" name="State tiers" -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; font-family: var(--font-sans); background: var(--paper-app); }
+  .wrap { padding: 18px 20px; box-sizing: border-box; }
+  .sw { display: flex; flex-direction: column; gap: 6px; }
+  .chip { height: 46px; border-radius: 12px; box-shadow: inset 0 0 0 1px rgba(42,39,36,0.06); }
+  .nm { font-size: 11.5px; font-weight: 600; color: var(--text-primary); }
+  .hx { font-size: 10.5px; color: var(--text-body); letter-spacing: 0.02em; }
+  .row { display: grid; gap: 10px; }
+</style>
+</head>
+<body><div class="wrap">
+
+<div style="display:flex; gap:10px">
+  <div style="flex:1; background: var(--state-steady-bg); border-radius: 14px; padding: 14px">
+    <div style="font-size:12px;font-weight:600;color:var(--state-steady-fg)">Steady</div>
+    <div style="font-size:11px;color:var(--text-body);margin-top:4px">sage-600 on sage-100</div>
+  </div>
+  <div style="flex:1; background: var(--state-caution-bg); border-radius: 14px; padding: 14px">
+    <div style="font-size:12px;font-weight:600;color:var(--state-caution-fg)">Stretched</div>
+    <div style="font-size:11px;color:var(--text-body);margin-top:4px">ochre-700 on ochre-100</div>
+  </div>
+  <div style="flex:1; background: var(--state-risk-bg); border-radius: 14px; padding: 14px">
+    <div style="font-size:12px;font-weight:600;color:var(--state-risk-fg)">Needs attention</div>
+    <div style="font-size:11px;color:var(--text-body);margin-top:4px">clay-700 on clay-100</div>
+  </div>
+</div>
+<div style="margin-top:12px;font-size:12px;line-height:1.5;color:var(--text-body)">Clay replaces signal red. Nothing in Lantern is allowed to look like an emergency it cannot resolve.</div>
+</div></body>
+</html>

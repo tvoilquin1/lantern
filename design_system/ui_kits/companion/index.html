@@ -1,0 +1,55 @@
+<!-- @dsCard group="Companion app" viewport="1260x880" subtitle="Conversation home, dashboard, transition brief" name="Companion app" -->
+<!-- @startingPoint section="Screens" subtitle="Lantern companion — conversation, dashboard, transition brief" viewport="1260x880" -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Lantern — Companion UI kit</title>
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+  body { margin: 0; background: var(--paper-desk); font-family: var(--font-sans); }
+  #root { padding: 34px 40px; box-sizing: border-box; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+(function(){
+  var e = React.createElement;
+  var L = window.Lantern;
+
+  var Conversation = L.Conversation, Dashboard = L.Dashboard, TransitionBrief = L.TransitionBrief;
+  var TABS = [["conversation", "Conversation"], ["dashboard", "Today"], ["brief", "Transition brief"]];
+
+  function Kit() {
+    var st = React.useState("conversation"), screen = st[0], setScreen = st[1];
+    var an = React.useState(null), answered = an[0], setAnswered = an[1];
+    return e("div", { style: { display: "flex", flexDirection: "column", gap: 22 } },
+      e("div", { style: { display: "flex", gap: 8 } }, TABS.map(function(t){
+        var active = screen === t[0];
+        return e("button", { key: t[0], onClick: function(){ setScreen(t[0]); }, style: {
+          font: "inherit", fontSize: 13, fontWeight: 600, cursor: "pointer",
+          padding: "9px 15px", borderRadius: 999, minHeight: 40,
+          border: "1px solid " + (active ? "transparent" : "var(--border-quiet)"),
+          background: active ? "var(--accent)" : "var(--paper-card)",
+          color: active ? "#FBFAF6" : "var(--sage-700)"
+        } }, t[1]);
+      })),
+      e("div", { style: { display: "flex", gap: 28, alignItems: "flex-start" } },
+        screen === "conversation" ? e(Conversation, {
+          answered: answered, onAnswer: setAnswered, onOpenDashboard: function(){ setScreen("dashboard"); }
+        }) : null,
+        screen === "dashboard" ? e(Dashboard, {
+          onBack: function(){ setScreen("conversation"); }, onOpenBrief: function(){ setScreen("brief"); }
+        }) : null,
+        screen === "brief" ? e(TransitionBrief, { onBack: function(){ setScreen("dashboard"); } }) : null));
+  }
+
+  ReactDOM.createRoot(document.getElementById("root")).render(e(Kit));
+})();
+</script>
+</body>
+</html>

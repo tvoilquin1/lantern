@@ -1,0 +1,11 @@
+:root {
+  /* Soft, generous, never sharp. Nothing in Lantern has a square corner. */
+  --radius-chip: 8px;
+  --radius-inset: 16px;
+  --radius-bubble: 24px;
+  --radius-bubble-tail: 8px;   /* the one tightened corner on a chat bubble */
+  --radius-card: 28px;
+  --radius-panel: 24px;
+  --radius-device: 42px;
+  --radius-pill: 999px;
+}

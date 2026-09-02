@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #E8E4DC; }
+  a { color: #5F7A63; text-decoration: none; border-bottom: 1px solid rgba(95,122,99,0.35); }
+  a:hover { color: #3F5745; }
+</style>
+</helmet>
+
+<section style="padding: 72px 80px 120px; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column; gap: 56px;">
+
+  <div style="display: flex; flex-direction: column; gap: 14px; max-width: 760px;">
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8378;">Lantern — MVP UI exploration — turn 1</div>
+    <div style="font-family: 'Instrument Serif', Georgia, serif; font-size: 44px; line-height: 1.1; color: #2A2724;">Two calm directions for the Companion and the Dashboard</div>
+    <div style="font-size: 16px; line-height: 1.6; color: #6E675E; text-wrap: pretty;">Both are mobile-first (web + PWA), both answer the dashboard's three questions, both keep the coaching boundary — no diagnosis language, clinical framing stays descriptive. Both open in the conversation — the dashboard is a tap away, never the greeting. <a href="#1a">1a</a> is warm and editorial: paper tones, soft contrast, one thing at a time. <a href="#1b">1b</a> is quiet and structured: cool neutrals, clearer data surfaces, more legible trajectory over time.</div>
+  </div>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 64px; align-items: flex-start;">
+
+    <!-- ============ 1a ============ -->
+    <div id="1a" style="display: flex; flex-direction: column; gap: 24px;">
+      <div style="display: flex; align-items: baseline; gap: 14px;">
+        <div style="font-weight: 600; font-size: 12px; font-weight: 500; letter-spacing: 0.08em; color: #FBF8F3; background: #2A2724; padding: 6px 10px; border-radius: 999px;">1a</div>
+        <div style="font-size: 19px; font-weight: 600; color: #2A2724;">Lamplight — warm, editorial, one thing at a time</div>
+      </div>
+      <div style="font-size: 14.5px; line-height: 1.6; color: #6E675E; max-width: 640px;">Linen paper ground, sage as the only true accent, one sans throughout. Risk is spoken in words first and color second, so a yellow state never reads as an alarm.</div>
+
+      <div style="display: flex; gap: 28px;">
+
+        <!-- A: check-in -->
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="width: 390px; height: 812px; background: #F6F2EA; border-radius: 42px; box-shadow: 0 30px 60px -24px rgba(42,39,36,0.28), 0 0 0 1px rgba(42,39,36,0.06); overflow: hidden; display: flex; flex-direction: column;">
+            <div style="padding: 22px 26px 0; display: flex; gap: 7px; align-items: center; font-size: 13px; font-weight: 600; color: #8A8378;">
+              <div style="width: 6px; height: 6px; border-radius: 999px; background: #5F7A63;"></div><div>Lantern</div>
+            </div>
+
+            <div style="padding: 20px 26px 0; display: flex; flex-direction: column; gap: 3px;">
+              <div style="font-weight: 600; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: #6E675E;">Tuesday, 26 August</div>
+              <div style="font-weight: 700; letter-spacing: -0.015em; font-size: 22px; line-height: 1.15; color: #2A2724;">Good morning, Sarah.</div>
+              <div style="font-size: 12.5px; color: #4F6A53;">Day 51 of showing up.</div>
+            </div>
+
+            <div style="flex: 1; padding: 18px 22px 0; display: flex; flex-direction: column; gap: 10px; overflow: hidden;">
+
+              <div style="max-width: 84%; background: #FFFDFA; border-radius: 24px 24px 24px 8px; padding: 16px 18px; box-shadow: 0 0 0 1px rgba(42,39,36,0.05); font-size: 15.5px; line-height: 1.55; color: #2A2724;">How was last night for the two of you?</div>
+
+              <div style="align-self: flex-end; max-width: 84%; background: #E7EDE5; border-radius: 24px 24px 8px 24px; padding: 16px 18px; font-size: 15.5px; line-height: 1.55; color: #2F3A31;">He was up at 2 and again at 4. Wandered into the kitchen. I got maybe four hours.</div>
+
+              <div style="max-width: 88%; background: #FFFDFA; border-radius: 24px 24px 24px 8px; padding: 16px 18px; box-shadow: 0 0 0 1px rgba(42,39,36,0.05); display: flex; flex-direction: column; gap: 12px;">
+                <div style="font-size: 15.5px; line-height: 1.55; color: #2A2724;">Four hours is not enough, and this is the fourth night this week. I've noted it.</div>
+                <div style="background: #FAF7F1; border-radius: 16px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px;">
+                  <div style="font-weight: 600; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8378;">Added to Dad's log</div>
+                  <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                    <div style="font-size: 12px; font-weight: 500; color: #5F7A63; background: #E7EDE5; padding: 5px 10px; border-radius: 8px;">Sleep · 2 wakings</div>
+                    <div style="font-size: 12px; font-weight: 500; color: #5F7A63; background: #E7EDE5; padding: 5px 10px; border-radius: 8px;">Night wandering</div>
+                    <div style="font-size: 12px; font-weight: 500; color: #9A6A2E; background: #F5E9D6; padding: 5px 10px; border-radius: 8px;">Your sleep · 4h</div>
+                  </div>
+                </div>
+                <div style="font-size: 15.5px; line-height: 1.55; color: #2A2724;">Was the kitchen the destination, or did he seem to be looking for something?</div>
+              </div>
+
+              <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                <div style="font-size: 14px; color: #4A5B4E; background: #FFFDFA; border: 1px solid rgba(95,122,99,0.25); padding: 10px 14px; border-radius: 999px;">Looking for something</div>
+                <div style="font-size: 14px; color: #4A5B4E; background: #FFFDFA; border: 1px solid rgba(95,122,99,0.25); padding: 10px 14px; border-radius: 999px;">Just pacing</div>
+                <div style="font-size: 14px; color: #4A5B4E; background: #FFFDFA; border: 1px solid rgba(95,122,99,0.25); padding: 10px 14px; border-radius: 999px;">Not sure</div>
+              </div>
+            </div>
+
+            <div style="padding: 16px 20px 22px;">
+              <div style="background: #FFFDFA; border-radius: 999px; padding: 14px 16px 14px 22px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 8px 20px -10px rgba(42,39,36,0.22), 0 0 0 1px rgba(42,39,36,0.05);">
+                <div style="font-size: 15px; color: #8A8378;">Type as much or as little as you like</div>
+                <div style="width: 40px; height: 40px; border-radius: 999px; background: #5F7A63; display: flex; align-items: center; justify-content: center; color: #FFFDFA; font-size: 17px;">↑</div>
+              </div>
+            </div>
+          </div>
+          <sc-if value="{{ annotations }}" hint-placeholder-val="{{ true }}">
+            <div style="width: 390px; font-weight: 600; font-size: 11.5px; line-height: 1.6; color: #8A8378;">COMPANION — no forms. Extraction is shown, not hidden: the log chip makes the data visible so it stays correctable. Chips lower the cost of answering on a bad morning.</div>
+          </sc-if>
+        </div>
+
+        <!-- A: dashboard -->
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="width: 390px; height: 812px; background: #F6F2EA; border-radius: 42px; box-shadow: 0 30px 60px -24px rgba(42,39,36,0.28), 0 0 0 1px rgba(42,39,36,0.06); overflow: hidden; display: flex; flex-direction: column;">
+            <div style="padding: 22px 26px 0; display: flex; gap: 7px; align-items: center; font-size: 13px; font-weight: 600; color: #8A8378;">
+              <div style="width: 6px; height: 6px; border-radius: 999px; background: #5F7A63;"></div><div>Lantern</div>
+            </div>
+
+            <div style="padding: 20px 26px 0; display: flex; align-items: center; justify-content: space-between;">
+              <div style="font-weight: 700; letter-spacing: -0.015em; font-size: 22px; color: #2A2724;">Today</div>
+              <div style="font-weight: 600; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #6E675E;">Tue, 26 Aug</div>
+            </div>
+
+            <div style="padding: 14px 20px 0; display: flex; flex-direction: column; gap: 9px;">
+
+              <div style="background: #FFFDFA; border-radius: 28px; padding: 17px 20px 15px; box-shadow: 0 1px 0 rgba(42,39,36,0.04), 0 0 0 1px rgba(42,39,36,0.05); display: flex; flex-direction: column; gap: 11px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <div style="font-weight: 600; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #6E675E;">Where Dad is</div>
+                  <div style="font-size: 12px; font-weight: 600; color: #5F7A63; background: #E7EDE5; padding: 5px 10px; border-radius: 999px;">Steady</div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                  <div style="font-weight: 700; letter-spacing: -0.015em; font-size: 26px; color: #2A2724;">Stage 5 <span style="font-size: 17px; color: #8A8378;">— moderately severe</span></div>
+                  <div style="font-size: 14px; line-height: 1.55; color: #6E675E;">Nothing has shifted in the last three weeks.</div>
+                </div>
+                <div style="display: flex; gap: 5px; align-items: flex-end; height: 46px;">
+                  <div style="flex: 1; height: 40%; background: #E7EDE5; border-radius: 6px;"></div>
+                  <div style="flex: 1; height: 52%; background: #E7EDE5; border-radius: 6px;"></div>
+                  <div style="flex: 1; height: 44%; background: #E7EDE5; border-radius: 6px;"></div>
+                  <div style="flex: 1; height: 60%; background: #DCE5D9; border-radius: 6px;"></div>
+                  <div style="flex: 1; height: 55%; background: #DCE5D9; border-radius: 6px;"></div>
+                  <div style="flex: 1; height: 70%; background: #C7D5C3; border-radius: 6px;"></div>
+                  <div style="flex: 1; height: 66%; background: #5F7A63; border-radius: 6px;"></div>
+                </div>
+                <div style="display: flex; gap: 10px; border-top: 1px solid #F0EBE2; padding-top: 13px;">
+                  <div style="flex: 1; display: flex; flex-direction: column; gap: 3px;"><div style="font-size: 11.5px; color: #6E675E;">Sleep</div><div style="font-size: 14px; font-weight: 600; color: #9A6A2E;">Worsening</div></div>
+                  <div style="flex: 1; display: flex; flex-direction: column; gap: 3px;"><div style="font-size: 11.5px; color: #6E675E;">Eating</div><div style="font-size: 14px; font-weight: 600; color: #5F7A63;">Steady</div></div>
+                  <div style="flex: 1; display: flex; flex-direction: column; gap: 3px;"><div style="font-size: 11.5px; color: #6E675E;">Mobility</div><div style="font-size: 14px; font-weight: 600; color: #5F7A63;">Steady</div></div>
+                </div>
+              </div>
+
+              <div style="background: #FFFDFA; border-radius: 28px; padding: 17px 20px; box-shadow: 0 1px 0 rgba(42,39,36,0.04), 0 0 0 1px rgba(42,39,36,0.05); display: flex; flex-direction: column; gap: 11px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <div style="font-weight: 600; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #6E675E;">Where you are</div>
+                  <div style="font-size: 12px; font-weight: 600; color: #9A6A2E; background: #F5E9D6; padding: 5px 10px; border-radius: 999px;">Stretched</div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                  <div style="height: 8px; border-radius: 999px; background: #EFEAE1; overflow: hidden; display: flex;">
+                    <div style="width: 64%; background: linear-gradient(90deg, #C7D5C3, #D8AE68); border-radius: 999px;"></div>
+                  </div>
+                  <div style="font-size: 14px; line-height: 1.55; color: #6E675E;">You've been up past 1am four nights running. That's usually the first sign, not the last.</div>
+                </div>
+              </div>
+
+              <div style="background: #2F3A31; border-radius: 28px; padding: 17px 20px; display: flex; flex-direction: column; gap: 11px;">
+                <div style="font-weight: 600; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #9CB09E;">In front of you</div>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                  <div style="display: flex; gap: 12px; align-items: flex-start;">
+                    <div style="width: 18px; height: 18px; border-radius: 6px; border: 1.5px solid #7C9280; flex-shrink: 0; margin-top: 2px;"></div>
+                    <div style="font-size: 14.5px; line-height: 1.5; color: #F2F5F1;">Two hours of respite care this week — I found three options near you.</div>
+                  </div>
+                  <div style="display: flex; gap: 12px; align-items: flex-start;">
+                    <div style="width: 18px; height: 18px; border-radius: 6px; border: 1.5px solid #7C9280; flex-shrink: 0; margin-top: 2px;"></div>
+                    <div style="font-size: 14.5px; line-height: 1.5; color: #F2F5F1;">Move Dad's bedtime routine 30 minutes earlier.</div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div style="margin-top: auto; padding: 16px 20px 22px;">
+              <div style="background: #FFFDFA; border-radius: 999px; padding: 14px 16px 14px 22px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 8px 20px -10px rgba(42,39,36,0.22), 0 0 0 1px rgba(42,39,36,0.05);">
+                <div style="font-size: 15px; color: #8A8378;">Talk to Lantern…</div>
+                <div style="width: 40px; height: 40px; border-radius: 999px; background: #5F7A63; display: flex; align-items: center; justify-content: center; color: #FFFDFA; font-size: 17px;">↑</div>
+              </div>
+            </div>
+          </div>
+          <sc-if value="{{ annotations }}" hint-placeholder-val="{{ true }}">
+            <div style="width: 390px; font-weight: 600; font-size: 11.5px; line-height: 1.6; color: #8A8378;">DASHBOARD — three questions, three cards, in that order. Colour is the quiet layer; the sentence carries the meaning.</div>
+          </sc-if>
+        </div>
+
+        <!-- A: transition -->
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="width: 390px; height: 812px; background: #F6F2EA; border-radius: 42px; box-shadow: 0 30px 60px -24px rgba(42,39,36,0.28), 0 0 0 1px rgba(42,39,36,0.06); overflow: hidden; display: flex; flex-direction: column;">
+            <div style="padding: 26px 26px 0; display: flex; align-items: center; justify-content: space-between;">
+              <div style="font-size: 22px; color: #8A8378;">←</div>
+              <div style="font-weight: 600; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #6E675E;">Something to know</div>
+              <div style="width: 22px;"></div>
+            </div>
+
+            <div style="padding: 24px 26px 0; display: flex; flex-direction: column; gap: 12px;">
+              <div style="align-self: flex-start; font-size: 12px; font-weight: 600; color: #9A6A2E; background: #F5E9D6; padding: 6px 12px; border-radius: 999px;">Possible shift ahead</div>
+              <div style="font-weight: 700; letter-spacing: -0.015em; font-size: 25px; line-height: 1.18; color: #2A2724;">The pattern in Dad's last two weeks looks like early stage 6.</div>
+              <div style="font-size: 14px; line-height: 1.55; color: #6E675E; text-wrap: pretty;">Night wandering, needing help with buttons, and calling you by your mother's name are three of the changes that usually appear together at this point. This is a pattern in your logs, not a diagnosis — his doctor is the one to confirm it.</div>
+            </div>
+
+            <div style="padding: 20px 20px 0; display: flex; flex-direction: column; gap: 11px;">
+              <div style="background: #FFFDFA; border-radius: 24px; padding: 16px 18px; box-shadow: 0 0 0 1px rgba(42,39,36,0.05); display: flex; flex-direction: column; gap: 11px;">
+                <div style="font-weight: 600; font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: #8A8378;">What tends to help now</div>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                  <div style="display: flex; gap: 12px;"><div style="font-weight: 600; font-size: 12px; color: #5F7A63; padding-top: 2px;">01</div><div style="font-size: 14.5px; line-height: 1.55; color: #3D3934;">Lay out clothes in the order they go on. It buys back the dressing hour.</div></div>
+                  <div style="display: flex; gap: 12px;"><div style="font-weight: 600; font-size: 12px; color: #5F7A63; padding-top: 2px;">02</div><div style="font-size: 14.5px; line-height: 1.55; color: #3D3934;">A night light in the hallway and a bed sensor, before the next wandering night.</div></div>
+                  <div style="display: flex; gap: 12px;"><div style="font-weight: 600; font-size: 12px; color: #5F7A63; padding-top: 2px;">03</div><div style="font-size: 14.5px; line-height: 1.55; color: #3D3934;">When he uses the wrong name, answer the feeling, not the fact.</div></div>
+                </div>
+              </div>
+
+              <div style="background: #EFEAE1; border-radius: 24px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px;">
+                <div style="font-size: 14.5px; font-weight: 600; color: #3D3934;">Bring this to his next appointment</div>
+                <div style="font-size: 13.5px; line-height: 1.55; color: #6E675E;">A one-page summary of the last 14 days, ready to print or send.</div>
+              </div>
+            </div>
+
+            <div style="margin-top: auto; padding: 18px 20px 24px; display: flex; flex-direction: column; gap: 10px;">
+              <div style="background: #5F7A63; border-radius: 999px; padding: 17px; text-align: center; font-size: 15.5px; font-weight: 600; color: #FBFAF6;">Talk this through with Lantern</div>
+              <div style="text-align: center; font-size: 14px; color: #8A8378; padding: 6px;">Not now</div>
+            </div>
+          </div>
+          <sc-if value="{{ annotations }}" hint-placeholder-val="{{ true }}">
+            <div style="width: 390px; font-weight: 600; font-size: 11.5px; line-height: 1.6; color: #8A8378;">TRANSITION — arrives as "something to know", never a red alert. Evidence → clinical framing → three concrete actions → the disclaimer sits inside the paragraph, not in fine print.</div>
+          </sc-if>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ 1b ============ -->
+    <div id="1b" style="display: flex; flex-direction: column; gap: 24px;">
+      <div style="display: flex; align-items: baseline; gap: 14px;">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 0.08em; color: #FFFFFF; background: #1E2733; padding: 6px 10px; border-radius: 999px;">1b</div>
+        <div style="font-size: 19px; font-weight: 600; color: #2A2724;">Still Water — quiet, structured, trajectory-forward</div>
+      </div>
+      <div style="font-size: 14.5px; line-height: 1.6; color: #6E675E; max-width: 640px;">Cool near-white, one sans throughout, tighter radii. Same emotional restraint, but the patient's trajectory and the caregiver's own state are charted over time — better for a caregiver who wants to see the shape of things.</div>
+
+      <div style="display: flex; gap: 28px;">
+
+        <!-- B: check-in / coaching -->
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="width: 390px; height: 812px; background: #F2F5F8; border-radius: 42px; box-shadow: 0 30px 60px -24px rgba(30,39,51,0.28), 0 0 0 1px rgba(30,39,51,0.07); overflow: hidden; display: flex; flex-direction: column;">
+            <div style="padding: 22px 24px 16px; background: #FFFFFF; border-bottom: 1px solid #E7EDF3; display: flex; align-items: center; gap: 12px;">
+              <div style="width: 32px; height: 32px; border-radius: 10px; background: #E3EAF2; display: flex; align-items: center; justify-content: center;"><div style="width: 9px; height: 9px; border-radius: 999px; background: #4A6B8A;"></div></div>
+              <div style="flex: 1; display: flex; flex-direction: column;">
+                <div style="font-size: 15px; font-weight: 600; color: #1E2733;">Lantern</div>
+                <div style="font-size: 12px; color: #8494A6;">Check-ins each morning · adjustable</div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 6px; background: #F0F4F8; padding: 7px 11px; border-radius: 999px;">
+                <div style="width: 6px; height: 6px; border-radius: 999px; background: #C99A4E;"></div>
+                <div style="font-size: 12px; font-weight: 600; color: #4A5766;">Today</div>
+                <div style="font-size: 12px; color: #8494A6;">›</div>
+              </div>
+            </div>
+
+            <div style="flex: 1; padding: 20px 20px 0; display: flex; flex-direction: column; gap: 14px; overflow: hidden;">
+              <div style="align-self: flex-end; max-width: 84%; background: #4A6B8A; border-radius: 18px 18px 6px 18px; padding: 14px 16px; font-size: 15px; line-height: 1.5; color: #FFFFFF;">Honestly I don't know how much longer I can keep doing this.</div>
+
+              <div style="max-width: 88%; background: #FFFFFF; border-radius: 18px 18px 18px 6px; padding: 16px; box-shadow: 0 1px 2px rgba(30,39,51,0.05); font-size: 15px; line-height: 1.55; color: #1E2733;">That's a heavy thing to be carrying at 9am. You don't have to have a plan right now — I'm here.</div>
+
+              <div style="max-width: 88%; background: #FFFFFF; border-radius: 18px; padding: 16px; box-shadow: 0 1px 2px rgba(30,39,51,0.05); display: flex; flex-direction: column; gap: 14px;">
+                <div style="font-size: 15px; line-height: 1.55; color: #1E2733;">When you have a minute, one of these actually moves the needle. Which feels possible today?</div>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                  <div style="background: #F5F8FB; border: 1px solid #E2EAF2; border-radius: 14px; padding: 13px 14px; display: flex; flex-direction: column; gap: 3px;">
+                    <div style="font-size: 14px; font-weight: 600; color: #1E2733;">Four hours away on Saturday</div>
+                    <div style="font-size: 12.5px; color: #6B7A8C;">Three respite providers within 15 minutes</div>
+                  </div>
+                  <div style="background: #F5F8FB; border: 1px solid #E2EAF2; border-radius: 14px; padding: 13px 14px; display: flex; flex-direction: column; gap: 3px;">
+                    <div style="font-size: 14px; font-weight: 600; color: #1E2733;">Ask your sister for Wednesday nights</div>
+                    <div style="font-size: 12.5px; color: #6B7A8C;">I'll help you write the message</div>
+                  </div>
+                  <div style="background: #F5F8FB; border: 1px solid #E2EAF2; border-radius: 14px; padding: 13px 14px; display: flex; flex-direction: column; gap: 3px;">
+                    <div style="font-size: 14px; font-weight: 600; color: #1E2733;">Talk to someone who isn't an app</div>
+                    <div style="font-size: 12.5px; color: #6B7A8C;">Caregiver support line · free, 24/7</div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="align-self: center; background: #E9EEF4; border-radius: 999px; padding: 8px 14px; font-size: 12px; color: #6B7A8C;">Nothing here goes to anyone else.</div>
+            </div>
+
+            <div style="padding: 14px 20px 22px; background: #FFFFFF; border-top: 1px solid #E7EDF3;">
+              <div style="background: #F2F5F8; border-radius: 16px; padding: 13px 14px 13px 16px; display: flex; align-items: center; justify-content: space-between;">
+                <div style="font-size: 15px; color: #8494A6;">Message</div>
+                <div style="width: 34px; height: 34px; border-radius: 10px; background: #4A6B8A; display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-size: 15px;">↑</div>
+              </div>
+            </div>
+          </div>
+          <sc-if value="{{ annotations }}" hint-placeholder-val="{{ true }}">
+            <div style="width: 390px; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; line-height: 1.6; color: #8A8378;">BURNOUT MOMENT — hold space first, then offer three sized-down options including a human one. Never "you seem burned out, here's a score."</div>
+          </sc-if>
+        </div>
+
+        <!-- B: dashboard -->
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="width: 390px; height: 812px; background: #F2F5F8; border-radius: 42px; box-shadow: 0 30px 60px -24px rgba(30,39,51,0.28), 0 0 0 1px rgba(30,39,51,0.07); overflow: hidden; display: flex; flex-direction: column;">
+            <div style="padding: 22px 26px 0; display: flex; gap: 7px; align-items: center; font-size: 13px; font-weight: 600; color: #6B7A8C;">
+              <div style="width: 6px; height: 6px; border-radius: 999px; background: #4A6B8A;"></div><div>Lantern</div>
+            </div>
+
+            <div style="padding: 26px 24px 0; display: flex; flex-direction: column; gap: 4px;">
+              <div style="font-size: 26px; font-weight: 700; letter-spacing: -0.01em; color: #1E2733;">Good morning, Sarah</div>
+              <div style="font-size: 14.5px; color: #6B7A8C;">Tuesday · day 51 of logging</div>
+            </div>
+
+            <div style="padding: 14px 18px 0; display: flex; flex-direction: column; gap: 8px;">
+
+              <div style="background: #FFFFFF; border-radius: 20px; padding: 17px 18px; box-shadow: 0 1px 3px rgba(30,39,51,0.05), 0 0 0 1px rgba(30,39,51,0.05); display: flex; flex-direction: column; gap: 14px;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                  <div style="display: flex; flex-direction: column; gap: 3px;">
+                    <div style="font-size: 12.5px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: #8494A6;">Dad</div>
+                    <div style="font-size: 21px; font-weight: 700; color: #1E2733;">Stage 5 · steady</div>
+                  </div>
+                  <div style="display: flex; gap: 4px; align-items: center; background: #E7F0EC; padding: 6px 10px; border-radius: 8px;">
+                    <div style="width: 7px; height: 7px; border-radius: 999px; background: #4F8377;"></div>
+                    <div style="font-size: 12px; font-weight: 600; color: #3E6B61;">Low risk</div>
+                  </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                  <div style="display: flex; align-items: flex-end; gap: 3px; height: 48px;">
+                    <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 3px; height: 100%;"><div style="height: 34%; background: #DCE6F0; border-radius: 4px;"></div></div>
+                    <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 3px; height: 100%;"><div style="height: 46%; background: #DCE6F0; border-radius: 4px;"></div></div>
+                    <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 3px; height: 100%;"><div style="height: 40%; background: #DCE6F0; border-radius: 4px;"></div></div>
+                    <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 3px; height: 100%;"><div style="height: 58%; background: #C3D4E4; border-radius: 4px;"></div></div>
+                    <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 3px; height: 100%;"><div style="height: 52%; background: #C3D4E4; border-radius: 4px;"></div></div>
+                    <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 3px; height: 100%;"><div style="height: 72%; background: #4A6B8A; border-radius: 4px;"></div></div>
+                    <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 3px; height: 100%;"><div style="height: 64%; background: #4A6B8A; border-radius: 4px;"></div></div>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; font-size: 11px; color: #5A6878;"><div>7 weeks ago</div><div>this week</div></div>
+                </div>
+
+                <div style="display: flex; gap: 10px; border-top: 1px solid #EDF1F6; padding-top: 13px;">
+                  <div style="flex: 1; display: flex; flex-direction: column; gap: 3px;"><div style="font-size: 11.5px; color: #8494A6;">Sleep</div><div style="font-size: 14px; font-weight: 600; color: #B98436;">Worsening</div></div>
+                  <div style="flex: 1; display: flex; flex-direction: column; gap: 3px;"><div style="font-size: 11.5px; color: #8494A6;">Eating</div><div style="font-size: 14px; font-weight: 600; color: #3E6B61;">Stable</div></div>
+                  <div style="flex: 1; display: flex; flex-direction: column; gap: 3px;"><div style="font-size: 11.5px; color: #8494A6;">Mobility</div><div style="font-size: 14px; font-weight: 600; color: #3E6B61;">Stable</div></div>
+                </div>
+              </div>
+
+              <div style="background: #FFFFFF; border-radius: 20px; padding: 16px 18px; box-shadow: 0 1px 3px rgba(30,39,51,0.05), 0 0 0 1px rgba(30,39,51,0.05); display: flex; flex-direction: column; gap: 9px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <div style="font-size: 12.5px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: #8494A6;">You</div>
+                  <div style="font-size: 12px; font-weight: 600; color: #6B7A8C;">Stage 3 of 4 · rising</div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 7px;">
+                  <div style="font-size: 22px; font-weight: 700; letter-spacing: -0.015em; color: #96631F; line-height: 1.15;">Stretched thin</div>
+                  <div style="display: flex; gap: 4px;">
+                    <div style="flex: 1; height: 7px; border-radius: 999px; background: #C99A4E;"></div>
+                    <div style="flex: 1; height: 7px; border-radius: 999px; background: #C99A4E;"></div>
+                    <div style="flex: 1; height: 7px; border-radius: 999px; background: #C99A4E;"></div>
+                    <div style="flex: 1; height: 7px; border-radius: 999px; background: #EDF1F6;"></div>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: #5A6878;"><div>Coping</div><div>Stretched</div><div>At risk</div></div>
+                </div>
+                <div style="font-size: 13.5px; line-height: 1.55; color: #6B7A8C;">Four nights of broken sleep and two missed check-ins. Worth doing something small today. <span style="color: #5A6878;">Zarit-informed score 58, up 11 in three weeks.</span></div>
+                <sc-if value="{{ burnoutDetail }}" hint-placeholder-val="{{ true }}">
+                  <div style="background: #F7F9FB; border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 10px;">
+                    <div style="font-size: 11.5px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: #5A6878;">What's driving it</div>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                      <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px;"><div style="font-size: 13px; color: #4A5766;">Night-time activity</div><div style="width: 92px; height: 5px; border-radius: 999px; background: #E4EAF1;"><div style="width: 80%; height: 100%; border-radius: 999px; background: #A8574C;"></div></div></div>
+                      <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px;"><div style="font-size: 13px; color: #4A5766;">Logging gaps</div><div style="width: 92px; height: 5px; border-radius: 999px; background: #E4EAF1;"><div style="width: 55%; height: 100%; border-radius: 999px; background: #C99A4E;"></div></div></div>
+                      <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px;"><div style="font-size: 13px; color: #4A5766;">Self-report (PHQ-9)</div><div style="width: 92px; height: 5px; border-radius: 999px; background: #E4EAF1;"><div style="width: 38%; height: 100%; border-radius: 999px; background: #C99A4E;"></div></div></div>
+                    </div>
+                  </div>
+                </sc-if>
+              </div>
+
+              <div style="background: #1E2733; border-radius: 20px; padding: 17px 18px; display: flex; flex-direction: column; gap: 11px;">
+                <div style="font-size: 12.5px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: #8BA3BC;">In front of you · 2</div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                  <div style="background: rgba(255,255,255,0.07); border-radius: 14px; padding: 14px; display: flex; justify-content: space-between; align-items: center; gap: 10px;">
+                    <div style="font-size: 14px; line-height: 1.45; color: #EAF0F6;">Book two hours of respite care</div>
+                    <div style="font-size: 16px; color: #8BA3BC;">›</div>
+                  </div>
+                  <div style="background: rgba(255,255,255,0.07); border-radius: 14px; padding: 14px; display: flex; justify-content: space-between; align-items: center; gap: 10px;">
+                    <div style="font-size: 14px; line-height: 1.45; color: #EAF0F6;">Shift Dad's bedtime 30 min earlier</div>
+                    <div style="font-size: 16px; color: #8BA3BC;">›</div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div style="margin-top: auto; padding: 14px 24px 20px; background: #FFFFFF; border-top: 1px solid #E7EDF3; display: flex; justify-content: space-between;">
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;"><div style="width: 20px; height: 20px; border-radius: 999px; background: #CBD6E2;"></div><div style="font-size: 11px; font-weight: 500; color: #8494A6;">Talk</div></div>
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;"><div style="width: 20px; height: 20px; border-radius: 6px; background: #4A6B8A;"></div><div style="font-size: 11px; font-weight: 600; color: #4A6B8A;">Today</div></div>
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;"><div style="width: 20px; height: 20px; border-radius: 4px; background: #CBD6E2;"></div><div style="font-size: 11px; font-weight: 500; color: #8494A6;">Log</div></div>
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;"><div style="width: 20px; height: 20px; border-radius: 999px; border: 3px solid #CBD6E2; box-sizing: border-box;"></div><div style="font-size: 11px; font-weight: 500; color: #8494A6;">Learn</div></div>
+            </div>
+          </div>
+          <sc-if value="{{ annotations }}" hint-placeholder-val="{{ true }}">
+            <div style="width: 390px; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; line-height: 1.6; color: #8A8378;">DASHBOARD — same three questions, but each answer opens into its evidence. The caregiver's state is named in plain words; the Zarit number stays as a footnote.</div>
+          </sc-if>
+        </div>
+
+        <!-- B: onboarding -->
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="width: 390px; height: 812px; background: #FFFFFF; border-radius: 42px; box-shadow: 0 30px 60px -24px rgba(30,39,51,0.28), 0 0 0 1px rgba(30,39,51,0.07); overflow: hidden; display: flex; flex-direction: column;">
+            <div style="padding: 26px 24px 0; display: flex; flex-direction: column; gap: 18px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="font-size: 20px; color: #8494A6;">←</div>
+                <div style="flex: 1; height: 4px; border-radius: 999px; background: #EDF1F6; overflow: hidden;"><div style="width: 40%; height: 100%; background: #4A6B8A; border-radius: 999px;"></div></div>
+                <div style="font-size: 12px; font-weight: 600; color: #8494A6;">4 / 10</div>
+              </div>
+            </div>
+
+            <div style="padding: 40px 24px 0; display: flex; flex-direction: column; gap: 12px;">
+              <div style="font-size: 12.5px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: #8494A6;">About you</div>
+              <div style="font-size: 27px; font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; color: #1E2733;">In the last month, how often have you felt you couldn't leave him alone?</div>
+              <div style="font-size: 14.5px; line-height: 1.6; color: #6B7A8C;">One question at a time. There are no wrong answers, and you can skip any of them.</div>
+            </div>
+
+            <div style="padding: 32px 24px 0; display: flex; flex-direction: column; gap: 10px;">
+              <div style="border: 1px solid #E2EAF2; border-radius: 16px; padding: 17px 18px; font-size: 15.5px; color: #1E2733;">Never</div>
+              <div style="border: 1px solid #E2EAF2; border-radius: 16px; padding: 17px 18px; font-size: 15.5px; color: #1E2733;">Rarely</div>
+              <div style="border: 1px solid #E2EAF2; border-radius: 16px; padding: 17px 18px; font-size: 15.5px; color: #1E2733;">Sometimes</div>
+              <div style="border: 2px solid #4A6B8A; background: #F2F7FC; border-radius: 16px; padding: 16px 17px; font-size: 15.5px; font-weight: 600; color: #1E2733; display: flex; justify-content: space-between; align-items: center;"><div>Quite frequently</div><div style="width: 18px; height: 18px; border-radius: 999px; background: #4A6B8A;"></div></div>
+              <div style="border: 1px solid #E2EAF2; border-radius: 16px; padding: 17px 18px; font-size: 15.5px; color: #1E2733;">Nearly always</div>
+            </div>
+
+            <div style="margin-top: auto; padding: 20px 24px 26px; display: flex; flex-direction: column; gap: 12px;">
+              <div style="font-size: 12.5px; line-height: 1.5; color: #5A6878;">Your answers set a starting point so Lantern can notice when things change. Nothing is shared.</div>
+              <div style="background: #4A6B8A; border-radius: 16px; padding: 17px; text-align: center; font-size: 15.5px; font-weight: 600; color: #FFFFFF;">Continue</div>
+            </div>
+          </div>
+          <sc-if value="{{ annotations }}" hint-placeholder-val="{{ true }}">
+            <div style="width: 390px; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; line-height: 1.6; color: #8A8378;">ONBOARDING — GDS/Zarit baseline as one question per screen, skippable, with the reason stated. Same pattern works in either direction.</div>
+          </sc-if>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div style="max-width: 760px; display: flex; flex-direction: column; gap: 10px; border-top: 1px solid rgba(42,39,36,0.12); padding-top: 28px;">
+    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8378;">Open questions</div>
+    <div style="font-size: 15px; line-height: 1.65; color: #6E675E; text-wrap: pretty;">Both directions now open in the conversation, with the dashboard behind a quiet <em>Today</em> chip in the header — the app greets Sarah, it doesn't brief her. The burnout gauge leads with a named state ("Stretched thin", 3 of 4) and keeps the Zarit number as a footnote, since the scale means nothing to a caregiver who's never seen it. Still open: does the dashboard need a nudge to be visited at all, or is the companion pointing to it enough?</div>
+  </div>
+
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;annotations&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;burnoutDetail&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      annotations: this.props.annotations ?? true,
+      burnoutDetail: this.props.burnoutDetail ?? false,
+    };
+  }
+}
+</script>
+</body>
+</html>

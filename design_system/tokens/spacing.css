@@ -1,0 +1,26 @@
+:root {
+  /* Lantern is not on a strict 4px grid — the values below are the literal rhythm of the
+     source screens. Card padding lives at 16-20; stack gaps at 8-12; screen gutters at 20-26. */
+  --space-2: 2px;
+  --space-3: 3px;
+  --space-5: 5px;
+  --space-6: 6px;
+  --space-8: 8px;
+  --space-9: 9px;
+  --space-10: 10px;
+  --space-11: 11px;
+  --space-12: 12px;
+  --space-14: 14px;
+  --space-16: 16px;
+  --space-18: 18px;
+  --space-20: 20px;
+  --space-22: 22px;
+  --space-26: 26px;
+
+  --card-padding-y: 17px;
+  --card-padding-x: 20px;
+  --card-gap: 11px;
+  --stack-gap: 9px;
+  --screen-gutter: 20px;
+  --screen-gutter-text: 26px;
+}
