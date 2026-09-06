@@ -180,7 +180,7 @@ Medicare criteria for hospice eligibility in dementia requires the person to mee
    - Aspiration pneumonia
    - Pyelonephritis (kidney infection)
    - Septicemia (blood infection)
-   - Decubitus ulcers (pressure sores / bedsores) — grade 3 or 4
+   - Deep, full-thickness pressure sores (the two most severe categories)
    - Fever recurring after antibiotics
    - Inability to maintain sufficient fluid and calorie intake (10% weight loss in 6 months)
 

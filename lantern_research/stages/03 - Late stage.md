@@ -172,7 +172,7 @@ Hospice care is appropriate when a person is expected to live six months or less
 - Inability to speak or communicate meaningfully (≤6 words)
 - Weight loss (10%+ in previous 6 months)
 - Recurrent infections (pneumonia, UTIs, sepsis)
-- Pressure ulcers (grade 2+)
+- Pressure ulcers (partial or full-thickness skin breakdown)
 - Difficulty swallowing
 
 **Hospice provides:**
