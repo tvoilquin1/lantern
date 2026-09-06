@@ -31,7 +31,7 @@ export function Dashboard({ onBack, onOpenBrief }) {
             <StatePill tone="steady">Steady</StatePill>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-            <StageHeadline stage="Stage 5" qualifier="moderately severe" />
+            <StageHeadline stage="Early" qualifier="moderate" />
             <div style={{ fontSize: "14px", lineHeight: 1.55, color: "var(--text-body)" }}>Nothing has shifted in the last three weeks.</div>
           </div>
           <Sparkline values={[40, 52, 44, 60, 55, 70, 66]} />

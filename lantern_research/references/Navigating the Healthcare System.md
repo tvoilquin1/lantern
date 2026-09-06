@@ -175,12 +175,12 @@ Hospice is **not giving up.** It is a specific Medicare benefit for people with 
 
 Medicare criteria for hospice eligibility in dementia requires the person to meet ALL of these:
 
-1. **Stage 7 on the FAST Scale** (Functional Assessment Staging) — the person can no longer walk, dress, bathe, or toilet independently
+1. **Late-stage functional decline** — the person can no longer walk, dress, bathe, or toilet independently
 2. **AND one of the following in the past 12 months:**
    - Aspiration pneumonia
    - Pyelonephritis (kidney infection)
    - Septicemia (blood infection)
-   - Decubitus ulcers (pressure sores / bedsores) — Stage 3 or 4
+   - Deep, full-thickness pressure sores (the two most severe categories)
    - Fever recurring after antibiotics
    - Inability to maintain sufficient fluid and calorie intake (10% weight loss in 6 months)
 

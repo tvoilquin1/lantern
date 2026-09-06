@@ -4,4 +4,4 @@ StateTrack is the burnout gauge. Prefer the segmented form: it reads as a named 
 <StateTrack segments={4} value={70} tone="caution" labels={["Coping", "Stretched", "At risk"]} />
 ```
 
-Always pair it with a plain-language headline ("Stretched thin"). Any clinical score (Zarit, PHQ-9) belongs in the supporting sentence, never as the headline number.
+Always pair it with a plain-language headline ("Stretched thin"). Any clinical score (LCWS level or baseline score) belongs in the supporting sentence, never as the headline number.

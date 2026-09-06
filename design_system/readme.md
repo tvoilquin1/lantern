@@ -32,8 +32,8 @@ These are not style rules; they constrain the UI.
    with the doctor named as the one who confirms. The disclaimer lives inside the paragraph, never in
    fine print.
 3. **The word leads, the colour follows.** Every state is named in plain language ("Stretched thin")
-   before it is coloured. Clinical scores (GDS stage numbers, Zarit, PHQ-9) are footnotes, never headlines —
-   the caregiver has not been taught the scales.
+   before it is coloured. Clinical scores (LCWS levels, baseline scores, stage labels — Early/Middle/Late)
+   are footnotes, never headlines — the caregiver has not been taught the scales.
 4. **No gamification.** No streaks, no completion percentages, no "you missed 3 check-ins". A logging gap
    is a burnout signal to act on quietly, not a failure to report back.
 5. **Three things maximum.** Three cards on the dashboard, three items of guidance, two or three tasks.
@@ -155,7 +155,7 @@ The source is a design exploration, not a component library, so the inventory ab
 
 ## Not yet built
 
-The MVP scope names screens this system does not yet cover: **onboarding** (GDS + Zarit baseline, one
-question per screen), **the knowledge-base / learn surface**, **settings** (check-in frequency, quiet hours),
-and **crisis-tier states**. The tokens and primitives support them; the screens do not exist. Ask before
+The MVP scope names screens this system does not yet cover: **onboarding** (patient stage inference + LCWS
+baseline, one question per screen), **the knowledge-base / learn surface**, **settings** (check-in frequency,
+quiet hours), and **crisis-tier states**. The tokens and primitives support them; the screens do not exist. Ask before
 assuming a pattern for these.

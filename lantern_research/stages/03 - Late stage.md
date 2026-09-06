@@ -1,8 +1,7 @@
-# Stage 7 — Very Severe Decline (Late Dementia)
+# Late Stage — Very Severe Dementia
 
-**GDS Classification:** Stage 7 — Very Severe Cognitive Decline
 **Alternate Names:** Severe Alzheimer's Disease, End-Stage Dementia, Late-Stage Dementia
-**Total Duration:** Variable — substages 7a through 7f; most people die during this stage, typically between 7c and 7d
+**Total Duration:** Variable — most people die during this stage, typically after losing the ability to walk and before losing the ability to hold their head up
 **Care Dependency:** Continuous, round-the-clock assistance with all basic activities
 
 ---
@@ -15,36 +14,36 @@ This is the final stage of Alzheimer's disease. The person has lost the ability 
 
 **The goal of care is no longer slowing decline.** It is maximizing comfort, minimizing suffering, and ensuring the person's final months and days are lived with dignity and without pain.
 
-### The Six Substages (7a — 7f)
+### How the Late stage usually progresses
 
-| Substage | Functional Loss | Mean Duration |
-|----------|----------------|---------------|
-| **7a** | Speech limited to ≤6 intelligible words per day | ~12 months |
-| **7b** | Speech limited to ≤1 intelligible word per day | ~18 months |
-| **7c** | Loss of independent ambulation (cannot walk) | ~12 months |
-| **7d** | Loss of ability to sit up independently | ~12 months |
-| **7e** | Loss of ability to smile | ~18 months |
-| **7f** | Loss of ability to hold head up independently | Indefinite |
+The functional losses of this stage tend to follow an order, though the pace varies widely — some people move through quickly, others remain at one level for a year or more:
 
-**Note:** These represent the classic progression, but the timeline varies. Some people skip substages or progress more quickly. The duration estimates are averages from the original FAST (Functional Assessment Staging) research.
+1. **Speech reduces to a few words a day** — conversation is no longer possible, but short sounds or single words may occur. (Often around 12 months at this level.)
+2. **Speech reduces to one word or less per day** — the person may vocalize but cannot form meaningful words. (Often around 18 months.)
+3. **Walking is lost** — the person can no longer move independently and needs to be positioned in a chair or bed. (Often around 12 months.)
+4. **Sitting up unaided is lost** — the person can no longer hold themselves upright without support. (Often around 12 months.)
+5. **Smiling is lost** — not because of unhappiness, but because the facial muscles no longer respond to conscious will. (Often around 18 months.)
+6. **Holding the head up is lost** — the final loss of voluntary muscle control.
+
+These are averages and patterns, not a fixed schedule. The timeline varies. Some people remain at one level far longer or shorter than these ranges suggest.
 
 ---
 
 ## What You'll See
 
-### Speech & Communication (Stages 7a-7b)
+### Speech & Communication
 - Words become rare — first a few per day, then one or none
 - The person may moan, cry out, or make sounds that are not words
 - They may still understand tone of voice and emotional content, even if they cannot process words
 - **Assume they can hear and understand more than they can show** — never speak about them as if they aren't there
 
-### Mobility (Stages 7c-7d)
+### Mobility
 - Walking becomes impossible without support, then impossible at all
 - Eventually cannot sit up without being propped or supported
 - The person will need to be repositioned in bed or a chair every 1-2 hours to prevent pressure sores
 - Contractures (irreversible joint stiffness) develop in nearly all immobile patients — hands curl, knees bend, chin may pull toward chest
 
-### Facial Expression (Stage 7e)
+### Facial Expression
 - The person loses the ability to smile — not because they are unhappy, but because the muscles no longer respond
 - Grimacing may occur, but this is a reflex, not necessarily an expression of pain
 - **The loss of the smile is devastating for families.** Prepare for this. The person is still capable of experiencing comfort and peace, even if they cannot show it through a smile.
@@ -143,7 +142,7 @@ Late-stage Alzheimer's patients are highly sensitive to their environment:
 
 ## Caregiver Preparation & Coping
 
-Stage 7 brings a different kind of pain. The frantic activity of earlier stages is gone, replaced by a quiet, prolonged vigil.
+The Late stage brings a different kind of pain. The frantic activity of earlier stages is gone, replaced by a quiet, prolonged vigil.
 
 ### Emotional Landscape
 
@@ -173,7 +172,7 @@ Hospice care is appropriate when a person is expected to live six months or less
 - Inability to speak or communicate meaningfully (≤6 words)
 - Weight loss (10%+ in previous 6 months)
 - Recurrent infections (pneumonia, UTIs, sepsis)
-- Pressure ulcers (Stage 2+)
+- Pressure ulcers (partial or full-thickness skin breakdown)
 - Difficulty swallowing
 
 **Hospice provides:**
@@ -218,7 +217,6 @@ When the person dies, the caregiver is often left with:
 
 - Alzheimer's Association: [Late-Stage Care](https://www.alz.org/help-support/caregiving/stages-behaviors/late-stage)
 - Mace, N.L. & Rabins, P.V. (2021). *The 36-Hour Day* (6th ed.). — Chapters 6 (medical problems, death and dying), 12 (caregiver feelings), 16 (nursing homes, terminal care)
-- Reisberg, B. (1988). Functional Assessment Staging (FAST) in Alzheimer's disease. *The American Journal of Alzheimer's Care and Related Disorders & Research*, 3(2), 11-15.
 - National Institute on Aging: [End-of-Life Care for People with Dementia](https://www.nia.nih.gov/health/end-life-care-people-dementia)
 - National Hospice and Palliative Care Organization: [Hospice Care](https://www.nhpco.org/patients-and-caregivers/hospice-care/)
 - Alzheimer's Association: [Hospice and Palliative Care](https://www.alz.org/help-support/caregiving/care-options/hospice-and-palliative-care)
@@ -227,5 +225,5 @@ When the person dies, the caregiver is often left with:
 
 ---
 
-**Previous:** ← [[Stage 6 - Severe Decline]]
+**Previous:** ← [[02 - Middle stage]]
 **Up:** ← [[Framework Overview]]

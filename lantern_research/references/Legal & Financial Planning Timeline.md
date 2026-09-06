@@ -2,7 +2,7 @@
 
 **Purpose:** A stage-by-stage guide to what legal and financial documents need to be in place — and what decisions need to be made — before the person with dementia loses the capacity to participate.
 
-**The key rule:** In Stages 1–3, the person *can* sign legal documents, make their own decisions, and articulate their wishes. By Stage 5, this is no longer possible. **Stage 3 is the last safe window for most legal planning.** Stage 4 is the last possible window for simple documents.
+**The key rule:** Before diagnosis and through the early signs stage, the person *can* sign legal documents, make their own decisions, and articulate their wishes. By the Middle stage, this is no longer possible. **The early signs stage (MCI) is the last safe window for most legal planning.** The early stage is the last possible window for simple documents.
 
 ---
 
@@ -10,15 +10,15 @@
 
 | Stage | Legal Capacity | Must Do By Now | Can Still Do |
 |-------|---------------|----------------|--------------|
-| 1–2 | Fully capable | — | Everything |
-| 3 | Capable (with support) | Healthcare POA, Financial POA, Advance Directive, Will, Trust | Guardianship not yet needed |
-| 4 | Diminishing — may qualify as needed | Any documents not yet signed | Some simple documents possible if capacity confirmed by doctor |
-| 5 | Likely lacks capacity | — | Guardianship through court |
-| 6+ | No capacity | — | Guardianship through court (full) |
+| Before diagnosis | Fully capable | — | Everything |
+| Early signs (MCI) | Capable (with support) | Healthcare POA, Financial POA, Advance Directive, Will, Trust | Guardianship not yet needed |
+| Early stage | Diminishing — may qualify as needed | Any documents not yet signed | Some simple documents possible if capacity confirmed by doctor |
+| Middle stage (early-middle) | Likely lacks capacity | — | Guardianship through court |
+| Middle stage (late-middle) / Late | No capacity | — | Guardianship through court (full) |
 
 ---
 
-## Stage 1–2: Foundation
+## Before Diagnosis & Early Signs: Foundation
 
 **Nobody wants to plan for dementia at this stage — and that's exactly why you should.** When the person is still fully capable, you have the widest range of options and the person's full participation.
 
@@ -48,13 +48,13 @@ Answers should be written, signed, and shared with all designated agents:
 
 ---
 
-## Stage 3: The Last Safe Window
+## Early Signs (MCI): The Last Safe Window
 
 **This is the most critical planning stage.** The person can still legally sign documents, articulate preferences, and participate in decisions — but their window is closing. Once they lack capacity, everything shifts to guardianship (court-supervised, expensive, invasive).
 
 ### Priority Actions
 
-1. **Get all Stage 1–2 documents signed and notarized** — if not done already. Do this now.
+1. **Get all before-diagnosis documents signed and notarized** — if not done already. Do this now.
 2. **Consider a Revocable Living Trust.** This avoids probate (public, slow, expensive) and makes asset management seamless if the person becomes incapacitated. Critical if they own real estate.
 3. **Review beneficiary designations.** Retirement accounts (401k, IRA), life insurance, payable-on-death bank accounts — these pass outside the will, so the named beneficiary overrides the will. Make sure they're current.
 4. **Create a financial inventory.**
@@ -78,7 +78,7 @@ Answers should be written, signed, and shared with all designated agents:
 
 ---
 
-## Stage 4: Diminishing Capacity
+## Early Stage: Diminishing Capacity
 
 The person may still have enough capacity to sign simple documents with a doctor's certification, but complex planning is largely closed off. The focus shifts to administration of existing plans.
 
@@ -96,11 +96,11 @@ The person may still have enough capacity to sign simple documents with a doctor
 - A physician's capacity assessment indicates they are not competent to make legal decisions
 - There is active financial exploitation happening (new "friends," caregivers, family members gaining control)
 
-**If these documents were never signed in Stage 1–3, you are now looking at guardianship. See below.**
+**If these documents were never signed before or during the early signs stage, you are now looking at guardianship. See below.**
 
 ---
 
-## Stage 5+: Guardianship
+## Middle Stage Onwards: Guardianship
 
 If the person did not execute a durable POA when they had capacity, and they now lack capacity, **guardianship (or conservatorship)** is the only legal path to manage their affairs.
 

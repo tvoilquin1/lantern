@@ -1,8 +1,8 @@
-# The Stagewise Dementia Care Framework
+# The Lantern Dementia Care Framework
 
 **Project codename:** Lantern — *light for the road ahead*
 
-A structured synthesis of the Global Deterioration Scale (7 Stages of Alzheimer's) and the caregiving wisdom consolidated in *The 36-Hour Day*, translated into a practical, stage-by-stage guide for dementia caregivers.
+A structured synthesis of clinical knowledge about dementia progression and the caregiving wisdom consolidated in *The 36-Hour Day*, translated into a practical, stage-by-stage guide for dementia caregivers.
 
 ## How to Use This Framework
 
@@ -17,17 +17,16 @@ Each stage note follows a consistent template:
 
 Cross-cutting reference notes cover topics that span multiple stages, like legal planning, communication, and end-of-life care.
 
-## Quick Reference Table
+## Stage Overview
 
-| Stage | Name | Functional Level | Care Dependency | Avg. Duration |
-|-------|------|-----------------|-----------------|---------------|
-| [[Stage 1 - No Impairment\|1]] | No Impairment | Normal function | None | N/A |
-| [[Stage 2 - Very Mild Decline\|2]] | Very Mild Decline | Subjective memory lapses | None | ~15 years |
-| [[Stage 3 - Mild Cognitive Decline\|3]] | Mild Cognitive Decline (MCI) | Subtle deficits noticeable to close family | Minimal | ~7 years |
-| [[Stage 4 - Moderate Decline\|4]] | Moderate Decline (Mild Dementia) | Difficulty with finances, planning, recall | Some help needed | ~2 years |
-| [[Stage 5 - Moderately Severe Decline\|5]] | Moderately Severe Decline (Moderate Dementia) | Cannot live independently | Significant help needed | ~1.5 years |
-| [[Stage 6 - Severe Decline\|6]] | Severe Decline | Needs help with dressing, bathing, toileting | Full-time care | ~2.5 years |
-| [[Stage 7 - Very Severe Decline\|7]] | Very Severe Decline (Late Dementia) | Loss of speech, mobility, basic functions | Round-the-clock care | Variable |
+| Stage | Description | Functional Level | Care Dependency | Avg. Duration |
+|-------|-------------|-----------------|-----------------|---------------|
+| [[00 - Before diagnosis and early signs\|Before diagnosis & early signs]] | Pre-diagnosis context; MCI phase | Normal to near-normal function | None to minimal | Variable |
+| [[01 - Early stage\|Early]] | Mild dementia begins | Difficulty with finances, planning, recall | Some help needed | ~2 years |
+| [[02 - Middle stage\|Middle]] | Moderate to severe dementia | Cannot live independently; extensive help needed | Significant to full-time care | ~3–4 years |
+| [[03 - Late stage\|Late]] | Very severe dementia | Loss of speech, mobility, basic functions | Round-the-clock care | Variable |
+
+**Note:** The "Before diagnosis and early signs" entry is not a Lantern care stage — it is background context for families at the very beginning of the journey. Lantern's active companion support begins at the Early stage.
 
 ## Key Principles (Across All Stages)
 
@@ -44,21 +43,18 @@ You cannot pour from an empty cup. Each stage has specific burnout risks. The fr
 The person with dementia cannot adapt to complexity, confusion, or noise. The caregiver's job is to reshape the environment — physical, social, emotional — to match the person's current abilities.
 
 ### 5. Plan Ahead While Clarity Remains
-Financial, legal, and care decisions are far easier to make in Stages 2–3 than in Stages 5–6. The framework includes a [[Legal & Financial Planning Timeline]] that tells you what to do and when.
+Financial, legal, and care decisions are far easier to make before or during the early signs than once dementia has advanced. The framework includes a [[Legal & Financial Planning Timeline]] that tells you what to do and when.
 
 ## Vault Navigation
 
 ```
 obsidian/lantern/
 ├── Framework Overview.md       ← You are here
-├── stages/                      ← 7 individual stage notes
-│   ├── Stage 1 - No Impairment.md
-│   ├── Stage 2 - Very Mild Decline.md
-│   ├── Stage 3 - Mild Cognitive Decline.md
-│   ├── Stage 4 - Moderate Decline.md
-│   ├── Stage 5 - Moderately Severe Decline.md
-│   ├── Stage 6 - Severe Decline.md
-│   └── Stage 7 - Very Severe Decline.md
+├── stages/                      ← 4 stage documents
+│   ├── 00 - Before diagnosis and early signs.md
+│   ├── 01 - Early stage.md
+│   ├── 02 - Middle stage.md
+│   └── 03 - Late stage.md
 ├── references/                  ← Cross-cutting reference notes ✅
 │   ├── Legal & Financial Planning Timeline.md
 │   ├── Medical & Medication Overview.md
@@ -67,20 +63,18 @@ obsidian/lantern/
 │   ├── Caregiver Self-Care & Burnout Prevention.md
 │   ├── Navigating the Healthcare System.md
 │   └── End-of-Life & Hospice.md
-├── attachments/                 ← Diagrams, images, resources
-└── 🟢 all 7 reference notes complete
+└── attachments/                 ← Diagrams, images, resources
 ```
 
 ## Sources & Methodology
 
 This framework synthesizes the following primary sources, cited and attributed throughout:
-- The Global Deterioration Scale (GDS) / Reisberg Stages, developed by Dr. Barry Reisberg, NYU
 - *The 36-Hour Day* (6th ed.), Nancy L. Mace & Peter V. Rabins, MD, MPH
 - Alzheimer's Association clinical staging guidelines
 - Mayo Clinic, NIH/National Institute on Aging, and Fisher Center for Alzheimer's Research Foundation publications
 
-This is an original synthesis, not a reproduction of any copyrighted work.
+This is an original synthesis, not a reproduction of any copyrighted work. Clinical facts about dementia progression are in the public domain; the framework's organization, language, and caregiving guidance reflect original editorial work by the Lantern team.
 
 ---
 
-**Next:** → [[stages/Stage 1 - No Impairment|Start with Stage 1]]
+**Next:** → [[stages/00 - Before diagnosis and early signs|Start with Before Diagnosis]]

@@ -14,7 +14,7 @@
 ## The Problem
 
 Dementia caregiving is a 36-hour day on repeat. The caregiver faces:
-- **No coach** — they're handed a diagnosis and sent home. No one tells them what Stage 4 looks like, when to expect the transition to Stage 5, or what to do differently when it happens.
+- **No coach** — they're handed a diagnosis and sent home. No one tells them what the Early stage looks like, when to expect the transition to the Middle stage, or what to do differently when it happens.
 - **No one watching them** — support systems focus on the patient. The caregiver's burnout is invisible until they collapse.
 - **No proactive intelligence** — existing apps are passive: you log, they store. They don't push useful information at the moment it matters.
 
@@ -32,11 +32,11 @@ The caregiver interacts with Lantern primarily through conversation — text-bas
 
 | Capability | How |
 |------------|-----|
-| **Onboarding — sets the baseline** | GDS-style questionnaire via conversation. Establishes patient stage, caregiver baseline (Zarit Burden Index or equivalent). Creates the initial reference point. |
+| **Onboarding — sets the baseline** | Stage inference questionnaire via conversation. Establishes patient stage (Early/Middle/Late), caregiver baseline (LCWS baseline). Creates the initial reference point. |
 | **Daily check-in (proactive)** | "Good morning. Mom was up at 4 AM last night. I'm concerned about sundowning escalation. Want me to suggest evening routine changes?" |
 | **Patient log extraction (zero-friction)** | Companion asks specific, stage-sensitive questions in natural conversation. Extracts structured data (sleep quality, nutrition, mobility, behavioral changes) without the caregiver filling out forms. |
-| **Transition detection** | Cross-references unfolding patient log against the GDS body of knowledge (via RAG). Flags potential stage transitions with both clinical framing and practical caregiving guidance. |
-| **Caregiver burnout sensing** | Multi-signal detection: self-report ("How are you holding up?"), behavioral signals (gaps in logging, night-time app activity), periodic screening (abbreviated PHQ-9 / Zarit). Weighted over time. |
+| **Transition detection** | Cross-references unfolding patient log against Lantern's stage knowledge base (via RAG). Flags potential stage transitions with both clinical framing and practical caregiving guidance. |
+| **Caregiver burnout sensing** | Multi-signal detection: self-report ("How are you holding up?"), behavioral signals (gaps in logging, night-time app activity), periodic LCWS baseline re-screen. Weighted over time. |
 | **Coaching & relief** | When burnout signals rise: suggests specific interventions (respite, support group, a single task to delegate). When a transition is near: prepares the caregiver before it hits. When the caregiver just needs to talk: holds space. |
 
 **Tone:** Professional coach + practical assistant. Warm but never saccharine. Direct but never cold. It treats the caregiver as a capable person in an impossible situation.
@@ -62,7 +62,7 @@ The companion extracts more from a 2-minute conversation than a form could get i
 The companion initiates. The user can turn down the frequency or set quiet hours. But the default is: it shows up for you, because you're too exhausted to come to it.
 
 ### 3. Stage-aware, not diagnostic
-Lantern knows the GDS framework cold. It can say "This looks like a Stage 4–5 transition" and explain what that means for care. It NEVER says "Your loved one has Alzheimer's" or "They are at Stage X clinically." That line is firm.
+Lantern knows the dementia progression patterns cold. It can say "This looks like an Early-to-Middle transition" and explain what that means for care. It NEVER says "Your loved one has Alzheimer's" or "They are at a specific clinical stage." That line is firm.
 
 ### 4. Burnout is tracked like a vital sign
 The caregiver's wellbeing is not an afterthought — it's a tracked metric with trends, alerts, and interventions. No other app does this.
@@ -89,7 +89,7 @@ The caregiver's wellbeing is not an afterthought — it's a tracked metric with 
 ┌────────────────────▼────────────────────────────────┐
 │              RAG Engine                              │
 │  - Body of knowledge (Obsidian markdown → vector DB) │
-│  - GDS stages, reference notes, care protocols       │
+│  - Stage notes, reference notes, care protocols       │
 │  - Queried at inference time for stage-aware answers │
 └────────────────────┬────────────────────────────────┘
                      │
@@ -102,7 +102,7 @@ The caregiver's wellbeing is not an afterthought — it's a tracked metric with 
 └─────────────────────────────────────────────────────┘
 ```
 
-**RAG over the body of knowledge is the backbone.** The Obsidian vault we've built (7 stages + 7 reference notes) becomes Lantern's knowledge base. The AI companion queries it to answer stage-specific questions and detect transition patterns. We can add to it, refine it, and version it independently of the app code.
+**RAG over the body of knowledge is the backbone.** The Obsidian vault we've built (4 stage documents + 7 reference notes) becomes Lantern's knowledge base. The AI companion queries it to answer stage-specific questions and detect transition patterns. We can add to it, refine it, and version it independently of the app code.
 
 ---
 
@@ -122,7 +122,7 @@ The caregiver's wellbeing is not an afterthought — it's a tracked metric with 
 
 | For the caregiver | For the business |
 |------------------|-----------------|
-| Self-reported burnout reduction (PHQ-9 / Zarit trend) | Retention at 30/60/90 days |
+| Self-reported burnout reduction (LCWS trend) | Retention at 30/60/90 days |
 | Reduced sense of isolation (NPS / qualitative) | Daily active usage (conversations initiated) |
 | Feeling prepared for stage transitions | Caregiver does not quit (or quiet quit) |
 | Tangible actions taken (respite scheduled, support group joined) | Referrals / word-of-mouth from caregiver communities |

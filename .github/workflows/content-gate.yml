@@ -1,0 +1,53 @@
+name: Content gate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  no-proprietary-scales:
+    name: No proprietary clinical scale references
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Reject proprietary clinical instrument references
+        run: |
+          # Case-insensitive: proprietary scale names and stage numbers
+          ci_hit=$(grep -rIiE \
+            'zarit|\bZBI\b|\bGDS\b|global deterioration|reisberg|PHQ-?[29]|7 stages|stage [1-7]\b|\b7[a-f]\b|substage|functional assessment staging' \
+            --include="*.md" --include="*.html" --include="*.js" \
+            --include="*.jsx" --include="*.ts" --include="*.tsx" \
+            --include="*.json" --exclude-dir=.git .) && echo "$ci_hit"
+          # Case-sensitive: FAST acronym only (avoids matching "fast" as an adverb)
+          cs_hit=$(grep -rIE '\bFAST\b' \
+            --include="*.md" --include="*.html" --include="*.js" \
+            --include="*.jsx" --include="*.ts" --include="*.tsx" \
+            --include="*.json" --exclude-dir=.git .) && echo "$cs_hit"
+          if [ -n "$ci_hit" ] || [ -n "$cs_hit" ]; then
+            echo "::error::Proprietary clinical instrument references found. Use LCWS and Early/Middle/Late staging instead."
+            exit 1
+          fi
+
+  stage-file-inventory:
+    name: Exactly 4 stage files, no legacy Stage N files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check stage file count
+        run: |
+          count=$(ls "lantern_research/stages/"*.md 2>/dev/null | wc -l | tr -d ' ')
+          if [ "$count" -ne 4 ]; then
+            echo "::error::Expected exactly 4 stage files in lantern_research/stages/, found $count."
+            exit 1
+          fi
+
+      - name: Reject legacy Stage N filenames
+        run: |
+          if ls lantern_research/stages/Stage\ *.md 2>/dev/null | grep -q .; then
+            echo "::error::Legacy 'Stage N - *.md' files found. Stage files must use the 00-03 naming convention."
+            ls lantern_research/stages/Stage\ *.md
+            exit 1
+          fi
