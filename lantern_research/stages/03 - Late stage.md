@@ -37,13 +37,13 @@ This is the final stage of Alzheimer's disease. The person has lost the ability 
 - They may still understand tone of voice and emotional content, even if they cannot process words
 - **Assume they can hear and understand more than they can show** — never speak about them as if they aren't there
 
-### Mobility (Stages 7c-7d)
+### Mobility
 - Walking becomes impossible without support, then impossible at all
 - Eventually cannot sit up without being propped or supported
 - The person will need to be repositioned in bed or a chair every 1-2 hours to prevent pressure sores
 - Contractures (irreversible joint stiffness) develop in nearly all immobile patients — hands curl, knees bend, chin may pull toward chest
 
-### Facial Expression (Stage 7e)
+### Facial Expression
 - The person loses the ability to smile — not because they are unhappy, but because the muscles no longer respond
 - Grimacing may occur, but this is a reflex, not necessarily an expression of pain
 - **The loss of the smile is devastating for families.** Prepare for this. The person is still capable of experiencing comfort and peace, even if they cannot show it through a smile.
