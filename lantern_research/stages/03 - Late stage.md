@@ -1,7 +1,7 @@
 # Late Stage — Very Severe Dementia
 
 **Alternate Names:** Severe Alzheimer's Disease, End-Stage Dementia, Late-Stage Dementia
-**Total Duration:** Variable — substages 7a through 7f; most people die during this stage, typically between 7c and 7d
+**Total Duration:** Variable — most people die during this stage, typically after losing the ability to walk and before losing the ability to hold their head up
 **Care Dependency:** Continuous, round-the-clock assistance with all basic activities
 
 ---
@@ -14,24 +14,24 @@ This is the final stage of Alzheimer's disease. The person has lost the ability 
 
 **The goal of care is no longer slowing decline.** It is maximizing comfort, minimizing suffering, and ensuring the person's final months and days are lived with dignity and without pain.
 
-### The Six Substages (7a — 7f)
+### How the Late stage usually progresses
 
-| Substage | Functional Loss | Mean Duration |
-|----------|----------------|---------------|
-| **7a** | Speech limited to ≤6 intelligible words per day | ~12 months |
-| **7b** | Speech limited to ≤1 intelligible word per day | ~18 months |
-| **7c** | Loss of independent ambulation (cannot walk) | ~12 months |
-| **7d** | Loss of ability to sit up independently | ~12 months |
-| **7e** | Loss of ability to smile | ~18 months |
-| **7f** | Loss of ability to hold head up independently | Indefinite |
+The functional losses of this stage tend to follow an order, though the pace varies widely — some people move through quickly, others remain at one level for a year or more:
 
-**Note:** These represent the classic progression, but the timeline varies. Some people skip substages or progress more quickly. The duration estimates are averages from the original FAST (Functional Assessment Staging) research.
+1. **Speech reduces to a few words a day** — conversation is no longer possible, but short sounds or single words may occur. (Often around 12 months at this level.)
+2. **Speech reduces to one word or less per day** — the person may vocalize but cannot form meaningful words. (Often around 18 months.)
+3. **Walking is lost** — the person can no longer move independently and needs to be positioned in a chair or bed. (Often around 12 months.)
+4. **Sitting up unaided is lost** — the person can no longer hold themselves upright without support. (Often around 12 months.)
+5. **Smiling is lost** — not because of unhappiness, but because the facial muscles no longer respond to conscious will. (Often around 18 months.)
+6. **Holding the head up is lost** — the final loss of voluntary muscle control.
+
+These are averages and patterns, not a fixed schedule. The timeline varies. Some people remain at one level far longer or shorter than these ranges suggest.
 
 ---
 
 ## What You'll See
 
-### Speech & Communication (Stages 7a-7b)
+### Speech & Communication
 - Words become rare — first a few per day, then one or none
 - The person may moan, cry out, or make sounds that are not words
 - They may still understand tone of voice and emotional content, even if they cannot process words
