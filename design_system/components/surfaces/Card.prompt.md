@@ -3,7 +3,7 @@ Card is the only surface container in Lantern — use it for every block of cont
 ```jsx
 <Card variant="paper">
   <SectionLabel>Where Dad is</SectionLabel>
-  <StageHeadline stage="Stage 5" qualifier="moderately severe" />
+  <StageHeadline stage="Early" qualifier="moderate" />
 </Card>
 ```
 

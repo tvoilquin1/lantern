@@ -10,7 +10,7 @@ Unlike cancer or heart disease, dementia has no clear "terminal phase" that a do
 
 **Two things are true at the same time:**
 1. Dementia is a terminal illness. There is no cure. Every person with Alzheimer's will die from it or from complications of it.
-2. Predicting the timing is extremely difficult. People can remain in Stage 7 for months to years.
+2. Predicting the timing is extremely difficult. People can remain in the Late stage for months to years.
 
 **The end-of-life phase generally refers to the last 6–12 months of life,** when the person's function has declined to the point where the focus shifts from managing the disease to ensuring comfort and dignity.
 

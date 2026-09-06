@@ -14,8 +14,8 @@ home). Update this file as phases are dispatched and completed, and as decisions
 | Wellbeing-scale doc in RAG index | ✅ Resolved — include |
 | Check-in scheduling mechanism | ✅ Resolved — Vercel cron |
 | Log confirmation / InsetPanel reconciliation | ✅ Resolved — in-conversation confirmation |
-| Zarit Burden Interview item selection | ⏸️ Deferred — pending Eddy's clinical input |
-| Clinical review scope (M5 gate) | ⏸️ Deferred — pending Eddy's clinical input |
+| Proprietary scales | ✅ Resolved — none used; LCWS + Early/Middle/Late are Lantern-original |
+| Clinical review scope (M5 gate) | ⏸️ Deferred — co-founder reviews Lantern-original baseline items and stage descriptions |
 | Session persistence model | 🟡 Recommendation given (structured log + rolling summary), awaiting captain confirmation |
 
 ## Phases
@@ -31,13 +31,13 @@ home). Update this file as phases are dispatched and completed, and as decisions
 
 - [ ] **Phase 2 — RAG Pipeline: Indexing & Validation** (M1 gate)
   Chunk and index all vault documents (15, including the wellbeing scale); validate
-  Stage 4→5 retrieval test set.
+  Early→Middle transition retrieval test set.
   Blocked by: Phase 1.
 
 - [ ] **Phase 3 — AI Companion Core: Onboarding** (P0-1 + P0-2, M2 part A)
-  Conversational GDS onboarding + Zarit baseline; crisis keyword fallback; system prompt.
-  Blocked by: M1 gate; Zarit item selection (deferred, pending Eddy); session persistence
-  confirmation.
+  Conversational stage inference + LCWS baseline; crisis keyword fallback; system prompt.
+  Blocked by: M1 gate; baseline item clinical review (deferred, pending co-founder); session
+  persistence confirmation.
 
 - [ ] **Phase 4 — Daily Check-in + Patient Log Extraction** (P0-3 + P0-4, M2 gate)
   Companion-initiated check-in (Vercel cron); `log_patient_observation` tool extraction.

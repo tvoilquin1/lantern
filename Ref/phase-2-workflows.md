@@ -9,7 +9,7 @@
 
 ## Primary Persona
 
-**Sarah, 52** — managing her mother's Stage 4 dementia while working full-time. Her mother lives with her. Sarah doesn't know what's coming in Stage 5. She Googles at midnight. She needs orientation, not more information.
+**Sarah, 52** — managing her mother's Early stage dementia while working full-time. Her mother lives with her. Sarah doesn't know what's coming in the Middle stage. She Googles at midnight. She needs orientation, not more information.
 
 ---
 
@@ -28,26 +28,26 @@
 
 **Main Flow:**
 1. Sarah lands on the home screen. A short framing message explains what Lantern is and what the next few minutes will involve ("I'm going to ask you some questions about where your mother is right now — this helps me give you guidance that actually fits your situation").
-2. Companion begins a GDS-style conversational questionnaire — not a clinical form, but natural language questions about the patient's current abilities (finances, driving, memory, daily tasks, behavioral changes).
+2. Companion begins a conversational stage inference questionnaire — not a clinical form, but natural language questions about the patient's current abilities (finances, driving, memory, daily tasks, behavioral changes).
 3. Sarah answers in her own words. Companion extracts structured data from responses — no checkboxes or dropdowns.
-4. After ~6–8 exchanges, companion summarizes what it's heard: "Based on what you've described, your mother sounds like she's in Stage 4 — she's losing the ability to manage finances and familiar tasks, but she's still aware of herself and her surroundings." Sarah confirms or corrects.
-5. Companion then shifts focus to Sarah: "Before we go further — how are *you* doing?" Runs a lightweight Zarit Burden Index screen through conversation (not a form).
-6. Sarah answers. Companion acknowledges her state, sets a burnout baseline, and gives a brief framing of what to expect next.
-7. Dashboard loads for the first time — stage indicator (Stage 4), burnout gauge (initial reading), one or two orientation items surfaced from the knowledge base.
+4. After ~6–8 exchanges, companion summarizes what it's heard: "Based on what you've described, your mother sounds like she's in the Early stage — she's losing the ability to manage finances and familiar tasks, but she's still aware of herself and her surroundings." Sarah confirms or corrects.
+5. Companion then shifts focus to Sarah: "Before we go further — how are *you* doing?" Runs the LCWS baseline through conversation (not a form).
+6. Sarah answers. Companion acknowledges her state, sets a wellbeing baseline, and gives a brief framing of what to expect next.
+7. Dashboard loads for the first time — stage indicator (Early stage), wellbeing gauge (initial reading), one or two orientation items surfaced from the knowledge base.
 8. Companion closes onboarding: "I'll check in with you tomorrow morning. You can always come back here to talk between then and now."
 
 **Alternate Flows:**
 
 **A1: Sarah doesn't know the stage**
 - Companion asks behavioral questions instead of stage-based ones ("Has she stopped being able to pay bills on her own?", "Does she still drive?")
-- Derives the stage from answers; makes the inference transparent ("Based on what you're describing, this sounds like Stage 4 — here's what that typically means")
+- Derives the stage from answers; makes the inference transparent ("Based on what you're describing, this sounds like the Early stage — here's what that typically means")
 
 **A2: Sarah is too exhausted to finish**
 - After 3+ minutes with no response, companion offers: "We can pick this up when you have more space. I've saved where we are."
 - Resumes from last completed question next session
 
 **A3: Sarah corrects the stage estimate**
-- Companion accepts the correction: "You know her better than I do. I'll use Stage 5 as our starting point."
+- Companion accepts the correction: "You know her better than I do. I'll use the Middle stage as our starting point."
 - Adjusts knowledge retrieval accordingly
 
 **A4: Burnout screen reveals acute distress**
@@ -56,8 +56,8 @@
 - If high burnout but not crisis: acknowledges, adjusts onboarding pace, notes burnout state as elevated baseline
 
 **Postconditions:**
-- Patient stage and caregiver burnout baseline stored in session
-- RAG retrieval is now stage-scoped to Stage 4
+- Patient stage and caregiver wellbeing baseline stored in session
+- RAG retrieval is now stage-scoped to Early stage
 - Dashboard shows initial orientation
 - Daily check-in scheduled for next morning
 
@@ -95,7 +95,7 @@
 **A3: Sarah reports a significant incident (fall, wandering, aggression)**
 - Companion acknowledges the severity: "That sounds really frightening. Are you both okay now?"
 - Logs the incident with explicit flag for the transition detection layer
-- Surfaces relevant GDS knowledge: what incidents like this can signal at Stage 4, what to watch for next
+- Surfaces relevant stage knowledge: what incidents like this can signal at the Early stage, what to watch for next
 - Does not diagnose or alarm; frames as "worth watching"
 
 **A4: Burnout signals are elevated (terse responses, long delays, negative sentiment)**
@@ -113,19 +113,19 @@
 ## Use Case 3: Transition Detection & Advance Warning
 
 **Actor:** Sarah (after several weeks of use)
-**Goal:** Sarah gets a heads-up before Stage 5 behaviors arrive — not a diagnosis, but enough warning to prepare.
+**Goal:** Sarah gets a heads-up before Middle stage behaviors arrive — not a diagnosis, but enough warning to prepare.
 
 **Preconditions:**
-- Patient is currently at Stage 4
+- Patient is currently at the Early stage
 - Multiple check-ins have logged patient behavior over time
-- RAG pipeline has the GDS Stage 4→5 transition knowledge indexed
+- RAG pipeline has the Early→Middle transition knowledge indexed
 
 **Main Flow:**
-1. Companion cross-references the accumulated patient log against Stage 4→5 transition signals in the knowledge base.
-2. A pattern emerges: three check-ins in the past two weeks have logged incidents consistent with emerging Stage 5 behaviors (ADL decline: dressing assistance needed, increased confusion in the afternoon, one episode of not recognizing Sarah's name).
+1. Companion cross-references the accumulated patient log against Early→Middle transition signals in the knowledge base.
+2. A pattern emerges: three check-ins in the past two weeks have logged incidents consistent with emerging Middle stage behaviors (ADL decline: dressing assistance needed, increased confusion in the afternoon, one episode of not recognizing Sarah's name).
 3. Companion initiates a proactive message outside the normal check-in: "I've been noticing something in what you've been sharing with me, and I want to talk to you about it when you have a few minutes. Is now okay?"
-4. When Sarah responds, companion explains what it's been observing: "Over the past few weeks, I've noticed a few things that are worth flagging — particularly the afternoon confusion and the help she needed getting dressed. These can be early signs that Stage 5 is starting to emerge."
-5. Companion frames this carefully: "This doesn't mean you're there yet — it means it's worth watching. Stage 5 typically brings [X, Y, Z]. You don't have to be caught off guard by those."
+4. When Sarah responds, companion explains what it's been observing: "Over the past few weeks, I've noticed a few things that are worth flagging — particularly the afternoon confusion and the help she needed getting dressed. These can be early signs that the Middle stage is starting to emerge."
+5. Companion frames this carefully: "This doesn't mean you're there yet — it means it's worth watching. The Middle stage typically brings [X, Y, Z]. You don't have to be caught off guard by those."
 6. Companion shares one or two practical preparation steps: what to expect, what support changes might be useful, what questions to raise with her doctor.
 7. Sarah can ask follow-up questions. Companion answers from the knowledge base.
 8. Dashboard transition risk indicator updates from green to yellow.
@@ -146,7 +146,7 @@
 
 **Postconditions:**
 - Dashboard transition risk updated (yellow)
-- Stage 5 preparation content unlocked in companion's knowledge retrieval
+- Middle stage preparation content unlocked in companion's knowledge retrieval
 - Sarah has context to raise with doctor if she chooses
 - No alarm, no diagnosis — framing is "worth watching, here's what to expect"
 
@@ -166,13 +166,13 @@
 1. Companion's burnout detection layer aggregates signals across sessions:
    - Self-report: Sarah's responses have been shorter and more negative ("exhausted," "can't keep doing this," "my siblings don't help at all")
    - Behavioral: two missed check-ins this week; one check-in at 11:47pm
-   - Periodic screen: Zarit Burden Index re-administered two weeks after onboarding shows an increase
-2. Burnout gauge crosses threshold from amber to red.
+   - Periodic LCWS re-screen administered two weeks after onboarding shows an increase
+2. Wellbeing gauge crosses threshold from amber to red.
 3. Companion initiates: "I want to check in on you — not about your mom, just about you. How are you actually doing?"
 4. Sarah opens up ("I'm not sleeping, I had a fight with my brother, and I cried in my car before work twice this week").
 5. Companion holds space first: "That sounds really hard. You're carrying a lot."
 6. After Sarah feels heard, companion asks permission to share something: "Can I share a few things that other caregivers in your situation have found helpful?"
-7. Companion surfaces evidence-based interventions from the knowledge base appropriate for high-burnout Stage 4 caregivers: respite strategies, sibling conversation frameworks, sleep hygiene adjustments, validation that her emotional response is normal.
+7. Companion surfaces evidence-based interventions from the knowledge base appropriate for high-stress Early stage caregivers: respite strategies, sibling conversation frameworks, sleep hygiene adjustments, validation that her emotional response is normal.
 8. Companion doesn't prescribe. It offers options: "Some of these might not fit right now. Is any of this useful to you?"
 9. Dashboard burnout gauge shows red. A note appears: "Lantern has flagged high caregiver stress. This is worth paying attention to."
 
@@ -199,7 +199,7 @@
 - Burnout gauge updated in dashboard
 - Relevant self-care content surfaced and offered (not pushed)
 - Sarah has been heard — not diagnosed, not lectured
-- Next periodic Zarit screen scheduled
+- Next periodic LCWS re-screen scheduled
 
 ---
 
@@ -215,11 +215,11 @@
 **Main Flow:**
 1. Sarah opens the app and lands on the dashboard (not the companion chat).
 2. She sees three panels at a glance:
-   - **Patient stage:** "Stage 4 — Moderate" with a trend indicator (stable / progressing / watch)
-   - **Caregiver burnout gauge:** Green / Amber / Red with a label ("Holding steady" / "Watch yourself" / "High stress")
+   - **Patient stage:** "Early stage — Moderate" with a trend indicator (stable / progressing / watch)
+   - **Caregiver wellbeing gauge:** Green / Amber / Red with a label ("Holding steady" / "Watch yourself" / "High stress")
    - **What's in front of you:** 1–3 action items or companion observations surfaced from recent sessions
 3. She scans the action items:
-   - "Based on recent check-ins, look out for afternoon confusion — this is common at Stage 4 and tends to intensify."
+   - "Based on recent check-ins, look out for afternoon confusion — this is common at the Early stage and tends to intensify."
    - "You mentioned your mother's doctor appointment is next week. It may help to bring a list of recent behavioral changes — I can help you prepare that."
 4. She taps one item and it opens in the companion chat with context loaded.
 5. She reads what she needs and closes the app.

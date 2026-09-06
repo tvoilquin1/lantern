@@ -20,18 +20,18 @@ Lantern is a dementia care companion built for the caregiver — not the patient
 
 ## Primary User (MVP Persona)
 
-**Sarah, 52. Managing her mother's Stage 4 diagnosis while working full-time.**
+**Sarah, 52. Managing her mother's Early stage dementia while working full-time.**
 
 Her mother lives with her. The cognitive decline has been gradual — finances became unmanageable about a year ago, her mother can no longer drive, and Sarah is now fielding calls from her mother's doctor, coordinating medications, and covering the emotional labor her siblings aren't sharing. She's functional, but running on fumes.
 
-She doesn't know what's coming in Stage 5. Nobody told her. She Googles at midnight.
+She doesn't know what's coming in the Middle stage. Nobody told her. She Googles at midnight.
 
-**Why this persona, not early-stage:**
-Mid/late-stage caregivers (Stages 4–6) have more acute burnout risk, face more frequent crises, and represent the highest-value users for both the companion and the burnout layer. They also surface more edge cases in the product (safety situations, transition signals, care complexity) that will stress-test the system in ways an early-stage caregiver won't. Design for Sarah first; earlier-stage users will still get value.
+**Why this persona, not pre-diagnosis:**
+Mid/late-stage caregivers (Early through Late) have more acute burnout risk, face more frequent crises, and represent the highest-value users for both the companion and the burnout layer. They also surface more edge cases in the product (safety situations, transition signals, care complexity) that will stress-test the system in ways a pre-diagnosis caregiver won't. Design for Sarah first; earlier-stage users will still get value.
 
 **What Sarah needs from Lantern:**
-- To know what's normal for Stage 4 and what should alarm her
-- To be warned before Stage 5 behaviors start, not after they arrive
+- To know what's normal for the Early stage and what should alarm her
+- To be warned before Middle stage behaviors start, not after they arrive
 - Someone to check in on *her*, not just ask about her mother
 - To feel like she's not doing this wrong
 
@@ -40,7 +40,7 @@ Mid/late-stage caregivers (Stages 4–6) have more acute burnout risk, face more
 ## Goals
 
 1. **Reduce caregiver isolation** — give every caregiver access to a knowledgeable companion who understands where they are in the journey and what's coming next.
-2. **Surface stage transitions before they blindside** — cross-reference the patient log against the GDS body of knowledge to flag emerging patterns and prepare the caregiver in advance.
+2. **Surface stage transitions before they blindside** — cross-reference the patient log against Lantern's stage knowledge base to flag emerging patterns and prepare the caregiver in advance.
 3. **Make caregiver burnout visible** — track it as a vital sign, trend it over time, and intervene before collapse.
 4. **Demonstrate product-market fit** — get 10–25 real caregivers using it daily and generate qualitative signal on what's working.
 
@@ -86,7 +86,7 @@ At 10–25 users, percentage-based targets are statistically meaningless. Valida
 | **Alzheimer's Assoc. apps** | Disease information, resource directories | Informational only. Static. No personalization or conversation. | Dynamic, conversational, adapts to their specific stage |
 | **General AI companions (Replika, etc.)** | Emotional support chat | No domain knowledge, no stage awareness, no clinical grounding | Purpose-built for this specific journey |
 
-**The gap:** No product combines proactive outreach + GDS stage-awareness + caregiver burnout tracking in a single companion. That's the space Lantern occupies.
+**The gap:** No product combines proactive outreach + stage-aware intelligence + caregiver burnout tracking in a single companion. That's the space Lantern occupies.
 
 ---
 
@@ -96,11 +96,11 @@ At 10–25 users, percentage-based targets are statistically meaningless. Valida
 
 | Capability | Description |
 |------------|-------------|
-| **Onboarding** | GDS-style conversational questionnaire. Establishes patient stage and caregiver baseline (Zarit Burden Index). Creates initial reference point. |
+| **Onboarding** | Conversational stage inference questionnaire. Establishes patient stage (Early/Middle/Late) and caregiver baseline (LCWS baseline). Creates initial reference point. |
 | **Daily check-in (proactive)** | Companion initiates a morning check-in. Default: on. User can reduce frequency or set quiet hours. |
 | **Patient log extraction** | Companion asks stage-sensitive questions in natural conversation. Extracts structured data (sleep, nutrition, mobility, behavioral changes) — no forms. |
-| **Transition detection** | Cross-references patient log against GDS knowledge base (via RAG). Flags potential stage transitions with clinical framing + practical guidance. |
-| **Burnout sensing** | Multi-signal: self-report, behavioral (logging gaps, night-time activity), periodic PHQ-9 / Zarit screening. Weighted over time. |
+| **Transition detection** | Cross-references patient log against Lantern's stage knowledge base (via RAG). Flags potential stage transitions with clinical framing + practical guidance. |
+| **Burnout sensing** | Multi-signal: self-report, behavioral (logging gaps, night-time activity), periodic LCWS baseline re-screen. Weighted over time. |
 | **Coaching & relief** | Responds to rising burnout signals with specific interventions. Prepares caregiver when transition is near. Holds space when the caregiver needs to talk. |
 
 ### Pillar 2: Dashboard
@@ -113,7 +113,7 @@ Answers three questions at a glance:
 ### Knowledge Base (RAG)
 
 The Obsidian vault (`obsidian/lantern/`) is the knowledge backbone:
-- 7 stage notes (GDS Stages 1–7)
+- 4 stage documents (Before Diagnosis & Early Signs, Early, Middle, Late)
 - 7 cross-cutting reference notes (communication, legal, medical, crisis, burnout, healthcare system, end-of-life)
 - Vectorized and queried at inference time for stage-aware responses
 
@@ -179,7 +179,7 @@ Rough sequencing (not a committed sprint plan):
 
 | Milestone | Description |
 |-----------|-------------|
-| **M1: RAG pipeline** | Vectorize the Obsidian vault. Confirm retrieval quality on stage-specific queries. **⚠️ Chunking:** chunk by Markdown heading (`##`), not token count — default RAG library behavior splits stage notes badly. Each `##` section must be one chunk. Verify the "Transition Warning Signs" section in Stage 4 is intact as a single chunk before running any retrieval tests. Run the Stage 4→5 retrieval test set (see Phase 2 workflows doc) before marking M1 complete. |
+| **M1: RAG pipeline** | Vectorize the Obsidian vault. Confirm retrieval quality on stage-specific queries. **⚠️ Chunking:** chunk by Markdown heading (`##`), not token count — default RAG library behavior splits stage notes badly. Each `##` section must be one chunk. Verify the "Transition Warning Signs (Moving Toward Middle Stage)" section in the Early stage note is intact as a single chunk before running any retrieval tests. Run the Early→Middle transition retrieval test set (see Phase 2 workflows doc) before marking M1 complete. |
 | **M2: Companion MVP** | Conversational interface with onboarding + daily check-in. Single-user, no auth. |
 | **M3: Burnout layer** | Add caregiver state tracking and burnout signal detection. |
 | **M4: Dashboard** | Minimal dashboard: stage indicator, burnout gauge, action items. |

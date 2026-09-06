@@ -1,7 +1,7 @@
 StageHeadline states where the patient is.
 
 ```jsx
-<StageHeadline stage="Stage 5" qualifier="moderately severe" />
+<StageHeadline stage="Early" qualifier="moderate" />
 ```
 
-Never render a GDS stage without its qualifier — the scale is meaningless to a caregiver who has not been taught it.
+Always pair the stage label (Early / Middle / Late) with a plain-language qualifier — the label alone is not self-explanatory to a new caregiver.

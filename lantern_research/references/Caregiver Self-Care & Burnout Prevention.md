@@ -46,40 +46,40 @@ This guide is not a checklist of "you should do yoga and take breaks" platitudes
 
 | Stage | Primary Burnout Risk | Warning Signs Specific to This Stage |
 |-------|---------------------|--------------------------------------|
-| 1–2 | **Emotional anticipatory grief.** Worrying about a future that hasn't arrived yet. | Ruminating about what might happen; avoiding normal activities to "prepare"; researching obsessively |
-| 3 | **Denial-driven strain.** Minimizing the severity and not asking for help early enough. | Doing everything alone; refusing respite; insisting nothing is wrong |
-| 4 | **Role overload.** Juggling work, family, caregiving, and legal/financial decisions simultaneously. | Missing your own appointments; dropping hobbies; losing sleep to handle paperwork |
-| 5 | **Physical exhaustion + behavioral challenges.** Wandering, incontinence, agitation, sundowning. | You cannot leave the person alone; your own health declines; you feel trapped |
-| 6 | **Compassion fatigue + grief.** The person no longer recognizes you; care is purely physical. | Feeling like a robot; crying on the way home; dreading each visit |
-| 7 | **Anticipatory grief (again) + guilt.** Watching the end approach and wondering if you've done enough. | Withdrawing from the person who can't respond; feeling relief at the thought of their passing and then guilty for feeling it |
+| Before diagnosis & early signs | **Emotional anticipatory grief.** Worrying about a future that hasn't arrived yet. | Ruminating about what might happen; avoiding normal activities to "prepare"; researching obsessively |
+| Early stage (emerging) | **Denial-driven strain.** Minimizing the severity and not asking for help early enough. | Doing everything alone; refusing respite; insisting nothing is wrong |
+| Early stage (established) | **Role overload.** Juggling work, family, caregiving, and legal/financial decisions simultaneously. | Missing your own appointments; dropping hobbies; losing sleep to handle paperwork |
+| Middle stage (early-middle) | **Physical exhaustion + behavioral challenges.** Wandering, incontinence, agitation, sundowning. | You cannot leave the person alone; your own health declines; you feel trapped |
+| Middle stage (late-middle) | **Compassion fatigue + grief.** The person no longer recognizes you; care is purely physical. | Feeling like a robot; crying on the way home; dreading each visit |
+| Late stage | **Anticipatory grief + guilt.** Watching the end approach and wondering if you've done enough. | Withdrawing from the person who can't respond; feeling relief at the thought of their passing and then guilty for feeling it |
 
 ---
 
 ## Self-Care, Stage by Stage
 
-### Stages 1–2: Build the Foundation
+### Before Diagnosis & Early Signs: Build the Foundation
 
 You don't feel like a caregiver yet. That's exactly when to build the habits that will keep you alive later.
 
 **What to do now:**
-- **Establish a support network before you need it.** Join an Alzheimer's Association caregiver support group — online or in-person. Build relationships with people who will still be there in Stage 5.
+- **Establish a support network before you need it.** Join an Alzheimer's Association caregiver support group — online or in-person. Build relationships with people who will still be there in the Middle stage.
 - **Schedule protected time.** One evening per week that is yours. No exceptions. This trains everyone (including you) that your needs matter.
 - **Get your own healthcare in order.** Find a primary care doctor. Get a physical. Address any chronic conditions. The next few years will be hard on your body.
 - **Learn what's coming.** Read *The 36-Hour Day* now, not later. Knowledge is preventive medicine for burnout.
 - **Start therapy if you're anxious.** Caregiver grief is real and early therapy prevents complicated grief later.
 
-### Stage 3: Recognize You Are a Caregiver
+### Early Stage (Emerging): Recognize You Are a Caregiver
 
-Many people in Stage 3 still resist the label. Accepting it is the first step to surviving it.
+Many people early in the diagnosis still resist the caregiver label. Accepting it is the first step to surviving it.
 
 **What to do now:**
 - **Name one person who can give you 4 hours of break per week.** Ask them, specifically. "Can you sit with Mom on Saturday from 2–6 PM?"
 - **Build a care team document.** Write down: who to call for what, medications and dosages, emergency contacts, the person's preferences. Share it with everyone involved.
 - **Set boundaries with family.** "I need someone to handle the medical appointments. I can't do everything."
 - **Use technology to lighten the load.** Medication reminder apps, calendar sharing, grocery delivery services.
-- **Continue your own life.** Do not quit your job, drop your hobbies, or cancel your plans "just in case." Stage 3 can last years. You cannot pause your life for years.
+- **Continue your own life.** Do not quit your job, drop your hobbies, or cancel your plans "just in case." The early stage can last years. You cannot pause your life for years.
 
-### Stage 4: Survive the Overload
+### Early Stage (Established): Survive the Overload
 
 This is the stage where caregivers often start to crack. The demands are high, the person is declining, and the legal/financial work is piling up. Something has to give — and if it's not your caregiving, it will be your health.
 
@@ -90,7 +90,7 @@ This is the stage where caregivers often start to crack. The demands are high, t
 - **Reduce non-essential obligations.** Drop the volunteer board. Skip optional family events. Say no without explanation.
 - **Watch for your own medical neglect.** If you haven't seen a doctor in the last year, book an appointment today.
 
-### Stage 5: Crisis Prevention Mode
+### Middle Stage (Early-Middle): Crisis Prevention Mode
 
 This is the most physically demanding stage. The person needs near-constant supervision. Your health is at serious risk.
 
@@ -101,17 +101,17 @@ This is the most physically demanding stage. The person needs near-constant supe
 - **Monitor your own physical health.** Monthly blood pressure check. Annual physical. If you feel chest pain, shortness of breath, or persistent exhaustion, see a doctor — caregiver cardiovascular disease is real and serious.
 - **Join a caregiver support group (in person).** Online is better than nothing, but in-person connection with people who understand is uniquely protective against burnout.
 
-### Stage 6: Compassion Fatigue Management
+### Middle Stage (Late-Middle): Compassion Fatigue Management
 
 The person may no longer recognize you. They cannot give you the feedback that makes caregiving feel meaningful — a smile, a thank you, a moment of recognition. This is the stage where the emotional reward of caregiving disappears, and all that remains is the physical work.
 
 **What keeps you going:**
 - **Find meaning outside the caregiving role.** Do something — anything — that reminds you of who you are independently. A book club. A walk with a friend. A volunteer shift somewhere unrelated to dementia. You are more than a caregiver.
 - **Acknowledge the grief.** You are losing the person twice: first to the disease, and then to death. Allow yourself to mourn without guilt. Therapy is especially valuable at this stage.
-- **Connect with other Stage 6 caregivers.** They are the only ones who truly understand what it's like to be unrecognized by someone you love.
+- **Connect with other Middle stage caregivers.** They are the only ones who truly understand what it's like to be unrecognized by someone you love.
 - **Consider residential care without guilt.** If the person needs 24/7 skilled nursing and you are physically or emotionally depleted, placement is not abandonment — it is responsible care.
 
-### Stage 7: The Final Stage — Self-Preservation
+### Late Stage: Self-Preservation
 
 The person is nearing the end. You may feel guilty for feeling relief, exhausted from years of care, and uncertain about life after caregiving ends.
 

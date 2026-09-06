@@ -11,7 +11,7 @@
 
 Lantern is a dementia care companion built for the caregiver — not the patient's chart. It combines an AI companion with a lightweight dashboard to give family caregivers what they currently lack: a knowledgeable presence that understands where they are in the journey, warns them before the next stage hits, and checks in on their own wellbeing as a first-class concern.
 
-The problem is structural. When a family member is diagnosed with dementia, the caregiver is handed a prognosis and sent home. No roadmap, no proactive coaching, no warning when Stage 5 is approaching. Existing tools are either clinical (built for providers, not families) or passive (log your day, nothing happens). No product combines stage-aware intelligence, proactive outreach, and caregiver burnout tracking in a single companion. That is the gap Lantern occupies.
+The problem is structural. When a family member is diagnosed with dementia, the caregiver is handed a prognosis and sent home. No roadmap, no proactive coaching, no warning when the Middle stage is approaching. Existing tools are either clinical (built for providers, not families) or passive (log your day, nothing happens). No product combines stage-aware intelligence, proactive outreach, and caregiver burnout tracking in a single companion. That is the gap Lantern occupies.
 
 We are building for MVP validation with 10–25 real caregivers. The goal is not to ship a polished product — it is to get genuine behavioural signal fast enough to know whether this is worth building further. Every scope decision prioritises that signal over completeness.
 
@@ -54,7 +54,7 @@ The burnout gauge is a hypothesis — caregivers may only care about the patient
 
 ### Goal 4: Surface at least one validated stage transition signal in the beta cohort
 
-The transition detection feature (Stage 4→5 warning) is the highest-stakes capability. We need to observe it working in the wild at least once before scaling.
+The transition detection feature (Early→Middle warning) is the highest-stakes capability. We need to observe it working in the wild at least once before scaling.
 
 | Metric | Target |
 |--------|--------|
@@ -77,9 +77,9 @@ The transition detection feature (Stage 4→5 warning) is the highest-stakes cap
 
 ### Primary Persona
 
-**Sarah, 52** — managing her mother's Stage 4 dementia while working full-time. Her mother lives with her. Covers medical coordination, medication management, and the emotional labour her siblings don't share. Functional but running on fumes. Doesn't know what Stage 5 looks like. Googles at midnight.
+**Sarah, 52** — managing her mother's Early stage dementia while working full-time. Her mother lives with her. Covers medical coordination, medication management, and the emotional labour her siblings don't share. Functional but running on fumes. Doesn't know what the Middle stage looks like. Googles at midnight.
 
-**Design principle:** Design for Sarah first. Mid/late-stage caregivers (Stages 4–6) have the highest burnout risk, face the most frequent crises, and will surface every hard edge case in the product.
+**Design principle:** Design for Sarah first. Mid/late-stage caregivers (Early through Late) have the highest burnout risk, face the most frequent crises, and will surface every hard edge case in the product.
 
 ---
 
@@ -89,8 +89,8 @@ The transition detection feature (Stage 4→5 warning) is the highest-stakes cap
 |---|----------|---------------------|
 | 1 | **First-Time Onboarding** | Establishes patient stage + caregiver burnout baseline conversationally. No forms. Dashboard loads with initial orientation. |
 | 2 | **Daily Check-in** | Companion-initiated morning check-in. Extracts patient log data through conversation. Senses burnout in the background. |
-| 3 | **Transition Detection & Warning** | Accumulates patient log signals over time. Cross-references against GDS Stage 4→5 indicators. Issues a soft, proactive warning — not a diagnosis. |
-| 4 | **Burnout Detection & Intervention** | Multi-signal burnout detection (self-report + behavioral + periodic Zarit). Companion holds space first, then offers evidence-based options. Crisis protocol if indicators present. |
+| 3 | **Transition Detection & Warning** | Accumulates patient log signals over time. Cross-references against Early→Middle transition indicators. Issues a soft, proactive warning — not a diagnosis. |
+| 4 | **Burnout Detection & Intervention** | Multi-signal burnout detection (self-report + behavioral + periodic LCWS re-screen). Companion holds space first, then offers evidence-based options. Crisis protocol if indicators present. |
 | 5 | **Dashboard Orientation** | 2-minute at-a-glance: patient stage indicator, caregiver burnout gauge, 1–3 companion-surfaced action items. Calm when stable. Flagged when not. |
 
 ---
@@ -106,7 +106,7 @@ The transition detection feature (Stage 4→5 warning) is the highest-stakes cap
 
 **Acceptance Criteria:**
 - [ ] Companion opens with a warm framing message explaining what onboarding involves
-- [ ] GDS stage is derived from conversational questions, not a dropdown or checkbox form
+- [ ] Patient stage (Early/Middle/Late) is derived from conversational questions, not a dropdown or checkbox form
 - [ ] Companion summarises its stage inference and asks the caregiver to confirm or correct
 - [ ] Caregiver can correct the stage estimate and Lantern accepts it
 - [ ] If stage is unclear, companion asks behavioral questions ("Does she still drive?") and infers from answers
@@ -114,7 +114,7 @@ The transition detection feature (Stage 4→5 warning) is the highest-stakes cap
 - [ ] Entire onboarding completable in under 10 minutes
 
 **Notes:**
-- GDS conversational questions need to be pre-written and tested before the flow is built — the LLM derives the stage from answers, not from a rules engine
+- Stage inference conversational questions need to be pre-written and tested before the flow is built — the LLM derives the stage from answers, not from a rules engine
 - Stage inference uses Claude structured output (not freetext parsing); stage stored to Supabase immediately on confirmation
 - Resume state requires session progress stored in Supabase (current question index + answers so far)
 - The "10 minute" target is a UX constraint, not a technical one — prompt design must keep questions concise
@@ -132,21 +132,21 @@ The transition detection feature (Stage 4→5 warning) is the highest-stakes cap
 
 **Acceptance Criteria:**
 - [ ] After patient stage is established, companion shifts focus to the caregiver explicitly
-- [ ] Zarit Burden Index is administered through conversation, not a scored form
-- [ ] Burnout baseline is stored and visible in the dashboard as an initial reading
+- [ ] LCWS baseline is administered through conversation, not a scored form
+- [ ] Wellbeing baseline is stored and visible in the dashboard as an initial reading
 - [ ] If acute distress indicators are present, companion surfaces 988 Lifeline and pauses onboarding
 - [ ] Companion does not attempt to manage a crisis — holds space and refers
 
 **Notes:**
-- Full Zarit is 22 questions — select 5–7 most burnout-predictive questions for conversational use without losing clinical validity. Decide which items before building.
+- LCWS baseline covers 5 conversational items, one per domain (relationship strain, emotional wellbeing, social & family life, finances, sense of control). Items are in the LCWS doc; confirm with co-founder before building.
 - Crisis keyword fallback (from Feature 1) applies during this flow — fires before LLM response
 - Baseline score stored as a numeric reference point in `caregiver_state` table; future sessions compare against it directionally
 
 **Dependencies:**
 - P0-1 (Conversational Onboarding) must complete first — baseline is collected at the end of onboarding
-- Supabase schema: `caregiver_state` table must exist with burnout score and baseline fields
+- Supabase schema: `caregiver_state` table must exist with `lcws_baseline_score` and baseline fields
 
-**Estimation:** 5 points (1.5–2 days). Simpler than onboarding; main design work is selecting the right Zarit items.
+**Estimation:** 5 points (1.5–2 days). Simpler than onboarding; main design work is baseline item clinical review (co-founder sign-off).
 
 ---
 
@@ -201,17 +201,17 @@ The transition detection feature (Stage 4→5 warning) is the highest-stakes cap
 ---
 
 **Story P0-5: Transition Detection**
-> As a caregiver several weeks into using Lantern, I want to be warned when the patient's log is showing patterns consistent with a stage transition, so that I'm not blindsided when Stage 5 behaviours arrive.
+> As a caregiver several weeks into using Lantern, I want to be warned when the patient's log is showing patterns consistent with a stage transition, so that I'm not blindsided when Middle stage behaviours arrive.
 
 **Acceptance Criteria:**
-- [ ] Companion cross-references patient log entries against GDS Stage 4→5 signals in the knowledge base
+- [ ] Companion cross-references patient log entries against Early→Middle transition signals in the knowledge base
 - [ ] Transition flag is triggered only when 2+ signals appear across multiple sessions (not a single incident)
 - [ ] Companion initiates a proactive out-of-schedule message: "I've been noticing something worth talking about — is now okay?"
 - [ ] Flag is framed as "worth watching" — not a diagnosis or pronouncement
 - [ ] Companion shares 1–2 practical preparation steps (from knowledge base), not an alarm
 - [ ] Dashboard transition risk indicator updates to yellow when flag is issued
 - [ ] If caregiver disputes the flag, companion accepts the correction and continues monitoring
-- [ ] Companion does not diagnose or reference clinical criteria by name ("Stage 5") without the caregiver's own framing first
+- [ ] Companion does not diagnose or reference clinical criteria by name without the caregiver's own framing first
 
 **Notes:**
 - "2+ signals across multiple sessions" is a configurable threshold — start conservative to avoid false alarms; tune after observing real user data
@@ -222,7 +222,7 @@ The transition detection feature (Stage 4→5 warning) is the highest-stakes cap
 
 **Dependencies:**
 - P0-4 (Patient Log Extraction) must be running and have accumulated data across multiple sessions — requires real usage, not just a build
-- P0-7 (RAG Knowledge Base) must pass the Stage 4→5 test set before this story can be validated
+- P0-7 (RAG Knowledge Base) must pass the Early→Middle transition test set before this story can be validated
 - Proactive message scheduling mechanism (from P0-3) must exist
 
 **Estimation:** 13 points (3–4 days). Cross-referencing logic and flag framing are the riskiest parts; prompt design requires significant testing.
@@ -233,18 +233,18 @@ The transition detection feature (Stage 4→5 warning) is the highest-stakes cap
 > As a caregiver using Lantern over several weeks, I want the companion to notice when my responses suggest I'm burning out — even if I haven't said so directly — so that it can check in on me before I hit a wall.
 
 **Acceptance Criteria:**
-- [ ] Burnout detection aggregates at least 3 signal types: self-report sentiment, behavioral (missed check-ins, late-night sessions), periodic Zarit re-screening
-- [ ] Burnout gauge on dashboard updates directionally after each session
-- [ ] When burnout crosses amber→red threshold, companion proactively initiates a check-in focused on the caregiver, not the patient
+- [ ] Burnout detection aggregates at least 3 signal types: self-report sentiment, behavioral (missed check-ins, late-night sessions), periodic LCWS baseline re-screen
+- [ ] Wellbeing gauge on dashboard updates directionally after each session
+- [ ] When wellbeing crosses amber→red threshold, companion proactively initiates a check-in focused on the caregiver, not the patient
 - [ ] Companion leads with acknowledgment before offering resources
 - [ ] Companion asks permission before surfacing coping suggestions
 - [ ] If crisis indicators present: 988 Lifeline surfaced immediately; companion does not attempt to manage the situation
-- [ ] Burnout gauge moves in the positive direction when signals improve
+- [ ] Wellbeing gauge moves in the positive direction when signals improve
 
 **Notes:**
-- Signal weighting (confirmed v1 default, captain decision 2026-09-01): self-report sentiment 40%, behavioral signals 30%, Zarit re-screen 30%. Ship with these values for v1; keep them as a tunable parameter in code (not a hardcoded constant) so they can be adjusted later, but no further decision is needed before building.
+- Signal weighting (confirmed v1 default, captain decision 2026-09-01): self-report sentiment 40%, behavioral signals 30%, biweekly LCWS baseline re-screen 30%. Ship with these values for v1; keep them as a tunable parameter in code (not a hardcoded constant) so they can be adjusted later, but no further decision is needed before building.
 - Amber→red threshold (confirmed v1 default, captain decision 2026-09-01): implement using the conservative principle already stated here — err toward not triggering rather than picking a looser number. No further captain decision needed before building M3; revisit after real caregiver testing.
-- Periodic Zarit re-screen (every 2 weeks) reuses the same scheduling mechanism as P0-3
+- Periodic LCWS re-screen (every 2 weeks) reuses the same scheduling mechanism as P0-3
 - Sentiment analysis runs server-side on each session's text after the conversation ends — not real-time during the conversation
 - Behavioral signals (missed check-ins, night-time sessions) are derived from session timestamps in `sessions` table — no extra tracking needed
 
@@ -254,32 +254,32 @@ The transition detection feature (Stage 4→5 warning) is the highest-stakes cap
 - Signal weighting and amber→red threshold: confirmed 2026-09-01 to ship with the values/principle specified above; no longer a blocking decision before building
 - Supabase schema: `caregiver_state` table must track score history (not just current value)
 
-**Estimation:** 8 points (2–3 days). Signal aggregation logic is non-trivial; Zarit re-screen through conversation needs prompt testing.
+**Estimation:** 8 points (2–3 days). Signal aggregation logic is non-trivial; LCWS re-screen through conversation needs prompt testing.
 
 ---
 
 **Story P0-7: RAG Knowledge Base**
-> As the system, I need a vectorised knowledge base over the Obsidian vault so that all companion responses to stage-specific queries are grounded in the GDS knowledge base, not model hallucination.
+> As the system, I need a vectorised knowledge base over the Obsidian vault so that all companion responses to stage-specific queries are grounded in Lantern's stage knowledge base, not model hallucination.
 
 **Acceptance Criteria:**
 - [ ] All 14 vault documents (7 stage notes + 7 reference notes) are chunked and vectorised
 - [ ] Chunking is by Markdown heading (`##`), not token count
-- [ ] "Transition Warning Signs" section in Stage 4 is intact as a single chunk (verified before go-live)
+- [ ] "Transition Warning Signs (Moving Toward Middle Stage)" section in the Early stage note is intact as a single chunk (verified before go-live)
 - [ ] RAG retrieval is stage-scoped — queries run against the current patient stage by default
-- [ ] Stage 4→5 retrieval test set passes: ≥90% of signal queries return the correct section in top-3
-- [ ] No Stage 5 content surfaces for normal Stage 4 variance queries in top-1
+- [ ] Early→Middle transition retrieval test set passes: ≥90% of signal queries return the correct section in top-3
+- [ ] No Middle stage content surfaces for normal Early stage variance queries in top-1
 
 **Notes:**
 - This is M1 — must be built and validated before any other P0 story begins
 - Embedding model: Voyage AI hosted embeddings API (`voyage-3` or current recommended model — confirm API key is provisioned before starting)
 - Re-ranking pipeline: top-10 vector results → Voyage AI hosted rerank API (`rerank-2`) → top-3 returned
 - pgvector extension must be manually enabled in Supabase dashboard before the first `CREATE EXTENSION` migration runs — easy to miss
-- The Stage 4→5 test query set is already written in `docs/phase-2-workflows.md` — run it before declaring M1 done
+- The Early→Middle transition test query set is already written in `docs/phase-2-workflows.md` — run it before declaring M1 done
 
 **Dependencies:**
 - Supabase project must exist with pgvector extension enabled
 - Voyage AI API key must be provisioned and confirmed working before indexing
-- Stage 4→5 test query set (Phase 2 workflows doc) must exist before validation — already done
+- Early→Middle transition test query set (Phase 2 workflows doc) must exist before validation — already done
 
 **Estimation:** 5 points (1.5–2 days). Mostly scripting and validation; no complex logic once tooling is confirmed working.
 
@@ -323,7 +323,7 @@ The transition detection feature (Stage 4→5 warning) is the highest-stakes cap
 **Acceptance Criteria:**
 - [ ] Interventions sourced from knowledge base (not model generation alone)
 - [ ] Companion offers options, not prescriptions: "Some of these might not fit right now"
-- [ ] Interventions are stage-appropriate for a Stage 4/5 caregiver
+- [ ] Interventions are stage-appropriate for an Early/Middle stage caregiver
 - [ ] Includes: respite strategies, sibling conversation frameworks, sleep hygiene, validation of emotional response
 
 ---
@@ -396,7 +396,7 @@ The transition detection feature (Stage 4→5 warning) is the highest-stakes cap
 
 ### Feature 2: RAG Knowledge Pipeline
 
-**Purpose:** Grounds all companion responses in the GDS knowledge base. The quality of retrieval is a first-order concern — wrong stage guidance in this domain destroys trust immediately.
+**Purpose:** Grounds all companion responses in Lantern's stage knowledge base. The quality of retrieval is a first-order concern — wrong stage guidance in this domain destroys trust immediately.
 
 **Acceptance Criteria:**
 - [ ] All 14 vault documents chunked by Markdown heading (`##`)
@@ -406,7 +406,7 @@ The transition detection feature (Stage 4→5 warning) is the highest-stakes cap
 - [ ] **Re-ranking:** top-10 vector results re-ranked by Voyage AI's hosted rerank API (`rerank-2`) before returning top-3 to the companion
 - [ ] Retrieval pipeline: query → vector similarity top-10 → Voyage rerank → top-3 returned
 - [ ] Retrieval is stage-scoped by default (current patient stage filters or re-ranks results)
-- [ ] Stage 4→5 retrieval test set passes before M1 is marked complete (see Phase 2 workflows doc)
+- [ ] Early→Middle transition retrieval test set passes before M1 is marked complete (see Phase 2 workflows doc)
 - [ ] Retrieval latency < 800ms end-to-end including re-ranking (hosted embedding + rerank calls add network round-trip vs. local inference; adjust once measured)
 
 **Out of scope:**
@@ -521,15 +521,15 @@ The transition detection feature (Stage 4→5 warning) is the highest-stakes cap
 **Purpose:** Tracks caregiver wellbeing as a vital sign. Aggregates multiple signal types into a directional gauge (green / amber / red). Feeds the burnout intervention flow.
 
 **Acceptance Criteria:**
-- [ ] Gauge initialised from Zarit Burden Index at onboarding
+- [ ] Gauge initialised from LCWS baseline at onboarding
 - [ ] Updated after every session based on: sentiment of responses, session frequency/timing, explicit self-report
-- [ ] Periodic Zarit re-screen administered through conversation (not form) every 2 weeks
+- [ ] Periodic LCWS re-screen administered through conversation (not form) every 2 weeks
 - [ ] Gauge visible on dashboard as a coloured indicator with plain-language label
 - [ ] Gauge moves in both directions (can improve)
 - [ ] Burnout intervention flow triggered automatically at amber→red crossing
 
 **Out of scope:**
-- PHQ-9 integration at MVP (Zarit only)
+- Third-party wellbeing instrument integration at MVP (LCWS only)
 - Caregiver wellbeing trend history chart (dashboard shows current state only)
 
 ---
@@ -587,7 +587,7 @@ Next.js API Routes (server-side)
 
 1. **RAG pipeline (M1)** — everything depends on retrieval quality. Built and validated before the companion is wired up.
 2. **Chunking strategy** — by Markdown heading, not token count. Validated before vectorising (see Phase 2 doc).
-3. **Embedding + re-ranking pipeline** — Voyage AI hosted API (`voyage-3`) for embeddings; Voyage AI hosted rerank (`rerank-2`) for top-10 → top-3. Both hosted, called over the network. Must be wired together before running the Stage 4→5 test set. Requires a Voyage AI API key.
+3. **Embedding + re-ranking pipeline** — Voyage AI hosted API (`voyage-3`) for embeddings; Voyage AI hosted rerank (`rerank-2`) for top-10 → top-3. Both hosted, called over the network. Must be wired together before running the Early→Middle transition test set. Requires a Voyage AI API key.
 4. **Session persistence decision (TBD)** — must be resolved before M2. Three options: full transcript / structured log only / summarised context. Decision affects data model, system prompt design, and PHI exposure. See Known Risks.
 5. **System prompt discipline** — coaching boundary, crisis protocol, and prompt injection guardrail enforced in the system prompt. Must be tested explicitly before M5.
 6. **Crisis keyword fallback** — keyword layer fires before LLM response for known crisis phrases. Non-negotiable. Implemented before M5.
@@ -609,7 +609,7 @@ Scrappy iteration mode. No hard deadlines — velocity over schedule.
 
 | Milestone | Scope | Gate |
 |-----------|-------|------|
-| **M1: RAG pipeline** | Vectorise vault, validate retrieval quality on Stage 4→5 queries, chunking verified | Stage 4→5 test set passes (≥90% precision@3) |
+| **M1: RAG pipeline** | Vectorise vault, validate retrieval quality on Early→Middle queries, chunking verified | Early→Middle transition test set passes (≥90% precision@3) |
 | **M2: Companion MVP** | Onboarding + daily check-in + patient log extraction. Single-user, no auth. | Founders can complete onboarding and a 3-day check-in loop without bugs |
 | **M3: Burnout layer** | Burnout gauge initialised at onboarding, updated per session, dashboard visible | Gauge moves in both directions; amber→red triggers check-in |
 | **M4: Dashboard** | Stage indicator + burnout gauge + action items | Dashboard loads in <2s; all 3 panels functional |
@@ -639,8 +639,8 @@ Scrappy iteration mode. No hard deadlines — velocity over schedule.
 ## 9. Assumptions
 
 1. Caregivers are willing to engage with a text-based companion without a native mobile app, at least for MVP validation.
-2. The Obsidian vault (14 documents) contains sufficient GDS knowledge to ground stage-aware responses without external data sources.
-3. Stage 4→5 transition signals are behaviorally observable through caregiver conversation without clinical assessment.
+2. The Obsidian vault (11 documents) contains sufficient stage knowledge to ground stage-aware responses without external data sources.
+3. Early→Middle transition signals are behaviorally observable through caregiver conversation without clinical assessment.
 4. A 2-week debrief interview (~15 min per user) is achievable with the 10-user cohort given co-founder's personal network for recruitment.
 5. Supabase free tier is sufficient for MVP data volume (<25 users, <6 months).
 6. Claude claude-sonnet-4-6 can maintain coaching-boundary discipline via system prompt alone without additional guardrails infrastructure.

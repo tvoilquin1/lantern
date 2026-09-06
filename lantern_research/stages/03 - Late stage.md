@@ -1,6 +1,5 @@
-# Stage 7 — Very Severe Decline (Late Dementia)
+# Late Stage — Very Severe Dementia
 
-**GDS Classification:** Stage 7 — Very Severe Cognitive Decline
 **Alternate Names:** Severe Alzheimer's Disease, End-Stage Dementia, Late-Stage Dementia
 **Total Duration:** Variable — substages 7a through 7f; most people die during this stage, typically between 7c and 7d
 **Care Dependency:** Continuous, round-the-clock assistance with all basic activities
@@ -143,7 +142,7 @@ Late-stage Alzheimer's patients are highly sensitive to their environment:
 
 ## Caregiver Preparation & Coping
 
-Stage 7 brings a different kind of pain. The frantic activity of earlier stages is gone, replaced by a quiet, prolonged vigil.
+The Late stage brings a different kind of pain. The frantic activity of earlier stages is gone, replaced by a quiet, prolonged vigil.
 
 ### Emotional Landscape
 
@@ -173,7 +172,7 @@ Hospice care is appropriate when a person is expected to live six months or less
 - Inability to speak or communicate meaningfully (≤6 words)
 - Weight loss (10%+ in previous 6 months)
 - Recurrent infections (pneumonia, UTIs, sepsis)
-- Pressure ulcers (Stage 2+)
+- Pressure ulcers (grade 2+)
 - Difficulty swallowing
 
 **Hospice provides:**
@@ -218,7 +217,6 @@ When the person dies, the caregiver is often left with:
 
 - Alzheimer's Association: [Late-Stage Care](https://www.alz.org/help-support/caregiving/stages-behaviors/late-stage)
 - Mace, N.L. & Rabins, P.V. (2021). *The 36-Hour Day* (6th ed.). — Chapters 6 (medical problems, death and dying), 12 (caregiver feelings), 16 (nursing homes, terminal care)
-- Reisberg, B. (1988). Functional Assessment Staging (FAST) in Alzheimer's disease. *The American Journal of Alzheimer's Care and Related Disorders & Research*, 3(2), 11-15.
 - National Institute on Aging: [End-of-Life Care for People with Dementia](https://www.nia.nih.gov/health/end-life-care-people-dementia)
 - National Hospice and Palliative Care Organization: [Hospice Care](https://www.nhpco.org/patients-and-caregivers/hospice-care/)
 - Alzheimer's Association: [Hospice and Palliative Care](https://www.alz.org/help-support/caregiving/care-options/hospice-and-palliative-care)
@@ -227,5 +225,5 @@ When the person dies, the caregiver is often left with:
 
 ---
 
-**Previous:** ← [[Stage 6 - Severe Decline]]
+**Previous:** ← [[02 - Middle stage]]
 **Up:** ← [[Framework Overview]]

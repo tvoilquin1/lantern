@@ -80,22 +80,22 @@ These medications increase levels of acetylcholine, a brain chemical involved in
 
 ## Medical Issues Specific to Each Stage
 
-### Stages 1–2: No routine dementia-specific medical management
+### Before Diagnosis & Early Signs: No routine dementia-specific medical management
 
 - Annual physical exams with cognitive screening (MOCA, Mini-Cog)
 - Cardiovascular risk management (BP, cholesterol, blood sugar) — this IS dementia prevention
 - Hearing and vision assessments (untreated sensory loss accelerates cognitive decline)
 - Baseline medication review — discontinue any anticholinergic medications (Benadryl, some bladder control drugs, tricyclic antidepressants), as they worsen cognition
 
-### Stage 3: Diagnosis and Initial Treatment
+### Early Signs (MCI / Pre-Diagnosis): Diagnosis and Initial Treatment
 
 - Formal diagnostic workup by a neurologist, geriatrician, or memory clinic (MRI, cognitive testing, blood work to rule out reversible causes)
 - Initiate donepezil if appropriate (shared decision-making with doctor)
 - Annual re-assessment of cognition and function
 - Screen for depression (very common at this stage, both in the person and the caregiver)
-- Driving evaluation referral — Stage 3 is the time to discuss and evaluate driving safety
+- Driving evaluation referral — this is the time to discuss and evaluate driving safety
 
-### Stage 4: Increasing Medical Complexity
+### Early Stage: Increasing Medical Complexity
 
 - Continue donepezil; consider adding memantine if progressing
 - Start monitoring weight and nutrition closely (unintentional weight loss begins here)
@@ -106,7 +106,7 @@ These medications increase levels of acetylcholine, a brain chemical involved in
 - Consider long-term care planning discussion with doctor (document capacity now)
 - Vaccinations up to date (flu, pneumonia, shingles — avoiding infections is critical)
 
-### Stage 5: Active Medical Management
+### Middle Stage (Early-Middle): Active Medical Management
 
 - Donepezil + memantine is standard at this stage
 - Close weight monitoring — unintentional weight loss is common. Consider nutritional supplements or referral to a dietitian
@@ -116,7 +116,7 @@ These medications increase levels of acetylcholine, a brain chemical involved in
 - Fall prevention becomes a medical priority — review medications that increase fall risk (blood pressure meds, sedatives, diuretics)
 - Advance care planning discussion with primary care provider
 
-### Stage 6: Managing Complications
+### Middle Stage (Late-Middle): Managing Complications
 
 - Swallowing evaluation (dysphagia) — choking risk increases significantly. Speech therapy referral can help
 - Pneumonia prevention — oral care (brushing, mouth swabs) reduces aspiration pneumonia risk. Vaccinations critical
@@ -125,7 +125,7 @@ These medications increase levels of acetylcholine, a brain chemical involved in
 - Seizures — may develop in advanced Alzheimer's. Any new, unusual behaviors or loss of consciousness should be evaluated
 - Pain management — assume pain is present and treat empirically if the person is agitated and cannot communicate
 
-### Stage 7: End-of-Life Medical Care
+### Late Stage: End-of-Life Medical Care
 
 - Transition to comfort-focused care (palliative or hospice)
 - Goal shifts from treatment to quality of life and pain/symptom management
@@ -173,12 +173,12 @@ These medications increase levels of acetylcholine, a brain chemical involved in
 |----------|------|-------------|
 | **Primary care / Geriatrician** | Overall medical management, medication prescribing, coordination of care | Throughout |
 | **Neurologist** | Diagnosis, specialized management, interpretation of imaging | Diagnosis + periodic follow-up |
-| **Geriatric psychiatrist** | Behavioral symptoms, medication management for mood/behavior | Stages 4+ if behavior is challenging |
-| **Speech-language pathologist** | Swallowing evaluation, communication strategies | Stage 6+ |
-| **Occupational therapist** | Home safety, adaptive equipment, daily activity strategies | Stages 4+ |
-| **Physical therapist** | Mobility, fall prevention, strengthening | Stages 4+ |
+| **Geriatric psychiatrist** | Behavioral symptoms, medication management for mood/behavior | Early stage+ if behavior is challenging |
+| **Speech-language pathologist** | Swallowing evaluation, communication strategies | Middle-Late stage |
+| **Occupational therapist** | Home safety, adaptive equipment, daily activity strategies | Early stage+ |
+| **Physical therapist** | Mobility, fall prevention, strengthening | Early stage+ |
 | **Social worker / Care manager** | Community resources, financial/legal guidance, caregiver support | Throughout |
-| **Palliative care / Hospice team** | Comfort-focused care, symptom management | Stage 6+, or earlier if needed |
+| **Palliative care / Hospice team** | Comfort-focused care, symptom management | Middle-Late stage, or earlier if needed |
 
 ### How to Make Medical Appointments Work
 

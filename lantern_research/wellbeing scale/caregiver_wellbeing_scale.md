@@ -1,7 +1,6 @@
 # Lantern Caregiver Wellbeing Scale (LCWS)
 
 > **Status:** Draft for co-founder validation  
-> **Alignment:** Zarit Burden Interview (ZBI)  
 > **Detection mechanism:** Structured daily check-in (1 question)  
 
 ---
@@ -9,7 +8,6 @@
 ## Table of Contents
 
 - [Purpose & Principles](#purpose--principles)
-- [ZBI Alignment Map](#zbi-alignment-map)
 - [Level 5 — Stable](#level-5--stable)
 - [Level 4 — Managing](#level-4--managing)
 - [Level 3 — Strained](#level-3--strained)
@@ -19,7 +17,8 @@
 - [Escalation Velocity Logic](#escalation-velocity-logic)
 - [Lantern Response Modes by Level](#lantern-response-modes-by-level)
 - [Missed Check-In Handling](#missed-check-in-handling)
-- [ZBI Domain Profile Reference](#zbi-domain-profile-reference)
+- [LCWS Domain Profile](#lcws-domain-profile)
+- [Baseline Items](#baseline-items)
 - [Phase 2: Conversation-Based Detection](#phase-2-conversation-based-detection)
 - [Validation Questions for Co-Founder](#validation-questions-for-co-founder)
 
@@ -31,25 +30,11 @@ The Lantern Caregiver Wellbeing Scale (LCWS) is a **5-level framework** that map
 
 ### Design principles
 
-1. **Respect the caregiver's limited energy.** The check-in must take ≤5 seconds. No 22-item questionnaires.
+1. **Respect the caregiver's limited energy.** The check-in must take ≤5 seconds. No lengthy questionnaires.
 2. **Truthful detection via self-report.** A caregiver who's at level 2 but reports "3" still told you they're not okay. The trend matters more than the absolute number.
 3. **Level-aware coaching.** Lantern does not coach the same way at every level. Each level demands a distinct response mode.
 4. **Oscillation, not linearity.** Caregivers move up and down the scale day-to-day. The system tracks velocity and trend, not just point-in-time.
-5. **Aligned to a validated instrument.** The scale maps to the Zarit Burden Interview (ZBI) so it has clinical credibility and maps to established research.
-
----
-
-## ZBI Alignment Map
-
-| LCWS Level | ZBI Tier | ZBI Score Range |
-|---|---|---|
-| **5 — Stable** | Little or no burden | 0-21 |
-| **4 — Managing** | Mild to moderate | 21-40 |
-| **3 — Strained** | Moderate to severe | 41-55 |
-| **2 — Overwhelmed** | Moderate to severe | 55-70 |
-| **1 — Crisis** | Severe | 61-88 |
-
-**Note:** Levels 3 and 2 overlap in ZBI's "moderate to severe" band because that range (41-70) is wide. The distinction between them is behavioral — still functional but exhausted (3) vs. functional impairment setting in (2) — not just score-based.
+5. **Grounded in observed caregiver experience.** The five levels reflect the real arc of caregiver wellbeing as documented in the dementia caregiving literature and the co-founder's clinical experience.
 
 ---
 
@@ -59,7 +44,6 @@ The Lantern Caregiver Wellbeing Scale (LCWS) is a **5-level framework** that map
 
 | Dimension | Description |
 |---|---|
-| **ZBI equivalent** | Little or no burden (0-21) |
 | **Core feeling** | Capable, present, finding meaning |
 | **Self-reported** | "I'm doing well — challenged but okay" |
 | **Check-in label** | 5 — Doing well. Challenged, but okay. |
@@ -67,7 +51,7 @@ The Lantern Caregiver Wellbeing Scale (LCWS) is a **5-level framework** that map
 **What it looks like:**  
 The caregiver has adapted well. They acknowledge it's hard but feel they're meeting the challenge. They have perspective — they see the person, not just the patient. Self-care happens (small things — a walk, a call with a friend). They can talk about positive moments without forcing it.
 
-**ZBI domain profile:** Low across all five domains. Grief and ambiguous loss expressed as manageable sadness, not distress.
+**LCWS domain profile:** Low strain across all five domains. Grief and ambiguous loss expressed as manageable sadness, not distress.
 
 **Lantern response mode:** [[#Lantern Response Modes by Level|Reinforce & celebrate]]
 
@@ -77,7 +61,6 @@ The caregiver has adapted well. They acknowledge it's hard but feel they're meet
 
 | Dimension | Description |
 |---|---|
-| **ZBI equivalent** | Mild to moderate burden (21-40) |
 | **Core feeling** | Treading water, coping day-to-day |
 | **Self-reported** | "I'm getting by. It's a lot." |
 | **Check-in label** | 4 — Managing. It's a lot, but okay. |
@@ -85,7 +68,7 @@ The caregiver has adapted well. They acknowledge it's hard but feel they're meet
 **What it looks like:**  
 The default state for most long-term caregivers. Stress is present but being handled. The routine works but fatigue is building. Sleep may be disrupted sometimes. Low-grade worry about the future. The caregiver is functional but feels stretched.
 
-**ZBI domain profile:** Elevated in Loss of Control and Social/Family Life. Relationship burden still low. Emotional well-being is holding.
+**LCWS domain profile:** Elevated in sense of control and social/family life. Relationship strain still low. Emotional wellbeing is holding.
 
 **Lantern response mode:** [[#Lantern Response Modes by Level|Light support & awareness]]
 
@@ -95,7 +78,6 @@ The default state for most long-term caregivers. Stress is present but being han
 
 | Dimension | Description |
 |---|---|
-| **ZBI equivalent** | Moderate to severe burden (41-55) |
 | **Core feeling** | Irritable, exhausted, guilty, losing patience |
 | **Self-reported** | "I'm struggling. I need a break but I can't take one." |
 | **Check-in label** | 3 — Struggling. I need a break. |
@@ -103,7 +85,7 @@ The default state for most long-term caregivers. Stress is present but being han
 **What it looks like:**  
 The inflection point. The caregiver is snapping at people, cancelling plans regularly, feeling guilty about their own irritability. Sleep is significantly disrupted. Physical symptoms may emerge (headaches, getting sick more often). They say "I need a break" but don't take one. They feel trapped in a cycle they can't escape.
 
-**ZBI domain profile:** Elevated in Emotional Well-being and Burden in the Relationship. Guilt and anger markers present.
+**LCWS domain profile:** Elevated in emotional wellbeing and relationship strain. Guilt and anger markers present.
 
 **Lantern response mode:** [[#Lantern Response Modes by Level|Active coaching]] — the highest-value intervention zone
 
@@ -113,7 +95,6 @@ The inflection point. The caregiver is snapping at people, cancelling plans regu
 
 | Dimension | Description |
 |---|---|
-| **ZBI equivalent** | Moderate to severe burden (55-70) |
 | **Core feeling** | Helpless, hopeless, isolated, losing control |
 | **Self-reported** | "I can't do this anymore. I feel completely alone." |
 | **Check-in label** | 2 — Completely overwhelmed. |
@@ -121,7 +102,7 @@ The inflection point. The caregiver is snapping at people, cancelling plans regu
 **What it looks like:**  
 Functional impairment is setting in. The caregiver is neglecting their own needs (skipping meals, poor hygiene). They've withdrawn from friends and family. There may be rough moments with the patient — shouting, impatience, missed medications. They express wanting to give up or run away.
 
-**ZBI domain profile:** High across all domains. Loss of Control and Emotional Well-being dominate. Strong anger at the situation or the patient.
+**LCWS domain profile:** High strain across all domains. Sense of control and emotional wellbeing dominate. Strong anger at the situation or the patient.
 
 **Lantern response mode:** [[#Lantern Response Modes by Level|Intervention]]
 
@@ -131,7 +112,6 @@ Functional impairment is setting in. The caregiver is neglecting their own needs
 
 | Dimension | Description |
 |---|---|
-| **ZBI equivalent** | Severe burden (61-88) |
 | **Core feeling** | Complete breakdown |
 | **Self-reported** | "I can't. I'm done. I need help now." |
 | **Check-in label** | 1 — I can't keep going. I need help. |
@@ -139,7 +119,7 @@ Functional impairment is setting in. The caregiver is neglecting their own needs
 **What it looks like:**  
 The caregiver has reached their limit. Crisis event likely — ER visit, explosive conflict, desire to abandon care. Suicidal ideation may be present. Care quality has likely collapsed. Acute burnout stage.
 
-**ZBI domain profile:** Severe across all domains.
+**LCWS domain profile:** Severe strain across all domains.
 
 **Lantern response mode:** [[#Lantern Response Modes by Level|Crisis protocol only]]
 
@@ -261,26 +241,26 @@ If the caregiver doesn't respond to the check-in for 2+ consecutive days, the AI
 
 ---
 
-## ZBI Domain Profile Reference
+## LCWS Domain Profile
 
-The scale maps to the **16 items of the Zarit Burden Interview** (the full 22 is broader; these are the core domains).
+The five domains below reflect the core dimensions of caregiver wellbeing as Lantern tracks them. They are Lantern-original constructs — not derived from or mapped to any external instrument.
 
-| ZBI Domain | 5 — Stable | 4 — Managing | 3 — Strained | 2 — Overwhelmed | 1 — Crisis |
+| LCWS Domain | 5 — Stable | 4 — Managing | 3 — Strained | 2 — Overwhelmed | 1 — Crisis |
 |---|---|---|---|---|---|
-| Burden in the relationship | Low | Low | Elevated | High | Very high |
-| Emotional well-being | Low | Low-moderate | High | Very high | Severe |
+| Relationship strain | Low | Low | Elevated | High | Very high |
+| Emotional wellbeing | Low | Low-moderate | High | Very high | Severe |
 | Social & family life | Low | Moderate | Elevated | High | Very high |
 | Finances | Low | Low | Low-moderate | Moderate | High |
-| Loss of control over one's life | Low | Moderate | High | Very high | Severe |
+| Sense of control | Low | Moderate | High | Very high | Severe |
 
 ### Per-domain signals (for future conversation analysis)
 
-**Burden in the relationship:**
+**Relationship strain:**
 - Resentment at the patient's demands
 - Anger, embarrassment, guilt
 - Feeling the patient is "a different person"
 
-**Emotional well-being:**
+**Emotional wellbeing:**
 - Exhaustion, anxiety, depression
 - Feeling trapped or hopeless
 - Apathy ("I don't care anymore")
@@ -295,10 +275,28 @@ The scale maps to the **16 items of the Zarit Burden Interview** (the full 22 is
 - Job loss or reduced hours
 - Unable to afford care
 
-**Loss of control:**
+**Sense of control:**
 - "I can't keep up"
 - "I've lost control of my life"
 - "I can't plan anything"
+
+---
+
+## Baseline Items
+
+Lantern administers a Lantern-original baseline conversation at onboarding, covering one item per LCWS domain. Each item is scored 0–4 by the companion based on the caregiver's conversational response. The same items are re-administered conversationally approximately every two weeks.
+
+> **DRAFT — pending clinical review by co-founder. Item text below is placeholder and must be rewritten before use.**
+
+| Domain | Item (caregiver-facing, second person) | Scoring guide |
+|---|---|---|
+| **Relationship strain** | "How is the daily caregiving affecting your relationship with your loved one — are you still able to feel connected to them as a person, not just as someone who needs care?" | 0 = severe strain/disconnect; 4 = connection intact |
+| **Emotional wellbeing** | "When you think about the week ahead, what feeling comes up first — is it something you can carry, or does it feel like more than you can hold?" | 0 = overwhelming dread/hopelessness; 4 = manageable, present |
+| **Social & family life** | "How much of your own social life — time with friends, family outside the caregiving role, or just things you enjoy — have you been able to keep up lately?" | 0 = completely withdrawn; 4 = mostly intact |
+| **Finances** | "Has the financial side of caregiving — whether that's direct costs, time away from work, or anything else — been adding to your stress?" | 0 = severe financial distress; 4 = little or no financial strain |
+| **Sense of control** | "Do you feel like you have enough information and support to handle what comes next, or does the situation feel like it's ahead of you?" | 0 = completely overwhelmed, no sense of agency; 4 = informed and capable |
+
+**Scoring:** Each item produces a 0–4 score. The composite LCWS baseline score is the mean of all five items, producing a 0–4 value (equivalent to the 1–5 daily check-in when offset by 1). The companion extracts a score from the caregiver's conversational response — the caregiver never sees a numeric scale during the baseline.
 
 ---
 
@@ -308,7 +306,7 @@ The preferred long-term detection mechanism is organic conversation — the AI c
 
 ### Why this is deferred to Phase 2
 
-1. **Implementation complexity.** NLP-based sentiment analysis across ZBI domains is non-trivial.
+1. **Implementation complexity.** NLP-based sentiment analysis across LCWS domains is non-trivial.
 2. **Cost.** Every conversation needs inference to extract the level.
 3. **Cold start problem.** The first few conversations have no baseline.
 4. **False positive risk.** The AI could hallucinate a level shift that isn't there.
@@ -326,7 +324,7 @@ The preferred long-term detection mechanism is organic conversation — the AI c
 
 1. Do the 5 level descriptions match the caregiver journey you've observed in practice?
 2. Is "Strained" (Level 3) the right inflection point for coaching intervention — the moment where catching someone makes the biggest difference?
-3. Is the ZBI alignment useful for credibility, or does it feel too clinical and disconnected from lived experience?
+3. Do the five domain descriptions (relationship strain, emotional wellbeing, social & family life, finances, sense of control) capture what you see clinically as the primary dimensions of caregiver burden?
 4. Will a caregiver at Level 2 honestly report "2"? If not, how do we catch them reliably?
 5. What's the hardest transition to catch? Which level shift happens most silently and is most dangerous when missed?
 6. Is "one question a day" enough to be useful, or does it feel too shallow?
@@ -340,4 +338,4 @@ The preferred long-term detection mechanism is organic conversation — the AI c
 
 ---
 
-*Last updated: June 10, 2026*
+*Last updated: September 2026*

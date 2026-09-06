@@ -1,6 +1,5 @@
-# Stage 4 — Moderate Decline (Mild Dementia)
+# Early Stage — Mild Dementia
 
-**GDS Classification:** Stage 4 — Moderate Cognitive Decline
 **Alternate Names:** Mild Alzheimer's Disease, Early-Stage Dementia
 **Duration:** On average ~2 years in otherwise healthy persons
 **Care Dependency:** Needs help with complex tasks; can still live at home with support
@@ -61,7 +60,7 @@ This is the stage at which Alzheimer's disease can be diagnosed with considerabl
 
 ## Daily Care Guide
 
-Stage 4 is where hands-on caregiving begins in earnest. The role shifts from "watching" to "structuring."
+The Early stage is where hands-on caregiving begins in earnest. The role shifts from "watching" to "structuring."
 
 ### Creating a Dementia-Friendly Home
 
@@ -117,14 +116,14 @@ The person may appear more capable in public than they are at home. This can lea
 
 ## Caregiver Preparation & Coping
 
-Stage 4 is often emotionally harder than the later stages — because the person is still present enough to feel the loss, and the caregiver is doing far more work with far less recognition.
+The Early stage is often emotionally harder than the later stages — because the person is still present enough to feel the loss, and the caregiver is doing far more work with far less recognition.
 
 ### Emotional Challenges
 - **Grief intensifies.** The person is still here, but the relationship is changing irrevocably.
 - **Resentment.** You may resent the burden, then feel guilty for the resentment.
 - **Loneliness.** The person who used to be your partner/confidant/parent can no longer fill that role.
 - **Anger at the unfairness.** This is normal. Let yourself feel it.
-- **Fear of what's next.** Stage 5 is around the corner, and you know what that means.
+- **Fear of what's next.** The Middle stage is around the corner, and you know what that means.
 
 ### Practical Steps
 
@@ -134,7 +133,7 @@ Stage 4 is often emotionally harder than the later stages — because the person
 | **Join a caregiver support group** | Attend at least once. The validation from others who understand is irreplaceable. |
 | **Stop expecting the person to validate you** | They may not thank you, notice your effort, or appreciate your sacrifice. Your validation must come from elsewhere. |
 | **Document everything** | Medical appointments, medication changes, behavioral patterns, falls, weight changes. The medical team needs this data. |
-| **Update the care plan** | Stage 4 changes fast. Re-evaluate every 3-6 months. |
+| **Update the care plan** | The Early stage changes fast. Re-evaluate every 3-6 months. |
 | **Tell the primary care doctor** | Make sure the doctor knows dementia is present — it changes how every other condition is managed. |
 
 ### Anticipatory Grief
@@ -149,11 +148,11 @@ Stage 4 is often emotionally harder than the later stages — because the person
 
 ---
 
-## Transition Warning Signs (Moving Toward Stage 5)
+## Transition Warning Signs (Moving Toward Middle Stage)
 
-The shift to Stage 5 (Moderate Dementia) is marked by a clear threshold:
+The shift to the Middle stage (Moderate Dementia) is marked by a clear threshold:
 
-**The person can no longer live alone safely.** This is the defining milestone of Stage 5. Specific warning signs:
+**The person can no longer live alone safely.** This is the defining milestone of the Middle stage. Specific warning signs:
 
 - Consistently forgetting to eat or drink
 - Leaving the stove on, burning pots, starting fires
@@ -170,15 +169,14 @@ When two or more of these are present, it's no longer safe to leave the person u
 
 ## Resources & References
 
-- Alzheimer's Association: [Mild Dementia (Stage 4)](https://www.alz.org/alzheimers-dementia/stages)
+- Alzheimer's Association: [Mild Dementia](https://www.alz.org/alzheimers-dementia/stages)
 - Mace, N.L. & Rabins, P.V. (2021). *The 36-Hour Day* (6th ed.). — Chapters 3-5 (daily care), 7 (behavioral symptoms), 8 (mood changes)
-- Reisberg, B. (1983). Clinical presentation, diagnosis, and symptomatology of age-associated cognitive decline and Alzheimer's disease. *Advances in Neurology*, 38, 173-187.
 - National Institute on Aging: [Managing Daily Life with Alzheimer's](https://www.nia.nih.gov/health/managing-daily-life-alzheimers)
 - Alzheimer's Association: [Home Safety for People with Dementia](https://www.alz.org/help-support/caregiving/safety/home-safety)
 - Family Caregiver Alliance: [Caregiver's Guide to Understanding Dementia Behaviors](https://www.caregiver.org/resource/understanding-dementia-behaviors/)
 
 ---
 
-**Next:** → [[Stage 5 - Moderately Severe Decline]]
-**Previous:** ← [[Stage 3 - Mild Cognitive Decline]]
+**Next:** → [[02 - Middle stage]]
+**Previous:** ← [[00 - Before diagnosis and early signs]]
 **Up:** ← [[Framework Overview]]

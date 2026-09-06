@@ -305,7 +305,7 @@
             e(SectionLabel, null, "Where Dad is"),
             e(StatePill, { tone: "steady" }, "Steady")),
           e("div", { style: { display: "flex", flexDirection: "column", gap: "8px" } },
-            e(StageHeadline, { stage: "Stage 5", qualifier: "moderately severe" }),
+            e(StageHeadline, { stage: "Early", qualifier: "moderate" }),
             e("div", { style: { fontSize: "14px", lineHeight: 1.55, color: "var(--text-body)" } }, "Nothing has shifted in the last three weeks.")),
           e(Sparkline, { values: [40, 52, 44, 60, 55, 70, 66] }),
           e(TrendRow, { items: [
@@ -339,7 +339,7 @@
       e("div", { style: { padding: "24px 26px 0", display: "flex", flexDirection: "column", gap: "12px" } },
         e(StatePill, { tone: "caution", style: { alignSelf: "flex-start", padding: "6px 12px" } }, "Possible shift ahead"),
         e("div", { style: { fontWeight: 700, letterSpacing: "-0.015em", fontSize: "25px", lineHeight: 1.18, color: "var(--text-primary)" } },
-          "The pattern in Dad's last two weeks looks like early stage 6."),
+          "The pattern in Dad's last two weeks looks like an early shift toward the Middle stage."),
         e("div", { style: { fontSize: "14px", lineHeight: 1.55, color: "var(--text-body)", textWrap: "pretty" } },
           "Night wandering, needing help with buttons, and calling you by your mother's name are three of the changes that usually appear together at this point. This is a pattern in your logs, not a diagnosis — his doctor is the one to confirm it.")),
       e("div", { style: { padding: "20px 20px 0", display: "flex", flexDirection: "column", gap: "11px" } },
