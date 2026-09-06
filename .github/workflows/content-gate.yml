@@ -14,11 +14,18 @@ jobs:
 
       - name: Reject proprietary clinical instrument references
         run: |
-          if grep -rIiE \
-            'zarit|\bZBI\b|\bGDS\b|global deterioration|reisberg|PHQ-?[29]|7 stages|stage [1-7]\b|\bFAST\b|\b7[a-f]\b|substage|functional assessment staging' \
+          # Case-insensitive: proprietary scale names and stage numbers
+          ci_hit=$(grep -rIiE \
+            'zarit|\bZBI\b|\bGDS\b|global deterioration|reisberg|PHQ-?[29]|7 stages|stage [1-7]\b|\b7[a-f]\b|substage|functional assessment staging' \
             --include="*.md" --include="*.html" --include="*.js" \
             --include="*.jsx" --include="*.ts" --include="*.tsx" \
-            --include="*.json" .; then
+            --include="*.json" --exclude-dir=.git .) && echo "$ci_hit"
+          # Case-sensitive: FAST acronym only (avoids matching "fast" as an adverb)
+          cs_hit=$(grep -rIE '\bFAST\b' \
+            --include="*.md" --include="*.html" --include="*.js" \
+            --include="*.jsx" --include="*.ts" --include="*.tsx" \
+            --include="*.json" --exclude-dir=.git .) && echo "$cs_hit"
+          if [ -n "$ci_hit" ] || [ -n "$cs_hit" ]; then
             echo "::error::Proprietary clinical instrument references found. Use LCWS and Early/Middle/Late staging instead."
             exit 1
           fi
