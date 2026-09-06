@@ -15,19 +15,11 @@ jobs:
       - name: Reject proprietary clinical instrument references
         run: |
           if grep -rIiE \
-            'zarit|\bZBI\b|\bGDS\b|global deterioration|reisberg|PHQ-?[29]|7 stages|stage [1-7]\b|stage [1-7]→[1-7]' \
+            'zarit|\bZBI\b|\bGDS\b|global deterioration|reisberg|PHQ-?[29]|7 stages|stage [1-7]\b|\bFAST\b|\b7[a-f]\b|substage|functional assessment staging' \
             --include="*.md" --include="*.html" --include="*.js" \
             --include="*.jsx" --include="*.ts" --include="*.tsx" \
             --include="*.json" .; then
-            echo "::error::Proprietary clinical instrument references found (ZBI, GDS, Reisberg, PHQ-9). Use LCWS and Early/Middle/Late staging instead."
-            exit 1
-          fi
-
-      - name: Reject FAST substage notation
-        run: |
-          if grep -rIinE '\bFAST\b|\b7[a-f]\b|substage|functional assessment staging' \
-            --include="*.md" .; then
-            echo "::error::FAST substage notation found (7a-7f, FAST scale, substage). Use plain language descriptions instead."
+            echo "::error::Proprietary clinical instrument references found. Use LCWS and Early/Middle/Late staging instead."
             exit 1
           fi
 
