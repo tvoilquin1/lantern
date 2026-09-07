@@ -6,14 +6,30 @@ Instructions for AI agents (Claude Code, Firstmate, and any future orchestrators
 
 ## Scope
 
-This is a pre-Phase-0 product repository. It contains:
+This repository is a Next.js 14 App Router application (Phase 0 scaffold complete). It contains:
+- `app/` — Next.js App Router pages and layouts
+- `components/` — shared UI components (empty at Phase 0)
+- `features/` — feature-scoped modules (empty at Phase 0)
+- `lib/` — shared utilities (`lib/utils.ts` — `cn()` helper)
+- `data/` — typed placeholder data modules (system prompt, wellbeing items, crisis keywords, burnout signals)
+- `constants/` — app-wide constants; `copy.ts` is the single source for all user-facing strings
+- `styles/` — global CSS (`globals.css` loads Tailwind; design tokens imported in `app/layout.tsx`)
+- `hooks/` — custom React hooks (empty at Phase 0)
+- `types/` — shared TypeScript types (empty at Phase 0)
+- `design_system/` — the Lamplight design system (HTML/CSS/JS; do not modify — see below)
 - `lantern_research/` — the Obsidian knowledge vault (markdown only)
-- `design_system/` — the Lamplight design system (HTML/CSS/JS/JSX, no framework)
 - `Ref/` — product spec documents (phase-1-spec.md, phase-2-workflows.md, phase-3-prd.md)
 - `eval/` — golden-conversation fixtures and schema validator (see Evaluation set below)
 - `BACKLOG.md` — sequenced build phases and open decisions
 
-No application code exists yet. Do not scaffold one unless the user explicitly requests it.
+## Application scaffold
+
+**Framework:** Next.js 14 (App Router) · TypeScript · Tailwind CSS · ESLint · Prettier  
+**Design system:** Lamplight tokens in `design_system/tokens/` are imported in `app/layout.tsx` (CSS custom properties) and mapped into Tailwind classes in `tailwind.config.ts`. Do not invent generic shadcn/Tailwind defaults where a Lamplight token exists.  
+**String hygiene:** All user-facing strings must live in `constants/copy.ts`. No hardcoded strings in JSX.  
+**Data placeholders:** `data/wellbeingItems.ts` and `data/stagingQuestions.ts` are empty typed modules. Fill with LCWS items / Lantern-original staging content in Phase 1.  
+**Environment:** See `.env.local.example` for required keys (Anthropic, Voyage AI, Supabase).  
+**Dev:** `npm run dev` · **Lint:** `npm run lint`
 
 ---
 
@@ -81,10 +97,10 @@ Phase 3 follow-up: wire against real companion once Phase 3 code lands.
 
 ## What not to do
 
-- Do not add application code, npm packages, or a Next.js scaffold
-- Do not change design system visual tokens, CSS, or component structure — only copy text
+- Do not change `design_system/` visual tokens, CSS, or component structure — only read from it
 - Do not push to the default branch or merge a PR
 - Do not introduce proprietary clinical instrument names (see Clinical models above)
+- Do not add feature UI, business logic, Supabase schema, API routes, or auth — those are Phase 1+
 
 ## Maintaining this file
 
