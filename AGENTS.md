@@ -46,7 +46,7 @@ Lantern-original caregiver wellbeing scale:
 - **5 levels:** 5 (Stable) → 1 (Crisis)
 - **5 domains:** relationship strain, emotional wellbeing, social & family life, finances, sense of control
 - **Daily check-in:** one-question self-report
-- **Biweekly baseline re-screen:** 5 conversational items (0–4 each, one per domain) — DRAFT, pending clinical review by co-founder
+- **Biweekly baseline re-screen:** 7 conversational items (0–4 each), co-founder-authored and clinically approved 2026-09-06; items do not map one-to-one onto the five domains — see LCWS doc for the full set
 - **Signal weighting:** self-report 40% / behavioral 30% / LCWS baseline re-screen 30%
 
 Full specification: `lantern_research/wellbeing scale/caregiver_wellbeing_scale.md`
