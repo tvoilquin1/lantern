@@ -62,9 +62,32 @@ Full specification: `lantern_research/wellbeing scale/caregiver_wellbeing_scale.
 
 ---
 
+## Key resolved decisions (consult BACKLOG.md for full list)
+
+| Decision | Outcome |
+|---|---|
+| Default view on app open | Companion/conversation is always home; dashboard is navigated-to, never the entry point |
+| Session persistence | Structured log + rolling end-of-session summary (`sessions.summary`, 100–200 words); no raw transcript |
+| Auth | Single-caregiver Supabase Auth login in MVP scope; `user_id` FK on all caregiver-specific tables; RLS at DB layer |
+| Crisis protocol | `CRISIS_KEYWORDS` bypass fires first (LLM skipped); `flag_crisis` LLM tool is the complementary layer for ambiguous cases |
+| Human escalation | Level 2 (3+ consecutive days at red): surfaces human support resources. 5+ missed check-ins: outreach to caregiver-designated emergency contact. Both sit alongside, not in place of, 988 Lifeline |
+
+## Evaluation set
+
+`eval/golden-conversations/` — four conversation fixtures with expected structured output.
+`eval/validate-golden-conversations.js` — schema validator (runs in CI today via `.github/workflows/golden-conversations.yml`).
+Phase 3 follow-up: wire against real companion once Phase 3 code lands.
+
 ## What not to do
 
 - Do not add application code, npm packages, or a Next.js scaffold
 - Do not change design system visual tokens, CSS, or component structure — only copy text
 - Do not push to the default branch or merge a PR
 - Do not introduce proprietary clinical instrument names (see Clinical models above)
+
+## Maintaining this file
+
+Update this file whenever a ship task produces durable project knowledge: resolved decisions,
+new conventions, new directories with special rules. Keep entries concise and point to the
+authoritative source file rather than duplicating content. Prefer a pointer to `BACKLOG.md`
+or `Ref/` over copying detail.
