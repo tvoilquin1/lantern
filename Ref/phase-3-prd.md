@@ -138,13 +138,13 @@ The transition detection feature (Early→Middle warning) is the highest-stakes 
 - [ ] Companion does not attempt to manage a crisis — holds space and refers
 
 **Notes:**
-- LCWS baseline covers 7 conversational items authored by the co-founder (clinically approved 2026-09-06). Items are in the LCWS doc (`lantern_research/wellbeing scale/caregiver_wellbeing_scale.md`). They do not map one-to-one onto the five LCWS domains; use the authored set verbatim.
+- LCWS baseline covers 8 conversational items: 7 domain items (6 co-founder-authored, clinically approved 2026-09-06, plus Finances captain-added with clinical agreement; covers all five LCWS domains) plus "Overall burden" as a global summary item scored 0–4 separately. Items are in the LCWS doc (`lantern_research/wellbeing scale/caregiver_wellbeing_scale.md`). Use the authored set verbatim.
 - Crisis keyword fallback (from Feature 1) applies during this flow — fires before LLM response
-- Baseline score stored as a numeric reference point in `caregiver_state` table; future sessions compare against it directionally
+- Domain composite and overall-burden score stored as separate numeric reference points in `caregiver_state`; future sessions compare against them directionally
 
 **Dependencies:**
 - P0-1 (Conversational Onboarding) must complete first — baseline is collected at the end of onboarding
-- Supabase schema: `caregiver_state` table must exist with `lcws_baseline_score` and baseline fields
+- Supabase schema: `caregiver_state` table must exist with `lcws_baseline_score` (7-domain composite) and `lcws_overall_burden_score` (global summary, separate) and other baseline fields
 
 **Estimation:** 5 points (1.5–2 days). Simpler than onboarding; baseline items are clinically approved — no additional review gate before building.
 
