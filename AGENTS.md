@@ -27,7 +27,7 @@ This repository is a Next.js 14 App Router application (Phase 0 scaffold complet
 **Framework:** Next.js 14 (App Router) · TypeScript · Tailwind CSS · ESLint · Prettier  
 **Design system:** Lamplight tokens in `design_system/tokens/` are imported in `app/layout.tsx` (CSS custom properties) and mapped into Tailwind classes in `tailwind.config.ts`. Do not invent generic shadcn/Tailwind defaults where a Lamplight token exists.  
 **String hygiene:** All user-facing strings must live in `constants/copy.ts`. No hardcoded strings in JSX.  
-**Data placeholders:** `data/zaritItems.ts` and `data/gdsQuestions.ts` use names inherited from the build plan doc; they are NOT the Zarit or GDS clinical scales. Fill with LCWS items / Lantern-original staging content in Phase 1.  
+**Data placeholders:** `data/wellbeingItems.ts` and `data/stagingQuestions.ts` are empty typed modules. Fill with LCWS items / Lantern-original staging content in Phase 1.  
 **Environment:** See `.env.local.example` for required keys (Anthropic, Voyage AI, Supabase).  
 **Dev:** `npm run dev` · **Lint:** `npm run lint`
 
