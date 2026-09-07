@@ -284,9 +284,11 @@ The five domains below reflect the core dimensions of caregiver wellbeing as Lan
 
 ## Baseline Items
 
-Lantern administers a Lantern-original baseline conversation at onboarding using seven clinically authored items. Each item is scored 0–4 by the companion based on the caregiver's conversational response. The same items are re-administered conversationally approximately every two weeks.
+Lantern administers a Lantern-original baseline conversation at onboarding using eight clinically approved items. Each item is scored 0–4 by the companion based on the caregiver's conversational response. The same items are re-administered conversationally approximately every two weeks.
 
-These items were authored by the co-founder and clinically approved on 2026-09-06. They do not map one-to-one onto the five LCWS domains; the authored set is authoritative. "Overall burden" (item 7) is a global summary item rather than a domain-specific item.
+Seven domain items were authored by the co-founder and clinically approved on 2026-09-06; a Finances item was captain-added with clinical co-founder agreement. Together, the seven domain items cover all five LCWS domains. "Overall burden" is a global summary item and is scored separately from the composite.
+
+### Domain items (seven — feed the composite)
 
 | Label | Item (caregiver-facing, second person) | Scoring guide |
 |---|---|---|
@@ -296,11 +298,17 @@ These items were authored by the co-founder and clinically approved on 2026-09-0
 | **Tension during caregiving** | "Do you feel on edge or tense when you're with the person you're caring for?" | 0 = consistently on edge or tense; 4 = rarely or never tense |
 | **Your own health** | "Has your physical or emotional health taken a hit because of your caregiving role?" | 0 = significant health impact from caregiving; 4 = little or no impact |
 | **Sense of control** | "Since your relative's health changed, do you feel like you've lost a sense of control over your own life?" | 0 = complete loss of control over own life; 4 = sense of control mostly intact |
+| **Finances** | "Do you feel the cost of caregiving is putting a strain on your finances?" | 0 = severe financial strain from caregiving; 4 = little or no financial strain |
+
+### Global summary item (scored separately — not included in the composite)
+
+| Label | Item (caregiver-facing, second person) | Scoring guide |
+|---|---|---|
 | **Overall burden** | "Taking everything into account, how heavy does the weight of caregiving feel to you right now?" | 0 = crushing, unbearable weight; 4 = manageable, not heavy |
 
 **Polarity note:** These questions are phrased so that agreement indicates more burden. The scale runs 0 = severe / 4 = little or none, matching the rest of the LCWS document.
 
-**Scoring:** Each item produces a 0–4 score. The composite LCWS baseline score is the mean of all seven items, producing a 0–4 value (equivalent to the 1–5 daily check-in when offset by 1). The companion extracts a score from the caregiver's conversational response — the caregiver never sees a numeric scale during the baseline.
+**Scoring:** Each item produces a 0–4 score. The composite LCWS baseline score is the mean of the seven domain items, producing a 0–4 value (equivalent to the 1–5 daily check-in when offset by 1). Overall burden is scored 0–4 separately and recorded as a whole-picture cross-check — a meaningful gap between the overall-burden score and the domain composite is itself signal worth noting. No specific divergence threshold has been defined. The companion extracts all scores from the caregiver's conversational response — the caregiver never sees a numeric scale during the baseline.
 
 ---
 
@@ -334,7 +342,7 @@ The following were reviewed and approved:
 - **LCWS level descriptions** (Level 5 — Stable through Level 1 — Crisis): approved as consistent with observed caregiver experience.
 - **Early/Middle/Late stage descriptions** (in the separate stage documents): approved.
 - **Human-escalation thresholds:** 3+ consecutive days of qualifying distress triggering human support surfacing; 5 consecutive missed check-ins triggering emergency contact outreach — both thresholds approved.
-- **Baseline items:** the seven items in the table above are the co-founder's clinically authored text, approved for use verbatim.
+- **Baseline items:** the seven domain items were authored by the co-founder and approved verbatim; the Finances item was captain-added and clinically agreed by the co-founder.
 
 ---
 
