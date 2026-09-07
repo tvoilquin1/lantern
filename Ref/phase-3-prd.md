@@ -138,7 +138,7 @@ The transition detection feature (Early→Middle warning) is the highest-stakes 
 - [ ] Companion does not attempt to manage a crisis — holds space and refers
 
 **Notes:**
-- LCWS baseline covers 8 conversational items: 7 domain items (co-founder-authored, clinically approved 2026-09-06; covers all five LCWS domains) plus "Overall burden" as a global summary item scored 0–4 separately. Items are in the LCWS doc (`lantern_research/wellbeing scale/caregiver_wellbeing_scale.md`). Use the authored set verbatim.
+- LCWS baseline covers 8 conversational items: 7 domain items (6 co-founder-authored, clinically approved 2026-09-06, plus Finances captain-added with clinical agreement; covers all five LCWS domains) plus "Overall burden" as a global summary item scored 0–4 separately. Items are in the LCWS doc (`lantern_research/wellbeing scale/caregiver_wellbeing_scale.md`). Use the authored set verbatim.
 - Crisis keyword fallback (from Feature 1) applies during this flow — fires before LLM response
 - Domain composite and overall-burden score stored as separate numeric reference points in `caregiver_state`; future sessions compare against them directionally
 

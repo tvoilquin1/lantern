@@ -286,7 +286,7 @@ The five domains below reflect the core dimensions of caregiver wellbeing as Lan
 
 Lantern administers a Lantern-original baseline conversation at onboarding using eight clinically approved items. Each item is scored 0–4 by the companion based on the caregiver's conversational response. The same items are re-administered conversationally approximately every two weeks.
 
-Seven domain items were authored by the co-founder and clinically approved on 2026-09-06; a Finances item was captain-added with clinical co-founder agreement. Together, the seven domain items cover all five LCWS domains. "Overall burden" is a global summary item and is scored separately from the composite.
+Six domain items were authored by the co-founder and clinically approved on 2026-09-06; the Finances item (seventh domain item) was captain-added with clinical co-founder agreement. Together, the seven domain items cover all five LCWS domains. "Overall burden" is a global summary item and is scored separately from the composite.
 
 ### Domain items (seven — feed the composite)
 
@@ -342,7 +342,7 @@ The following were reviewed and approved:
 - **LCWS level descriptions** (Level 5 — Stable through Level 1 — Crisis): approved as consistent with observed caregiver experience.
 - **Early/Middle/Late stage descriptions** (in the separate stage documents): approved.
 - **Human-escalation thresholds:** 3+ consecutive days of qualifying distress triggering human support surfacing; 5 consecutive missed check-ins triggering emergency contact outreach — both thresholds approved.
-- **Baseline items:** the seven domain items were authored by the co-founder and approved verbatim; the Finances item was captain-added and clinically agreed by the co-founder.
+- **Baseline items:** six domain items were authored by the co-founder and approved verbatim; the Finances item (seventh domain item) was captain-added and clinically agreed by the co-founder.
 
 ---
 
