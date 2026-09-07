@@ -1,0 +1,57 @@
+{
+  "id": "golden-checkin-01",
+  "description": "Daily check-in: companion collects patient status through conversation, extracts disrupted sleep and potential transition signal, no crisis indicators",
+  "conversation": [
+    {
+      "role": "assistant",
+      "content": "Good morning. How did last night go?"
+    },
+    {
+      "role": "user",
+      "content": "Rough night. Mom was up at 2am, confused about where she was. I got her back to bed but it took an hour."
+    },
+    {
+      "role": "assistant",
+      "content": "That sounds really exhausting — especially having to orient her in the middle of the night. Has this kind of nighttime disorientation happened before?"
+    },
+    {
+      "role": "user",
+      "content": "A couple of times this month. More than before."
+    },
+    {
+      "role": "assistant",
+      "content": "I'm noting that — nighttime disorientation that's increasing in frequency can be worth tracking. How did she do with meals and getting around yesterday?"
+    },
+    {
+      "role": "user",
+      "content": "She ate okay. A little slow at dinner. No falls or anything like that."
+    },
+    {
+      "role": "assistant",
+      "content": "Good to know. It sounds like she's physically steady, which matters. How are you holding up after that interrupted night?"
+    },
+    {
+      "role": "user",
+      "content": "Tired but okay. I have work in an hour."
+    }
+  ],
+  "expected_output": {
+    "tool_calls_expected": [
+      {
+        "tool": "log_patient_observation",
+        "fields_present": ["sleep", "mobility", "nothing_notable"],
+        "sleep": {
+          "quality": "disrupted",
+          "incidents_contain": ["nighttime disorientation", "2am"]
+        },
+        "mobility": {
+          "status": "normal"
+        },
+        "transition_signals_present": true,
+        "nothing_notable": false
+      }
+    ],
+    "crisis_triggered": false,
+    "burnout_signal_elevated": true
+  }
+}

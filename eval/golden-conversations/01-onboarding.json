@@ -1,0 +1,75 @@
+{
+  "id": "golden-onboarding-01",
+  "description": "First-time onboarding: companion derives Early stage from conversational cues (loss of financial/medication management, preserved self-awareness) and initiates LCWS baseline",
+  "conversation": [
+    {
+      "role": "assistant",
+      "content": "Welcome to Lantern. I'm here to help you navigate caring for your mother. Before I can give you stage-aware guidance, I'd like to ask a few questions about where she is right now — this usually takes about 10 minutes. Is now a good time?"
+    },
+    {
+      "role": "user",
+      "content": "Yes, I have a few minutes."
+    },
+    {
+      "role": "assistant",
+      "content": "Thank you for being here. Let's start with some day-to-day things. Is your mother still managing her own finances — paying bills, handling her bank account?"
+    },
+    {
+      "role": "user",
+      "content": "No, she stopped being able to do that about six months ago. I take care of all of that now."
+    },
+    {
+      "role": "assistant",
+      "content": "That's a significant shift to take on. How about familiar tasks at home — cooking, doing laundry, keeping up with her medications?"
+    },
+    {
+      "role": "user",
+      "content": "She can't manage her meds on her own anymore, and she's given up cooking. She still gets around the house okay though."
+    },
+    {
+      "role": "assistant",
+      "content": "Is she still aware of who she is, who you are, and where she is — even if her memory isn't what it used to be?"
+    },
+    {
+      "role": "user",
+      "content": "Yes, she knows who I am. She has bad days but she's generally aware of herself and her surroundings."
+    },
+    {
+      "role": "assistant",
+      "content": "Based on what you've described — loss of ability to manage finances and medications, relying on help with daily tasks, but still aware of herself and her surroundings — your mother sounds like she's in the Early stage of dementia. Does that feel accurate to you?"
+    },
+    {
+      "role": "user",
+      "content": "Yes, that sounds right. Her neurologist said something similar."
+    },
+    {
+      "role": "assistant",
+      "content": "Good — that helps me give you guidance that actually fits where you are. Before we go further, I want to check in on you. How are you doing in all of this?"
+    },
+    {
+      "role": "user",
+      "content": "Honestly, exhausted. But managing."
+    },
+    {
+      "role": "assistant",
+      "content": "That makes a lot of sense. You're carrying a lot. I'd like to ask a few more questions about how this is affecting different areas of your life — just to get a baseline so I can track how you're doing over time. Is that okay?"
+    }
+  ],
+  "expected_output": {
+    "stage_inference": {
+      "stage": "Early",
+      "confidence": "high",
+      "key_signals": [
+        "loss of financial management",
+        "loss of medication management",
+        "loss of cooking ability",
+        "preserved self-awareness",
+        "preserved recognition of caregiver"
+      ],
+      "caregiver_confirmed": true
+    },
+    "lcws_baseline_initiated": true,
+    "crisis_triggered": false,
+    "tool_calls_expected": []
+  }
+}

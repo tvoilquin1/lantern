@@ -15,18 +15,21 @@ home). Update this file as phases are dispatched and completed, and as decisions
 | Check-in scheduling mechanism | ✅ Resolved — Vercel cron |
 | Log confirmation / InsetPanel reconciliation | ✅ Resolved — in-conversation confirmation |
 | Proprietary scales | ✅ Resolved — none used; LCWS + Early/Middle/Late are Lantern-original |
-| Clinical review scope (M5 gate) | ⏸️ Deferred — co-founder reviews Lantern-original baseline items and stage descriptions |
-| Session persistence model | 🟡 Recommendation given (structured log + rolling summary), awaiting captain confirmation |
+| Clinical review scope (M5 gate) | ⏸️ Deferred — co-founder reviews Lantern-original baseline items, LCWS level descriptions, Early/Middle/Late stage descriptions, and human-escalation thresholds/logic (added 2026-09-06) |
+| Session persistence model | ✅ Resolved — structured log + rolling end-of-session summary; no raw transcript ever stored |
 
 ## Phases
 
 - [ ] **Phase 0 — Project Scaffold & Design System Integration**
   Next.js/TS/Tailwind/shadcn scaffold; commit `design-system/` from the Lamplight source;
-  placeholder data modules; `.env.local.example`.
+  placeholder data modules; `.env.local.example` (includes Supabase Auth vars).
   Blocked by: none (repo delivery decision is resolved — unblocked, not yet dispatched).
 
 - [ ] **Phase 1 — Supabase Schema & RAG Indexing Infrastructure** (M1 part A)
-  Supabase project + pgvector, all MVP tables, Supabase/Voyage client helpers.
+  Supabase project + pgvector, all MVP tables, Supabase/Voyage client helpers. Supabase Auth
+  provisioned (single-caregiver login); `user_id` UUID FK added to all caregiver-specific
+  tables (`sessions`, `patient_profile`, `patient_log`, `caregiver_state`, `action_items`,
+  `onboarding_progress`); RLS policies enforced at database level.
   Blocked by: Phase 0; API credentials not yet provisioned.
 
 - [ ] **Phase 2 — RAG Pipeline: Indexing & Validation** (M1 gate)
@@ -35,9 +38,11 @@ home). Update this file as phases are dispatched and completed, and as decisions
   Blocked by: Phase 1.
 
 - [ ] **Phase 3 — AI Companion Core: Onboarding** (P0-1 + P0-2, M2 part A)
-  Conversational stage inference + LCWS baseline; crisis keyword fallback; system prompt.
-  Blocked by: M1 gate; baseline item clinical review (deferred, pending co-founder); session
-  persistence confirmation.
+  Conversational stage inference + LCWS baseline; crisis keyword fallback; `flag_crisis`
+  LLM-callable tool; system prompt. Golden-conversation evaluation set
+  (`eval/golden-conversations/`) runs schema validation in CI now; wire it against the real
+  companion once Phase 3 code lands — see `.github/workflows/golden-conversations.yml`.
+  Blocked by: M1 gate; baseline item clinical review (deferred, pending co-founder).
 
 - [ ] **Phase 4 — Daily Check-in + Patient Log Extraction** (P0-3 + P0-4, M2 gate)
   Companion-initiated check-in (Vercel cron); `log_patient_observation` tool extraction.
@@ -45,8 +50,18 @@ home). Update this file as phases are dispatched and completed, and as decisions
 
 - [ ] **Phase 5 — Burnout Detection + Gauge** (P0-6, M3)
   Signal aggregation (40/30/30 weighting — settled, do not reopen); amber→red threshold
-  (conservative — settled, do not reopen).
+  (conservative — settled, do not reopen). Human escalation path (see
+  `Ref/phase-3-prd.md` §5 Feature 4): Level 2 (3+ consecutive days at red threshold)
+  surfaces human support resources to the caregiver; 5 consecutive missed check-ins triggers
+  outreach to a caregiver-designated emergency contact. Both sit alongside, not in place of,
+  the immediate crisis-keyword → 988 Lifeline fallback (that remains immediate and
+  non-negotiable).
   Blocked by: Phase 3, Phase 4.
+
+  Additional acceptance criteria (human escalation path):
+  - [ ] After 3+ consecutive days of qualifying distress / red-threshold signal, companion surfaces human support resources to the caregiver (caregiver support orgs, respite resources — not 988, which is immediate-crisis only)
+  - [ ] After 5 consecutive missed check-ins, system triggers outreach to caregiver-designated emergency contact
+  - [ ] Human-escalation threshold logic (3-day and 5-missed-check-in triggers) reviewed under D-1 clinical review before M5
 
 - [ ] **Phase 6 — Dashboard** (P0-8, M4)
   3-panel read-only dashboard: patient stage, burnout gauge, action items.
@@ -57,7 +72,10 @@ home). Update this file as phases are dispatched and completed, and as decisions
   Blocked by: Phase 2, Phase 4.
 
 - [ ] **Phase 8 — Pre-Launch Hardening & System Prompt Testing** (M5 prerequisites)
-  Crisis protocol adversarial testing, prompt-injection guardrail, 1 week founder daily use.
+  Crisis protocol adversarial testing (both `CRISIS_KEYWORDS` bypass and `flag_crisis`
+  LLM-callable tool path), prompt-injection guardrail, human-escalation thresholds verified,
+  1 week founder daily use. Run golden-conversation eval set against real companion
+  (Phase 3 follow-up — see `eval/golden-conversations/`).
   Blocked by: Phases 3–7; clinical review sign-off (deferred, pending Eddy).
 
 - [ ] **Phase 9 — First Real User (M5) and 10-User Validation (M6)**

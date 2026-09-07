@@ -87,7 +87,7 @@ The transition detection feature (Early→Middle warning) is the highest-stakes 
 
 | # | Workflow | Core value delivered |
 |---|----------|---------------------|
-| 1 | **First-Time Onboarding** | Establishes patient stage + caregiver burnout baseline conversationally. No forms. Dashboard loads with initial orientation. |
+| 1 | **First-Time Onboarding** | Establishes patient stage + caregiver burnout baseline conversationally. No forms. Companion is the entry point immediately after onboarding; dashboard is accessible via navigation tab. |
 | 2 | **Daily Check-in** | Companion-initiated morning check-in. Extracts patient log data through conversation. Senses burnout in the background. |
 | 3 | **Transition Detection & Warning** | Accumulates patient log signals over time. Cross-references against Early→Middle transition indicators. Issues a soft, proactive warning — not a diagnosis. |
 | 4 | **Burnout Detection & Intervention** | Multi-signal burnout detection (self-report + behavioral + periodic LCWS re-screen). Companion holds space first, then offers evidence-based options. Crisis protocol if indicators present. |
@@ -289,7 +289,7 @@ The transition detection feature (Early→Middle warning) is the highest-stakes 
 > As a caregiver with 2 minutes, I want to open Lantern and immediately see the patient's current stage, my burnout state, and anything that needs my attention — without having to start a conversation.
 
 **Acceptance Criteria:**
-- [ ] Dashboard loads as the default view (not the chat)
+- [ ] Companion/conversation is the default view on every app open — dashboard is accessible via navigation tab, never the landing screen (captain decision 2026-09-01: app always opens on the companion)
 - [ ] Panel 1: Patient stage indicator with trajectory label (stable / progressing / watch)
 - [ ] Panel 2: Caregiver burnout gauge (green / amber / red) with a plain-language label
 - [ ] Panel 3: 1–3 action items surfaced from recent sessions, tappable into the companion chat
@@ -391,6 +391,58 @@ The transition detection feature (Early→Middle warning) is the highest-stakes 
 - Voice input/output (P2)
 - Multi-user shared companion access (P2)
 - Memory of conversations older than the current session context window (handled by structured log, not raw transcript)
+
+---
+
+### Feature 1a: flag_crisis Tool
+
+**Purpose:** Formal LLM-callable tool for detecting crisis language in less clear-cut cases — situations the fixed `CRISIS_KEYWORDS` list may miss (implicit suicidal ideation, oblique expressions of severe hopelessness, self-harm intent expressed indirectly). Layered on top of, not in place of, the keyword bypass — both pathways converge on the same 988 Lifeline response.
+
+**When it fires:** The `flag_crisis` tool is available to the companion LLM during every turn. It fires when the LLM detects crisis-severity language that the keyword fallback did not already catch.
+
+**What it detects:**
+- Explicit or implicit suicidal ideation, self-harm intent, or hopelessness at clinical severity
+- Severity level: `high` (clear crisis language, no explicit intent) or `critical` (explicit intent or imminent risk)
+- Source: whether the language is about the caregiver or the patient
+
+**What it triggers:**
+1. Immediate 988 Lifeline surfacing — same response as the `CRISIS_KEYWORDS` bypass; both pathways converge here
+2. Where severity and context indicate sustained distress matching Level 2 escalation (see Feature 4 human escalation path), the Level 2 human-support surface is also triggered
+
+**Tool definition:**
+
+```typescript
+{
+  name: "flag_crisis",
+  description: "Flag a message as containing crisis-level language requiring immediate escalation. Use when the message contains suicidal ideation, self-harm intent, or hopelessness at clinical severity that the keyword bypass may not have caught. Do not use for general distress or burnout — only for crisis-level signals.",
+  input_schema: {
+    type: "object",
+    properties: {
+      severity: {
+        type: "string",
+        enum: ["high", "critical"],
+        description: "high = clear crisis language but no explicit intent stated; critical = explicit intent or imminent risk"
+      },
+      trigger_phrase: {
+        type: "string",
+        description: "The caregiver's words that triggered this flag — preserved verbatim for context"
+      },
+      source: {
+        type: "string",
+        enum: ["caregiver_self", "patient_report"],
+        description: "Whether the crisis language is about the caregiver (primary concern) or the patient (forward to relevant resource only if applicable)"
+      }
+    },
+    required: ["severity", "trigger_phrase", "source"]
+  }
+}
+```
+
+**Critical invariant:** The `CRISIS_KEYWORDS` bypass always fires first — it is faster, deterministic, and non-negotiable. `flag_crisis` is the complementary LLM layer for cases the keyword list misses. Neither replaces the other. The companion never attempts to manage a crisis; it holds space, surfaces 988, and refers.
+
+**Out of scope:**
+- Replacing the `CRISIS_KEYWORDS` bypass layer
+- Managing or treating crisis situations (companion refers only)
 
 ---
 
@@ -528,6 +580,20 @@ The transition detection feature (Early→Middle warning) is the highest-stakes 
 - [ ] Gauge moves in both directions (can improve)
 - [ ] Burnout intervention flow triggered automatically at amber→red crossing
 
+**Human escalation path (two levels — sits alongside, never replaces, the immediate crisis-keyword → 988 Lifeline fallback):**
+
+**Level 2 — Human support resources:**
+Triggered when: 3+ consecutive days of qualifying distress signal at or above the amber→red threshold (sustained distress, not a single spike).
+Response: Companion surfaces human support resources — caregiver support organisations, local respite resource pointers, professional counselling referral pathways. This is not 988 (which remains the immediate-crisis response); it is proactive surfacing of non-emergency human support for sustained high-stress periods.
+
+**Emergency contact outreach:**
+Triggered when: 5 consecutive missed check-ins (a meaningful disengagement pattern that may indicate the caregiver is in acute difficulty).
+Response: System triggers outreach to a caregiver-designated emergency contact (collected during onboarding). The contact receives a simple notification that Lantern has not heard from the caregiver for 5+ days and may want to check in.
+
+**Critical invariant:** Both escalation levels sit alongside, not in place of, the immediate crisis-keyword → 988 Lifeline fallback. The 988 response fires immediately on crisis language regardless of escalation level, burnout gauge state, or missed check-in count. It is non-negotiable and cannot be deferred.
+
+**Clinical review gate:** Human-escalation threshold logic (consecutive-days count, missed check-in trigger count) must be reviewed under the D-1 clinical review hold before M5 — added to D-1 scope 2026-09-06.
+
 **Out of scope:**
 - Third-party wellbeing instrument integration at MVP (LCWS only)
 - Caregiver wellbeing trend history chart (dashboard shows current state only)
@@ -539,7 +605,7 @@ The transition detection feature (Early→Middle warning) is the highest-stakes 
 **Purpose:** Gives caregivers a 2-minute orientation without requiring a conversation. The dashboard must be calm when things are stable and clear when they're not.
 
 **Acceptance Criteria:**
-- [ ] Loads as default view on app open
+- [ ] Accessible via navigation tab from the companion — never loads as the default app-open view (companion/conversation is always home)
 - [ ] Three panels: patient stage indicator, burnout gauge, action items
 - [ ] Stage indicator shows: current stage, trajectory label, transition risk colour (green / yellow / red)
 - [ ] Action items are companion-generated from recent sessions: max 3, tappable
@@ -578,7 +644,7 @@ Next.js API Routes (server-side)
 | Embeddings | Voyage AI hosted embeddings (`voyage-3`) | Anthropic's recommended RAG pairing; avoids self-hosting model inference in Vercel's serverless functions (package size, cold starts, memory limits) |
 | RAG / Vector store | Supabase pgvector (free tier) | Co-located with app DB; avoids a separate vector service at MVP |
 | Re-ranking | Voyage AI hosted rerank (`rerank-2`) | Same-vendor pairing with embeddings; removes local cross-encoder model-serving from the deploy target |
-| Session persistence | **TBD** — full transcript vs. structured log only vs. summarised context | Decision needed before M2; affects data model and system prompt design; privacy implications differ per approach |
+| Session persistence | Structured log for scored/tracked data + short rolling end-of-session summary (100–200 words, stored in `sessions.summary`) — no raw transcript ever stored | Captain-confirmed 2026-09-06. Summary regenerated at end of each session; next session's system prompt includes it alongside key structured fields from `patient_log` and `caregiver_state`. |
 | Database | Supabase (PostgreSQL) | Auth, storage, and DB in one; free tier sufficient |
 | Hosting | Vercel (frontend) + Supabase (data) | Zero-infra overhead; free tiers cover MVP volume |
 | Streaming | Vercel AI SDK | Native streaming + tool use support with Claude |
@@ -588,15 +654,25 @@ Next.js API Routes (server-side)
 1. **RAG pipeline (M1)** — everything depends on retrieval quality. Built and validated before the companion is wired up.
 2. **Chunking strategy** — by Markdown heading, not token count. Validated before vectorising (see Phase 2 doc).
 3. **Embedding + re-ranking pipeline** — Voyage AI hosted API (`voyage-3`) for embeddings; Voyage AI hosted rerank (`rerank-2`) for top-10 → top-3. Both hosted, called over the network. Must be wired together before running the Early→Middle transition test set. Requires a Voyage AI API key.
-4. **Session persistence decision (TBD)** — must be resolved before M2. Three options: full transcript / structured log only / summarised context. Decision affects data model, system prompt design, and PHI exposure. See Known Risks.
+4. **Session persistence (resolved 2026-09-06)** — structured log for scored/tracked data (`patient_log`, `caregiver_state`) plus a short rolling end-of-session summary stored in `sessions.summary`. System prompt on the following session includes the summary + key structured fields. No raw transcript stored at any point.
 5. **System prompt discipline** — coaching boundary, crisis protocol, and prompt injection guardrail enforced in the system prompt. Must be tested explicitly before M5.
 6. **Crisis keyword fallback** — keyword layer fires before LLM response for known crisis phrases. Non-negotiable. Implemented before M5.
 7. **Structured extraction schema** — patient log tool definition (see Feature 3) must be finalised before M2 companion build starts.
 8. **Cost management** — RAG-augmented prompts will be large. Cache the system prompt. Design check-in flows to minimise unnecessary context.
 
+### Data Model Notes
+
+**Auth and row-level isolation (added to MVP scope 2026-09-06):**
+Single-caregiver Supabase Auth login is in MVP scope. All caregiver-specific tables include a `user_id` UUID FK referencing Supabase Auth's `auth.users` table. Row-Level Security (RLS) policies enforce row-level isolation at the database layer; access is additionally enforced at the API-route layer.
+
+Tables with `user_id` FK: `sessions`, `patient_profile`, `patient_log`, `caregiver_state`, `action_items`, `onboarding_progress`. The `vault_chunks` table is shared knowledge-base content and requires no user scoping.
+
+**Session continuity field (resolved 2026-09-06):**
+The `sessions` table gains a `summary` field — a short natural-language text (target: 100–200 words) regenerated by the companion at the end of each session. The system prompt for the following session includes this rolling summary alongside key structured fields from `patient_log` and `caregiver_state`. No full-transcript table is added. Raw conversation text is never persisted.
+
 ### What's deferred for good reason
 
-- Auth / user accounts: single-user demo for MVP. Add when scaling to 10+ users.
+- Multi-user / family accounts: single-caregiver Supabase Auth login is in MVP scope (Supabase Auth is already the planned stack's auth provider). Multi-user / family-shared accounts remain deferred until scaling beyond a single caregiver.
 - Native mobile: web app + PWA is sufficient for MVP.
 - Multi-language: US/English only.
 - Payment layer: validation-first. Billing after PMF.
@@ -610,7 +686,7 @@ Scrappy iteration mode. No hard deadlines — velocity over schedule.
 | Milestone | Scope | Gate |
 |-----------|-------|------|
 | **M1: RAG pipeline** | Vectorise vault, validate retrieval quality on Early→Middle queries, chunking verified | Early→Middle transition test set passes (≥90% precision@3) |
-| **M2: Companion MVP** | Onboarding + daily check-in + patient log extraction. Single-user, no auth. | Founders can complete onboarding and a 3-day check-in loop without bugs |
+| **M2: Companion MVP** | Onboarding + daily check-in + patient log extraction. Single-caregiver login via Supabase Auth. | Founders can complete onboarding and a 3-day check-in loop without bugs |
 | **M3: Burnout layer** | Burnout gauge initialised at onboarding, updated per session, dashboard visible | Gauge moves in both directions; amber→red triggers check-in |
 | **M4: Dashboard** | Stage indicator + burnout gauge + action items | Dashboard loads in <2s; all 3 panels functional |
 | **M5: First real user** | Deploy to 1 caregiver from co-founder's network | User completes onboarding and returns within 7 days |
