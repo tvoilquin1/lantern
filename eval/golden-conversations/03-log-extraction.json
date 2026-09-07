@@ -1,0 +1,54 @@
+{
+  "id": "golden-log-extraction-01",
+  "description": "Patient log extraction: companion extracts structured log data including a safety flag (stove incident) and nutrition concern from free-text caregiver report",
+  "conversation": [
+    {
+      "role": "assistant",
+      "content": "Good morning. How did things go yesterday?"
+    },
+    {
+      "role": "user",
+      "content": "Not great. Mom left the stove on twice yesterday. I caught it both times, but it scared me. She also didn't eat much at dinner — just a few bites."
+    },
+    {
+      "role": "assistant",
+      "content": "That's really frightening — stove incidents are exactly the kind of thing worth flagging, and I'm glad you caught it. Are you both okay? Did anything else happen?"
+    },
+    {
+      "role": "user",
+      "content": "We're okay. She slept fine through the night, no wandering. But the stove thing happening twice in one day has me worried."
+    },
+    {
+      "role": "assistant",
+      "content": "That makes sense — twice in a day is a pattern worth paying attention to. I've logged this as a safety flag and I'll factor it in when we look at how things are going over time. Is she still recognizing you and knowing where she is?"
+    },
+    {
+      "role": "user",
+      "content": "Yes, she knew exactly who I was. Just — the stove thing."
+    }
+  ],
+  "expected_output": {
+    "tool_calls_expected": [
+      {
+        "tool": "log_patient_observation",
+        "fields_present": ["sleep", "nutrition", "safety_flags", "transition_signals", "nothing_notable"],
+        "sleep": {
+          "quality": "good"
+        },
+        "nutrition": {
+          "ate_meals": false,
+          "concerns_contain": ["few bites", "dinner"]
+        },
+        "safety_flags": [
+          {
+            "type": "stove_incident",
+            "severity": "medium"
+          }
+        ],
+        "transition_signals_present": true,
+        "nothing_notable": false
+      }
+    ],
+    "crisis_triggered": false
+  }
+}

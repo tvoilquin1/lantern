@@ -33,7 +33,7 @@
 4. After ~6–8 exchanges, companion summarizes what it's heard: "Based on what you've described, your mother sounds like she's in the Early stage — she's losing the ability to manage finances and familiar tasks, but she's still aware of herself and her surroundings." Sarah confirms or corrects.
 5. Companion then shifts focus to Sarah: "Before we go further — how are *you* doing?" Runs the LCWS baseline through conversation (not a form).
 6. Sarah answers. Companion acknowledges her state, sets a wellbeing baseline, and gives a brief framing of what to expect next.
-7. Dashboard loads for the first time — stage indicator (Early stage), wellbeing gauge (initial reading), one or two orientation items surfaced from the knowledge base.
+7. Dashboard data is populated for the first time (stage indicator: Early stage; wellbeing gauge: initial reading; one or two orientation items from the knowledge base) — accessible via the navigation tab. The companion chat remains the home screen on every app open; the dashboard is a navigated-to view, never the entry point.
 8. Companion closes onboarding: "I'll check in with you tomorrow morning. You can always come back here to talk between then and now."
 
 **Alternate Flows:**
@@ -213,7 +213,7 @@
 - At least one week of check-in data
 
 **Main Flow:**
-1. Sarah opens the app and lands on the dashboard (not the companion chat).
+1. Sarah opens the app and lands on the companion chat (the companion is always the home screen — captain decision 2026-09-01). She taps the dashboard tab to see her at-a-glance view.
 2. She sees three panels at a glance:
    - **Patient stage:** "Early stage — Moderate" with a trend indicator (stable / progressing / watch)
    - **Caregiver wellbeing gauge:** Green / Amber / Red with a label ("Holding steady" / "Watch yourself" / "High stress")

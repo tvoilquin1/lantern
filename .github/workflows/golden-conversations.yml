@@ -1,0 +1,22 @@
+name: Golden-conversation validation
+
+# Validates golden-conversation fixture schemas on every PR and push to main.
+#
+# Phase 3 follow-up: once companion code lands, extend this job (or add a second job)
+# to run the eval set against the real companion API and assert on expected_output fields.
+# Track this under Phase 3 scope in BACKLOG.md and Phase 8 acceptance criteria.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  validate-schema:
+    name: Schema validation (structural — no companion calls)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate golden-conversation fixture schemas
+        run: node eval/validate-golden-conversations.js
