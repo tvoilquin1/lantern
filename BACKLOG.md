@@ -15,7 +15,7 @@ home). Update this file as phases are dispatched and completed, and as decisions
 | Check-in scheduling mechanism | ✅ Resolved — Vercel cron |
 | Log confirmation / InsetPanel reconciliation | ✅ Resolved — in-conversation confirmation |
 | Proprietary scales | ✅ Resolved — none used; LCWS + Early/Middle/Late are Lantern-original |
-| Clinical review scope (D-1) | ✅ Resolved — co-founder reviewed and approved LCWS level descriptions, Early/Middle/Late stage descriptions, and human-escalation thresholds (3-day distress / 5-missed-check-in triggers) on 2026-09-06; baseline items are now co-founder-authored text |
+| Clinical review scope (D-1) | ✅ Resolved — co-founder reviewed and approved LCWS level descriptions, Early/Middle/Late stage descriptions, and human-escalation thresholds (3-day distress / 5-missed-check-in triggers) on 2026-09-06; six baseline domain items are co-founder-authored text; Finances (seventh domain item) captain-added with clinical co-founder agreement |
 | Session persistence model | ✅ Resolved — structured log + rolling end-of-session summary; no raw transcript ever stored |
 
 ## Phases
