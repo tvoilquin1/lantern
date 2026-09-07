@@ -1,6 +1,6 @@
 # Lantern Caregiver Wellbeing Scale (LCWS)
 
-> **Status:** Draft for co-founder validation  
+> **Status:** Clinically reviewed and approved — co-founder sign-off 2026-09-06  
 > **Detection mechanism:** Structured daily check-in (1 question)  
 
 ---
@@ -20,7 +20,7 @@
 - [LCWS Domain Profile](#lcws-domain-profile)
 - [Baseline Items](#baseline-items)
 - [Phase 2: Conversation-Based Detection](#phase-2-conversation-based-detection)
-- [Validation Questions for Co-Founder](#validation-questions-for-co-founder)
+- [Clinical Sign-Off Record](#clinical-sign-off-record)
 
 ---
 
@@ -284,19 +284,23 @@ The five domains below reflect the core dimensions of caregiver wellbeing as Lan
 
 ## Baseline Items
 
-Lantern administers a Lantern-original baseline conversation at onboarding, covering one item per LCWS domain. Each item is scored 0–4 by the companion based on the caregiver's conversational response. The same items are re-administered conversationally approximately every two weeks.
+Lantern administers a Lantern-original baseline conversation at onboarding using seven clinically authored items. Each item is scored 0–4 by the companion based on the caregiver's conversational response. The same items are re-administered conversationally approximately every two weeks.
 
-> **DRAFT — pending clinical review by co-founder. Item text below is placeholder and must be rewritten before use.**
+These items were authored by the co-founder and clinically approved on 2026-09-06. They do not map one-to-one onto the five LCWS domains; the authored set is authoritative. "Overall burden" (item 7) is a global summary item rather than a domain-specific item.
 
-| Domain | Item (caregiver-facing, second person) | Scoring guide |
+| Label | Item (caregiver-facing, second person) | Scoring guide |
 |---|---|---|
-| **Relationship strain** | "How is the daily caregiving affecting your relationship with your loved one — are you still able to feel connected to them as a person, not just as someone who needs care?" | 0 = severe strain/disconnect; 4 = connection intact |
-| **Emotional wellbeing** | "When you think about the week ahead, what feeling comes up first — is it something you can carry, or does it feel like more than you can hold?" | 0 = overwhelming dread/hopelessness; 4 = manageable, present |
-| **Social & family life** | "How much of your own social life — time with friends, family outside the caregiving role, or just things you enjoy — have you been able to keep up lately?" | 0 = completely withdrawn; 4 = mostly intact |
-| **Finances** | "Has the financial side of caregiving — whether that's direct costs, time away from work, or anything else — been adding to your stress?" | 0 = severe financial distress; 4 = little or no financial strain |
-| **Sense of control** | "Do you feel like you have enough information and support to handle what comes next, or does the situation feel like it's ahead of you?" | 0 = completely overwhelmed, no sense of agency; 4 = informed and capable |
+| **Personal time** | "Do you find it hard to carve out time for the things you want or need to do for yourself?" | 0 = consistently impossible to carve out time; 4 = rarely or never hard |
+| **Competing demands** | "Does juggling caregiving alongside your other obligations leave you feeling stretched thin?" | 0 = constantly stretched to breaking; 4 = rarely or not at all stretched |
+| **Relationships with others** | "Has caregiving created tension or distance between you and other people in your life?" | 0 = severe tension or significant withdrawal from relationships; 4 = little or no impact |
+| **Tension during caregiving** | "Do you feel on edge or tense when you're with the person you're caring for?" | 0 = consistently on edge or tense; 4 = rarely or never tense |
+| **Your own health** | "Has your physical or emotional health taken a hit because of your caregiving role?" | 0 = significant health impact from caregiving; 4 = little or no impact |
+| **Sense of control** | "Since your relative's health changed, do you feel like you've lost a sense of control over your own life?" | 0 = complete loss of control over own life; 4 = sense of control mostly intact |
+| **Overall burden** | "Taking everything into account, how heavy does the weight of caregiving feel to you right now?" | 0 = crushing, unbearable weight; 4 = manageable, not heavy |
 
-**Scoring:** Each item produces a 0–4 score. The composite LCWS baseline score is the mean of all five items, producing a 0–4 value (equivalent to the 1–5 daily check-in when offset by 1). The companion extracts a score from the caregiver's conversational response — the caregiver never sees a numeric scale during the baseline.
+**Polarity note:** These questions are phrased so that agreement indicates more burden. The scale runs 0 = severe / 4 = little or none, matching the rest of the LCWS document.
+
+**Scoring:** Each item produces a 0–4 score. The composite LCWS baseline score is the mean of all seven items, producing a 0–4 value (equivalent to the 1–5 daily check-in when offset by 1). The companion extracts a score from the caregiver's conversational response — the caregiver never sees a numeric scale during the baseline.
 
 ---
 
@@ -320,14 +324,17 @@ The preferred long-term detection mechanism is organic conversation — the AI c
 
 ---
 
-## Validation Questions for Co-Founder
+## Clinical Sign-Off Record
 
-1. Do the 5 level descriptions match the caregiver journey you've observed in practice?
-2. Is "Strained" (Level 3) the right inflection point for coaching intervention — the moment where catching someone makes the biggest difference?
-3. Do the five domain descriptions (relationship strain, emotional wellbeing, social & family life, finances, sense of control) capture what you see clinically as the primary dimensions of caregiver burden?
-4. Will a caregiver at Level 2 honestly report "2"? If not, how do we catch them reliably?
-5. What's the hardest transition to catch? Which level shift happens most silently and is most dangerous when missed?
-6. Is "one question a day" enough to be useful, or does it feel too shallow?
+**Sign-off date:** 2026-09-06  
+**Reviewer:** Co-founder (clinical)
+
+The following were reviewed and approved:
+
+- **LCWS level descriptions** (Level 5 — Stable through Level 1 — Crisis): approved as consistent with observed caregiver experience.
+- **Early/Middle/Late stage descriptions** (in the separate stage documents): approved.
+- **Human-escalation thresholds:** 3+ consecutive days of qualifying distress triggering human support surfacing; 5 consecutive missed check-ins triggering emergency contact outreach — both thresholds approved.
+- **Baseline items:** the seven items in the table above are the co-founder's clinically authored text, approved for use verbatim.
 
 ---
 

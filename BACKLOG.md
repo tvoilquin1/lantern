@@ -15,7 +15,7 @@ home). Update this file as phases are dispatched and completed, and as decisions
 | Check-in scheduling mechanism | ✅ Resolved — Vercel cron |
 | Log confirmation / InsetPanel reconciliation | ✅ Resolved — in-conversation confirmation |
 | Proprietary scales | ✅ Resolved — none used; LCWS + Early/Middle/Late are Lantern-original |
-| Clinical review scope (M5 gate) | ⏸️ Deferred — co-founder reviews Lantern-original baseline items, LCWS level descriptions, Early/Middle/Late stage descriptions, and human-escalation thresholds/logic (added 2026-09-06) |
+| Clinical review scope (D-1) | ✅ Resolved — co-founder reviewed and approved LCWS level descriptions, Early/Middle/Late stage descriptions, and human-escalation thresholds (3-day distress / 5-missed-check-in triggers) on 2026-09-06; baseline items are now co-founder-authored text |
 | Session persistence model | ✅ Resolved — structured log + rolling end-of-session summary; no raw transcript ever stored |
 
 ## Phases
@@ -42,7 +42,7 @@ home). Update this file as phases are dispatched and completed, and as decisions
   LLM-callable tool; system prompt. Golden-conversation evaluation set
   (`eval/golden-conversations/`) runs schema validation in CI now; wire it against the real
   companion once Phase 3 code lands — see `.github/workflows/golden-conversations.yml`.
-  Blocked by: M1 gate; baseline item clinical review (deferred, pending co-founder).
+  Blocked by: M1 gate.
 
 - [ ] **Phase 4 — Daily Check-in + Patient Log Extraction** (P0-3 + P0-4, M2 gate)
   Companion-initiated check-in (Vercel cron); `log_patient_observation` tool extraction.
@@ -61,7 +61,7 @@ home). Update this file as phases are dispatched and completed, and as decisions
   Additional acceptance criteria (human escalation path):
   - [ ] After 3+ consecutive days of qualifying distress / red-threshold signal, companion surfaces human support resources to the caregiver (caregiver support orgs, respite resources — not 988, which is immediate-crisis only)
   - [ ] After 5 consecutive missed check-ins, system triggers outreach to caregiver-designated emergency contact
-  - [ ] Human-escalation threshold logic (3-day and 5-missed-check-in triggers) reviewed under D-1 clinical review before M5
+  - [x] Human-escalation threshold logic (3-day and 5-missed-check-in triggers) — clinically approved 2026-09-06 (D-1 resolved)
 
 - [ ] **Phase 6 — Dashboard** (P0-8, M4)
   3-panel read-only dashboard: patient stage, burnout gauge, action items.
@@ -76,7 +76,7 @@ home). Update this file as phases are dispatched and completed, and as decisions
   LLM-callable tool path), prompt-injection guardrail, human-escalation thresholds verified,
   1 week founder daily use. Run golden-conversation eval set against real companion
   (Phase 3 follow-up — see `eval/golden-conversations/`).
-  Blocked by: Phases 3–7; clinical review sign-off (deferred, pending Eddy).
+  Blocked by: Phases 3–7.
 
 - [ ] **Phase 9 — First Real User (M5) and 10-User Validation (M6)**
   Blocked by: Phase 8 + M5 gate passed.
