@@ -38,5 +38,8 @@ Every fixture must have:
 }
 ```
 
-`expected_output` may include additional assertion fields beyond the required minimum;
-these are type-checked by the validator.
+`expected_output` may include additional assertion fields beyond the required minimum
+(e.g. `burnout_signal_elevated`, `stage_inference`, `lcws_baseline_initiated`,
+`crisis_pathway`, `crisis_keyword_matched`, `llm_bypassed`). The current validator
+ignores these fields; they serve as documentation of intended semantics and will be
+asserted against the real companion once Phase 3 code lands.
