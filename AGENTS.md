@@ -10,6 +10,7 @@ This is a pre-Phase-0 product repository. It contains:
 - `lantern_research/` — the Obsidian knowledge vault (markdown only)
 - `design_system/` — the Lamplight design system (HTML/CSS/JS/JSX, no framework)
 - `Ref/` — product spec documents (phase-1-spec.md, phase-2-workflows.md, phase-3-prd.md)
+- `eval/` — golden-conversation fixtures and schema validator (see Evaluation set below)
 - `BACKLOG.md` — sequenced build phases and open decisions
 
 No application code exists yet. Do not scaffold one unless the user explicitly requests it.
