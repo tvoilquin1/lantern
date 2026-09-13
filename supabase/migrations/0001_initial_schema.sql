@@ -8,7 +8,7 @@ create table if not exists sessions (
 
 create table if not exists patient_profile (
   id uuid primary key default gen_random_uuid(),
-  stage_id int check (stage_id between 1 and 7),
+  stage_id int check (stage_id between 1 and 3),
   stage_confirmed_by_caregiver bool default false,
   stage_confirmed_at timestamptz,
   updated_at timestamptz default now()
@@ -34,7 +34,7 @@ create table if not exists caregiver_state (
   burnout_score_current float,
   burnout_score_baseline float,
   score_history jsonb[],
-  last_zarit_at timestamptz,
+  last_lcws_at timestamptz,
   last_check_in_at timestamptz,
   amber_at timestamptz,
   red_at timestamptz,
@@ -66,3 +66,23 @@ create table if not exists onboarding_progress (
   partial_state jsonb,
   updated_at timestamptz default now()
 );
+
+create or replace function set_updated_at()
+returns trigger language plpgsql as $$
+begin
+  new.updated_at = now();
+  return new;
+end;
+$$;
+
+create trigger patient_profile_updated_at
+  before update on patient_profile
+  for each row execute procedure set_updated_at();
+
+create trigger caregiver_state_updated_at
+  before update on caregiver_state
+  for each row execute procedure set_updated_at();
+
+create trigger onboarding_progress_updated_at
+  before update on onboarding_progress
+  for each row execute procedure set_updated_at();
