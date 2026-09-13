@@ -6,11 +6,12 @@ Instructions for AI agents (Claude Code, Firstmate, and any future orchestrators
 
 ## Scope
 
-This repository is a Next.js 14 App Router application (Phase 0 scaffold complete). It contains:
+This repository is a Next.js 14 App Router application (Phase 1 complete). It contains:
 - `app/` — Next.js App Router pages and layouts
 - `components/` — shared UI components (empty at Phase 0)
 - `features/` — feature-scoped modules (empty at Phase 0)
-- `lib/` — shared utilities (`lib/utils.ts` — `cn()` helper)
+- `lib/` — shared utilities; `lib/utils.ts` (`cn()` helper); `lib/supabase/` (browser + server Supabase clients); `lib/voyage/` (embed + rerank helpers)
+- `supabase/migrations/` — SQL migration files; `0001_initial_schema.sql` creates all seven MVP tables
 - `data/` — typed placeholder data modules (system prompt, wellbeing items, crisis keywords, burnout signals)
 - `constants/` — app-wide constants; `copy.ts` is the single source for all user-facing strings
 - `styles/` — global CSS (`globals.css` loads Tailwind; design tokens imported in `app/layout.tsx`)
@@ -27,7 +28,7 @@ This repository is a Next.js 14 App Router application (Phase 0 scaffold complet
 **Framework:** Next.js 14 (App Router) · TypeScript · Tailwind CSS · ESLint · Prettier  
 **Design system:** Lamplight tokens in `design_system/tokens/` are imported in `app/layout.tsx` (CSS custom properties) and mapped into Tailwind classes in `tailwind.config.ts`. Do not invent generic shadcn/Tailwind defaults where a Lamplight token exists.  
 **String hygiene:** All user-facing strings must live in `constants/copy.ts`. No hardcoded strings in JSX.  
-**Data placeholders:** `data/wellbeingItems.ts` and `data/stagingQuestions.ts` are empty typed modules. Fill with LCWS items / Lantern-original staging content in Phase 1.  
+**Data placeholders:** `data/wellbeingItems.ts` and `data/stagingQuestions.ts` are empty typed modules. Fill with LCWS items / Lantern-original staging content in Phase 3 (companion core).  
 **Environment:** See `.env.local.example` for required keys (Anthropic, Voyage AI, Supabase).  
 **Dev:** `npm run dev` · **Lint:** `npm run lint`
 
@@ -85,7 +86,7 @@ Full specification: `lantern_research/wellbeing scale/caregiver_wellbeing_scale.
 |---|---|
 | Default view on app open | Companion/conversation is always home; dashboard is navigated-to, never the entry point |
 | Session persistence | Structured log + rolling end-of-session summary (`sessions.summary`, 100–200 words); no raw transcript |
-| Auth | Single-caregiver Supabase Auth login in MVP scope; `user_id` FK on all caregiver-specific tables; RLS at DB layer |
+| Auth (MVP) | No auth, no `user_id` columns, no RLS in Phase 1 MVP; access enforced at the API-route layer. Single-caregiver Supabase Auth is deferred to a post-MVP phase. |
 | Crisis protocol | `CRISIS_KEYWORDS` bypass fires first (LLM skipped); `flag_crisis` LLM tool is the complementary layer for ambiguous cases |
 | Human escalation | Level 2 (3+ consecutive days at red): surfaces human support resources. 5+ missed check-ins: outreach to caregiver-designated emergency contact. Both sit alongside, not in place of, 988 Lifeline |
 
@@ -100,7 +101,7 @@ Phase 3 follow-up: wire against real companion once Phase 3 code lands.
 - Do not change `design_system/` visual tokens, CSS, or component structure — only read from it
 - Do not push to the default branch or merge a PR
 - Do not introduce proprietary clinical instrument names (see Clinical models above)
-- Do not add feature UI, business logic, Supabase schema, API routes, or auth — those are Phase 1+
+- Do not add feature UI, API routes, or auth — those are Phase 2+; do not add new DB tables or migrations outside a dispatched Phase 1 follow-up
 
 ## Maintaining this file
 

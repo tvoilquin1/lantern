@@ -20,17 +20,15 @@ home). Update this file as phases are dispatched and completed, and as decisions
 
 ## Phases
 
-- [ ] **Phase 0 — Project Scaffold & Design System Integration**
+- [x] **Phase 0 — Project Scaffold & Design System Integration**
   Next.js/TS/Tailwind/shadcn scaffold; commit `design-system/` from the Lamplight source;
   placeholder data modules; `.env.local.example` (includes Supabase Auth vars).
-  Blocked by: none (repo delivery decision is resolved — unblocked, not yet dispatched).
 
-- [ ] **Phase 1 — Supabase Schema & RAG Indexing Infrastructure** (M1 part A)
-  Supabase project + pgvector, all MVP tables, Supabase/Voyage client helpers. Supabase Auth
-  provisioned (single-caregiver login); `user_id` UUID FK added to all caregiver-specific
-  tables (`sessions`, `patient_profile`, `patient_log`, `caregiver_state`, `action_items`,
-  `onboarding_progress`); RLS policies enforced at database level.
-  Blocked by: Phase 0; API credentials not yet provisioned.
+- [x] **Phase 1 — Supabase Schema & RAG Indexing Infrastructure** (M1 part A)
+  Seven MVP tables in `supabase/migrations/0001_initial_schema.sql` (sessions, patient_profile,
+  patient_log, caregiver_state, action_items, vault_chunks, onboarding_progress). No auth, no
+  `user_id` columns, no RLS — access enforced at the API-route layer. Browser + server Supabase
+  clients in `lib/supabase/`; Voyage embed + rerank helpers in `lib/voyage/client.ts`.
 
 - [ ] **Phase 2 — RAG Pipeline: Indexing & Validation** (M1 gate)
   Chunk and index all vault documents (15, including the wellbeing scale); validate
@@ -83,6 +81,6 @@ home). Update this file as phases are dispatched and completed, and as decisions
 
 ## Notes
 
-- No ship tasks have been dispatched yet — the project is pre-Phase-0.
+- Phases 0 and 1 are complete. Phase 2 (RAG pipeline) is next.
 - Full decision rationale and captain answers: `data/lantern-corrected-build-plan/decisions.md`
   in the firstmate home.
