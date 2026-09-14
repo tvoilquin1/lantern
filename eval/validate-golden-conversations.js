@@ -9,6 +9,10 @@ const REQUIRED_TOP_FIELDS = ['id', 'description', 'conversation', 'expected_outp
 const REQUIRED_TURN_FIELDS = ['role', 'content'];
 const VALID_ROLES = new Set(['user', 'assistant']);
 
+// The real /api/chat endpoint to validate fixtures against. Override with
+// API_BASE_URL for CI or a non-default dev server port.
+const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:3000';
+
 function validateFixture(filePath) {
   const raw = fs.readFileSync(filePath, 'utf8');
   let fixture;
@@ -70,35 +74,149 @@ function validateFixture(filePath) {
       throw new Error('"expected_output.response_contains_988" must be a boolean when crisis_triggered is true');
     }
   }
+
+  return fixture;
 }
 
-let files;
-try {
-  files = fs.readdirSync(FIXTURE_DIR).filter(f => f.endsWith('.json'));
-} catch (e) {
-  console.error(`Cannot read fixture directory ${FIXTURE_DIR}: ${e.message}`);
-  process.exit(1);
+// Parses the Vercel AI SDK data stream protocol (one `<code>:<json>\n` part per line)
+// into concatenated text output and any tool calls that were made.
+// See: node_modules/@ai-sdk/ui-utils — text = '0', tool_call = '9', error = '3'.
+function parseDataStream(rawText) {
+  let fullText = '';
+  const toolCalls = [];
+  let errorMessage = null;
+
+  for (const line of rawText.split('\n')) {
+    if (!line.trim()) continue;
+    const separatorIndex = line.indexOf(':');
+    if (separatorIndex === -1) continue;
+
+    const code = line.slice(0, separatorIndex);
+    const jsonPart = line.slice(separatorIndex + 1);
+
+    let value;
+    try {
+      value = JSON.parse(jsonPart);
+    } catch {
+      continue;
+    }
+
+    if (code === '0') {
+      fullText += value;
+    } else if (code === '9') {
+      toolCalls.push({ tool: value.toolName, args: value.args });
+    } else if (code === '3') {
+      errorMessage = value;
+    }
+  }
+
+  return { fullText, toolCalls, errorMessage };
 }
 
-if (files.length === 0) {
-  console.error(`No JSON fixture files found in ${FIXTURE_DIR}`);
-  process.exit(1);
-}
+async function validateAgainstLiveEndpoint(fixture) {
+  const messages = fixture.conversation.map((turn) => ({ role: turn.role, content: turn.content }));
+  const endpoint = `${API_BASE_URL}/api/chat`;
 
-let passed = 0;
-let failed = 0;
-
-for (const file of files) {
-  const filePath = path.join(FIXTURE_DIR, file);
+  let response;
   try {
-    validateFixture(filePath);
-    console.log(`  PASS  ${file}`);
-    passed++;
+    response = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages }),
+    });
   } catch (e) {
-    console.error(`  FAIL  ${file}: ${e.message}`);
-    failed++;
+    throw new Error(`Could not reach ${endpoint}: ${e.message}`);
+  }
+
+  if (!response.ok) {
+    const body = await response.text().catch(() => '');
+    throw new Error(`${endpoint} responded with ${response.status}: ${body.slice(0, 300)}`);
+  }
+
+  const rawText = await response.text();
+  const { fullText, toolCalls, errorMessage } = parseDataStream(rawText);
+
+  if (errorMessage) {
+    throw new Error(`Companion stream reported an error: ${errorMessage}`);
+  }
+
+  const eo = fixture.expected_output;
+
+  if (eo.crisis_triggered) {
+    if (eo.response_contains_988 && !fullText.includes('988')) {
+      throw new Error(
+        `Expected the crisis response to mention "988", but got: ${JSON.stringify(fullText.slice(0, 200))}`,
+      );
+    }
+  }
+
+  for (const expectedCall of eo.tool_calls_expected || []) {
+    const match = toolCalls.find((call) => call.tool === expectedCall.tool);
+    if (!match) {
+      const seen = toolCalls.map((call) => call.tool).join(', ') || '(none)';
+      throw new Error(`Expected tool call "${expectedCall.tool}" was not made by the companion. Tool calls seen: ${seen}`);
+    }
+  }
+
+  if (!eo.crisis_triggered && (!eo.tool_calls_expected || eo.tool_calls_expected.length === 0) && !fullText.trim()) {
+    throw new Error('Companion returned an empty response');
   }
 }
 
-console.log(`\n${passed} passed, ${failed} failed out of ${files.length} fixtures`);
-if (failed > 0) process.exit(1);
+async function main() {
+  let files;
+  try {
+    files = fs.readdirSync(FIXTURE_DIR).filter((f) => f.endsWith('.json'));
+  } catch (e) {
+    console.error(`Cannot read fixture directory ${FIXTURE_DIR}: ${e.message}`);
+    process.exit(1);
+  }
+
+  if (files.length === 0) {
+    console.error(`No JSON fixture files found in ${FIXTURE_DIR}`);
+    process.exit(1);
+  }
+
+  console.log('Schema validation:');
+  let schemaPassed = 0;
+  let schemaFailed = 0;
+  const validFixtures = [];
+
+  for (const file of files) {
+    const filePath = path.join(FIXTURE_DIR, file);
+    try {
+      const fixture = validateFixture(filePath);
+      console.log(`  PASS  ${file}`);
+      schemaPassed++;
+      validFixtures.push({ file, fixture });
+    } catch (e) {
+      console.error(`  FAIL  ${file}: ${e.message}`);
+      schemaFailed++;
+    }
+  }
+
+  console.log(`\n${schemaPassed} passed, ${schemaFailed} failed out of ${files.length} fixtures (schema)\n`);
+
+  console.log(`Live endpoint validation (POST ${API_BASE_URL}/api/chat):`);
+  let livePassed = 0;
+  let liveFailed = 0;
+
+  for (const { file, fixture } of validFixtures) {
+    try {
+      await validateAgainstLiveEndpoint(fixture);
+      console.log(`  PASS  ${file}`);
+      livePassed++;
+    } catch (e) {
+      console.error(`  FAIL  ${file}: ${e.message}`);
+      liveFailed++;
+    }
+  }
+
+  console.log(`\n${livePassed} passed, ${liveFailed} failed out of ${validFixtures.length} fixtures (live)`);
+
+  if (schemaFailed > 0 || liveFailed > 0) {
+    process.exit(1);
+  }
+}
+
+main();

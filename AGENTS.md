@@ -10,7 +10,7 @@ This repository is a Next.js 14 App Router application (Phase 1 complete). It co
 - `app/` — Next.js App Router pages and layouts
 - `components/` — shared UI components (empty at Phase 0)
 - `features/` — feature-scoped modules (empty at Phase 0)
-- `lib/` — shared utilities; `lib/utils.ts` (`cn()` helper); `lib/supabase/` (browser + server Supabase clients); `lib/voyage/` (embed + rerank helpers); `lib/retrieval/` (vault retrieval — `types.ts`, `retrieve.ts`)
+- `lib/` — shared utilities; `lib/utils.ts` (`cn()` helper); `lib/supabase/` (browser + server Supabase clients); `lib/voyage/` (embed + rerank helpers); `lib/retrieval/` (vault retrieval — `types.ts`, `retrieve.ts`); `lib/companion/` (crisis protocol — `crisis.ts`; system prompt builder — `systemPrompt.ts`; AI SDK tool defs — `tools.ts`, incl. `logPatientObservationTool`)
 - `supabase/migrations/` — SQL migration files; `0001_initial_schema.sql` creates all seven MVP tables
 - `data/` — typed placeholder data modules (system prompt, wellbeing items, crisis keywords, burnout signals)
 - `constants/` — app-wide constants; `copy.ts` is the single source for all user-facing strings
@@ -30,7 +30,8 @@ This repository is a Next.js 14 App Router application (Phase 1 complete). It co
 **Framework:** Next.js 14 (App Router) · TypeScript · Tailwind CSS · ESLint · Prettier  
 **Design system:** Lamplight tokens in `design_system/tokens/` are imported in `app/layout.tsx` (CSS custom properties) and mapped into Tailwind classes in `tailwind.config.ts`. Do not invent generic shadcn/Tailwind defaults where a Lamplight token exists.  
 **String hygiene:** All user-facing strings must live in `constants/copy.ts`. No hardcoded strings in JSX.  
-**Data placeholders:** `data/wellbeingItems.ts` and `data/stagingQuestions.ts` are empty typed modules. Fill with LCWS items / Lantern-original staging content in Phase 3 (companion core).  
+**Data:** `data/wellbeingItems.ts` holds the 8 LCWS baseline items verbatim from `lantern_research/wellbeing scale/caregiver_wellbeing_scale.md`; `data/stagingQuestions.ts` holds the Lantern-original staging questions grounded in `lantern_research/stages/`. Both filled in Phase 3 (companion core).  
+**AI SDK version pin:** `ai@4.3.19` / `@ai-sdk/anthropic@1.2.12` are deliberately pinned below npm "latest" (v7 at time of pinning) — an agent's training-cutoff knowledge of the AI SDK's exact API shapes (tool schemas, stream part types, `useChat` return shape) is reliable for v4, not for v5–v7. Confirm exact APIs via `node_modules/ai/dist/index.d.ts` before using; do not bump without re-verifying call sites against the new type declarations.  
 **Environment:** See `.env.local.example` for required keys (Anthropic, Voyage AI, Supabase).  
 **Dev:** `npm run dev` · **Lint:** `npm run lint`
 
@@ -95,15 +96,16 @@ Full specification: `lantern_research/wellbeing scale/caregiver_wellbeing_scale.
 ## Evaluation set
 
 `eval/golden-conversations/` — four conversation fixtures with expected structured output.
-`eval/validate-golden-conversations.js` — schema validator (runs in CI today via `.github/workflows/golden-conversations.yml`).
-Phase 3 follow-up: wire against real companion once Phase 3 code lands.
+`eval/validate-golden-conversations.js` — two-pass validator: schema validation, then (Phase 3+) a live pass that POSTs each fixture's conversation to the real `/api/chat` endpoint (`API_BASE_URL`, default `http://localhost:3000`) and asserts 988-mention on crisis fixtures and expected tool calls. Failures are never silenced.
+Known gap: `.github/workflows/golden-conversations.yml` still only runs the validator with no dev server started and no `ANTHROPIC_API_KEY`/Voyage secrets provisioned in CI, so the live pass will fail there until that infra is set up — a follow-up outside Phase 3's scope (the dispatched deliverable was the validator script, not CI infra/secrets).
 
 ## What not to do
 
 - Do not change `design_system/` visual tokens, CSS, or component structure — only read from it
 - Do not push to the default branch or merge a PR
 - Do not introduce proprietary clinical instrument names (see Clinical models above)
-- Do not add feature UI, API routes, or auth — those are Phase 3+; do not add new DB tables or migrations outside a dispatched phase task
+- Do not add auth (Supabase Auth, login, session cookies, `user_id` FKs, RLS) — deferred to a post-MVP phase
+- Do not add new DB tables or migrations, or new feature UI/API routes, outside a dispatched phase task (Phase 3 added `app/api/chat`, `app/api/onboard`, and `supabase/migrations/0003_add_companion_fields.sql`; Phase 4 is daily check-in + patient log persistence)
 
 ## Retrieval pipeline
 
