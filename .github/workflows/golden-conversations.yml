@@ -20,3 +20,5 @@ jobs:
 
       - name: Validate golden-conversation fixture schemas
         run: node eval/validate-golden-conversations.js
+        env:
+          SKIP_LIVE_PASS: 'true'

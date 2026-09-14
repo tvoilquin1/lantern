@@ -13,6 +13,10 @@ const VALID_ROLES = new Set(['user', 'assistant']);
 // API_BASE_URL for CI or a non-default dev server port.
 const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:3000';
 
+// Set SKIP_LIVE_PASS=true to run schema validation only (no server required).
+// Used by the structural CI job that runs without a live companion server.
+const SKIP_LIVE_PASS = process.env.SKIP_LIVE_PASS === 'true';
+
 function validateFixture(filePath) {
   const raw = fs.readFileSync(filePath, 'utf8');
   let fixture;
@@ -196,6 +200,12 @@ async function main() {
   }
 
   console.log(`\n${schemaPassed} passed, ${schemaFailed} failed out of ${files.length} fixtures (schema)\n`);
+
+  if (SKIP_LIVE_PASS) {
+    console.log('Live endpoint validation: skipped (SKIP_LIVE_PASS=true)');
+    if (schemaFailed > 0) process.exit(1);
+    return;
+  }
 
   console.log(`Live endpoint validation (POST ${API_BASE_URL}/api/chat):`);
   let livePassed = 0;
