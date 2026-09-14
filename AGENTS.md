@@ -10,7 +10,7 @@ This repository is a Next.js 14 App Router application (Phase 1 complete). It co
 - `app/` — Next.js App Router pages and layouts
 - `components/` — shared UI components (empty at Phase 0)
 - `features/` — feature-scoped modules (empty at Phase 0)
-- `lib/` — shared utilities; `lib/utils.ts` (`cn()` helper); `lib/supabase/` (browser + server Supabase clients); `lib/voyage/` (embed + rerank helpers)
+- `lib/` — shared utilities; `lib/utils.ts` (`cn()` helper); `lib/supabase/` (browser + server Supabase clients); `lib/voyage/` (embed + rerank helpers); `lib/retrieval/` (vault retrieval — `types.ts`, `retrieve.ts`)
 - `supabase/migrations/` — SQL migration files; `0001_initial_schema.sql` creates all seven MVP tables
 - `data/` — typed placeholder data modules (system prompt, wellbeing items, crisis keywords, burnout signals)
 - `constants/` — app-wide constants; `copy.ts` is the single source for all user-facing strings
@@ -103,7 +103,7 @@ Phase 3 follow-up: wire against real companion once Phase 3 code lands.
 - Do not change `design_system/` visual tokens, CSS, or component structure — only read from it
 - Do not push to the default branch or merge a PR
 - Do not introduce proprietary clinical instrument names (see Clinical models above)
-- Do not add feature UI, API routes, or auth — those are Phase 2+; do not add new DB tables or migrations outside a dispatched Phase 1 follow-up
+- Do not add feature UI, API routes, or auth — those are Phase 3+; do not add new DB tables or migrations outside a dispatched phase task
 
 ## Retrieval pipeline
 

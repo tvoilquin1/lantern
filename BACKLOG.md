@@ -30,10 +30,10 @@ home). Update this file as phases are dispatched and completed, and as decisions
   `user_id` columns, no RLS — access enforced at the API-route layer. Browser + server Supabase
   clients in `lib/supabase/`; Voyage embed + rerank helpers in `lib/voyage/client.ts`.
 
-- [ ] **Phase 2 — RAG Pipeline: Indexing & Validation** (M1 gate)
+- [x] **Phase 2 — RAG Pipeline: Indexing & Validation** (M1 gate)
   Chunk and index all vault documents (15, including the wellbeing scale); validate
   Early→Middle transition retrieval test set.
-  Blocked by: Phase 1.
+  Scripts: `scripts/index-vault.ts`, `scripts/validate-retrieval.ts`; retrieval: `lib/retrieval/retrieve.ts`.
 
 - [ ] **Phase 3 — AI Companion Core: Onboarding** (P0-1 + P0-2, M2 part A)
   Conversational stage inference + LCWS baseline; crisis keyword fallback; `flag_crisis`
