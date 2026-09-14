@@ -12,7 +12,7 @@ This repository is a Next.js 14 App Router application (Phase 1 complete). It co
 - `features/` — feature-scoped modules (empty at Phase 0)
 - `lib/` — shared utilities; `lib/utils.ts` (`cn()` helper); `lib/supabase/` (browser + server Supabase clients); `lib/voyage/` (embed + rerank helpers); `lib/retrieval/` (vault retrieval — `types.ts`, `retrieve.ts`); `lib/companion/` (crisis protocol — `crisis.ts`; system prompt builder — `systemPrompt.ts`; AI SDK tool defs — `tools.ts`, incl. `logPatientObservationTool`)
 - `supabase/migrations/` — SQL migration files; `0001_initial_schema.sql` creates all seven MVP tables
-- `data/` — typed placeholder data modules (system prompt, wellbeing items, crisis keywords, burnout signals)
+- `data/` — typed data modules (system prompt, staging questions, wellbeing items, crisis keywords, burnout signals); `wellbeingItems.ts` and `stagingQuestions.ts` filled in Phase 3 — see Application scaffold below
 - `constants/` — app-wide constants; `copy.ts` is the single source for all user-facing strings
 - `styles/` — global CSS (`globals.css` loads Tailwind; design tokens imported in `app/layout.tsx`)
 - `hooks/` — custom React hooks (empty at Phase 0)
@@ -120,3 +120,13 @@ Update this file whenever a ship task produces durable project knowledge: resolv
 new conventions, new directories with special rules. Keep entries concise and point to the
 authoritative source file rather than duplicating content. Prefer a pointer to `BACKLOG.md`
 or `Ref/` over copying detail.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

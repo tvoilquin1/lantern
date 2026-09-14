@@ -35,12 +35,12 @@ home). Update this file as phases are dispatched and completed, and as decisions
   Early→Middle transition retrieval test set.
   Scripts: `scripts/index-vault.ts`, `scripts/validate-retrieval.ts`; retrieval: `lib/retrieval/retrieve.ts`.
 
-- [ ] **Phase 3 — AI Companion Core: Onboarding** (P0-1 + P0-2, M2 part A)
+- [x] **Phase 3 — AI Companion Core: Onboarding** (P0-1 + P0-2, M2 part A)
   Conversational stage inference + LCWS baseline; crisis keyword fallback; `flag_crisis`
   LLM-callable tool; system prompt. Golden-conversation evaluation set
-  (`eval/golden-conversations/`) runs schema validation in CI now; wire it against the real
-  companion once Phase 3 code lands — see `.github/workflows/golden-conversations.yml`.
-  Blocked by: M1 gate.
+  (`eval/golden-conversations/`) now runs two passes: schema validation + live endpoint
+  assertions (crisis 988-check, tool_calls_expected). CI gap: `.github/workflows/golden-conversations.yml`
+  still lacks a dev server and secrets — see AGENTS.md > Evaluation set.
 
 - [ ] **Phase 4 — Daily Check-in + Patient Log Extraction** (P0-3 + P0-4, M2 gate)
   Companion-initiated check-in (Vercel cron); `log_patient_observation` tool extraction.
@@ -72,8 +72,8 @@ home). Update this file as phases are dispatched and completed, and as decisions
 - [ ] **Phase 8 — Pre-Launch Hardening & System Prompt Testing** (M5 prerequisites)
   Crisis protocol adversarial testing (both `CRISIS_KEYWORDS` bypass and `flag_crisis`
   LLM-callable tool path), prompt-injection guardrail, human-escalation thresholds verified,
-  1 week founder daily use. Run golden-conversation eval set against real companion
-  (Phase 3 follow-up — see `eval/golden-conversations/`).
+  1 week founder daily use. Run full golden-conversation eval set against real companion
+  (assert all `expected_output` fields — see `eval/golden-conversations/`).
   Blocked by: Phases 3–7.
 
 - [ ] **Phase 9 — First Real User (M5) and 10-User Validation (M6)**
