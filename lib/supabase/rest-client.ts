@@ -1,5 +1,7 @@
 type JsonObject = Record<string, unknown>;
 
+export type SupabaseRpcArgs = Record<string, unknown>;
+
 export interface SupabaseError {
   message: string;
   details?: string;
@@ -53,6 +55,26 @@ class SupabaseTableClient<Row extends JsonObject> {
     return this.request<Row[]>(`?${params.toString()}`, {
       method: 'PATCH',
       headers: { ...this.headers, Prefer: 'return=representation' },
+      body: JSON.stringify(values),
+    });
+  }
+
+  public async upsert(
+    values: Partial<Row> | Partial<Row>[],
+    options: { onConflict?: string } = {},
+  ): Promise<SupabaseResult<Row[]>> {
+    const params = new URLSearchParams();
+
+    if (options.onConflict) {
+      params.set('on_conflict', options.onConflict);
+    }
+
+    return this.request<Row[]>(params.size > 0 ? `?${params.toString()}` : '', {
+      method: 'POST',
+      headers: {
+        ...this.headers,
+        Prefer: 'resolution=merge-duplicates,return=representation',
+      },
       body: JSON.stringify(values),
     });
   }
@@ -116,6 +138,41 @@ export class SupabaseRestClient {
 
   public from<Row extends JsonObject = JsonObject>(table: string): SupabaseTableClient<Row> {
     return new SupabaseTableClient<Row>(this.baseUrl, this.headers, table);
+  }
+
+  public async rpc<Result>(
+    functionName: string,
+    args: SupabaseRpcArgs,
+  ): Promise<SupabaseResult<Result>> {
+    try {
+      const response = await fetch(`${this.baseUrl}/rest/v1/rpc/${functionName}`, {
+        method: 'POST',
+        headers: this.headers,
+        body: JSON.stringify(args),
+      });
+      const payload = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        return {
+          data: null,
+          error: {
+            message: payload?.message ?? `Supabase RPC request failed with status ${response.status}`,
+            details: payload?.details,
+            hint: payload?.hint,
+            code: payload?.code,
+          },
+        };
+      }
+
+      return { data: payload as Result, error: null };
+    } catch (error) {
+      return {
+        data: null,
+        error: {
+          message: error instanceof Error ? error.message : 'Supabase RPC request failed',
+        },
+      };
+    }
   }
 }
 
