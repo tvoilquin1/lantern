@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabase/server';
+import { createSupabaseRestClient } from '@/lib/supabase/rest-client';
 import { embed, rerank } from '@/lib/voyage/client';
 
 import type { RetrievedChunk } from './types';
@@ -17,6 +17,7 @@ export async function retrieve(query: string, stageScope?: number, topK = 3): Pr
     return [];
   }
 
+  const supabase = createSupabaseRestClient();
   const [queryEmbedding] = await embed([query], 'query');
   const { data: candidates, error } = await supabase.rpc<MatchVaultChunk[]>('match_vault_chunks', {
     query_embedding: queryEmbedding,
@@ -34,7 +35,7 @@ export async function retrieve(query: string, stageScope?: number, topK = 3): Pr
 
   const reranked = await rerank(
     query,
-    candidates.map((candidate) => candidate.content),
+    candidates.map((candidate: MatchVaultChunk) => candidate.content),
   );
 
   return [...reranked]

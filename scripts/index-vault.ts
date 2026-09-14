@@ -1,7 +1,7 @@
 import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 
-import { supabase } from '@/lib/supabase/server';
+import { createSupabaseRestClient } from '@/lib/supabase/rest-client';
 import { embed } from '@/lib/voyage/client';
 
 type VaultChunkRow = Record<string, unknown> & {
@@ -85,38 +85,9 @@ function parseChunks(markdown: string, filePath: string): ParsedChunk[] {
 
 async function indexChunk(chunk: ParsedChunk): Promise<void> {
   const [embedding] = await embed([chunk.content], 'document');
-  const table = supabase.from<VaultChunkRow>('vault_chunks');
+  const supabase = createSupabaseRestClient();
   const values = { ...chunk, embedding };
-  const { error } = await table.upsert(values, { onConflict: 'doc_path,heading' });
-
-  if (error?.message.includes('no unique or exclusion constraint')) {
-    const { data: existing, error: lookupError } = await table
-      .eq('doc_path', chunk.doc_path)
-      .eq('heading', chunk.heading)
-      .select('id');
-
-    if (lookupError) {
-      throw new Error(`Failed to find existing ${chunk.doc_path}#${chunk.heading}: ${lookupError.message}`);
-    }
-
-    if (existing?.[0]?.id) {
-      const { error: updateError } = await table.eq('id', existing[0].id).update(values);
-
-      if (updateError) {
-        throw new Error(`Failed to update ${chunk.doc_path}#${chunk.heading}: ${updateError.message}`);
-      }
-
-      return;
-    }
-
-    const { error: insertError } = await table.insert(values);
-
-    if (insertError) {
-      throw new Error(`Failed to insert ${chunk.doc_path}#${chunk.heading}: ${insertError.message}`);
-    }
-
-    return;
-  }
+  const { error } = await supabase.from<VaultChunkRow>('vault_chunks').upsert(values, { onConflict: 'doc_path,heading' });
 
   if (error) {
     throw new Error(`Failed to index ${chunk.doc_path}#${chunk.heading}: ${error.message}`);
