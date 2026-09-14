@@ -80,7 +80,15 @@ export async function POST(req: Request) {
   const { messages } = body;
 
   const lastUserMessage = [...messages].reverse().find((m) => m.role === 'user');
-  const lastUserText = typeof lastUserMessage?.content === 'string' ? lastUserMessage.content : '';
+  const lastUserText =
+    typeof lastUserMessage?.content === 'string'
+      ? lastUserMessage.content
+      : Array.isArray(lastUserMessage?.content)
+        ? (lastUserMessage.content as Array<{ type: string; text?: string }>)
+            .filter((p) => p.type === 'text' && typeof p.text === 'string')
+            .map((p) => p.text as string)
+            .join(' ')
+        : '';
 
   if (checkCrisisKeywords(lastUserText)) {
     return createDataStreamResponse({
@@ -175,16 +183,20 @@ export async function POST(req: Request) {
         if (object.complete) {
           const scores = object.scores as Record<string, number | null>;
 
-          const domainScores = wellbeingItems
-            .filter((item) => !item.isGlobalItem)
-            .map((item) => scores[item.id])
-            .filter((score): score is number => typeof score === 'number');
+          const domainItems = wellbeingItems.filter((item) => !item.isGlobalItem);
+          const rawDomainScores = domainItems.map((item) => scores[item.id]);
+
+          if (rawDomainScores.some((score) => score === null || score === undefined)) {
+            dataStream.write(formatDataStreamPart('error', 'incomplete_lcws_scores'));
+            await writeProgress(supabase, progressRow?.id, 'lcws', { scores: object.scores });
+            return;
+          }
+
+          const domainScores = rawDomainScores as number[];
+          const baselineScore = domainScores.reduce((sum, s) => sum + s, 0) / domainScores.length;
 
           const globalItem = wellbeingItems.find((item) => item.isGlobalItem);
           const overallBurdenScore = globalItem ? (scores[globalItem.id] ?? null) : null;
-
-          const baselineScore =
-            domainScores.length > 0 ? domainScores.reduce((sum, s) => sum + s, 0) / domainScores.length : null;
 
           const { data: existingState } = await supabase
             .from('caregiver_state')

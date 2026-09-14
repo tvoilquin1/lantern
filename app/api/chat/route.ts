@@ -26,7 +26,15 @@ export async function POST(req: Request) {
   const { messages, patientStageId = null, lastSessionSummary = null, lcwsLevel = null } = body;
 
   const lastUserMessage = [...messages].reverse().find((m) => m.role === 'user');
-  const lastUserText = typeof lastUserMessage?.content === 'string' ? lastUserMessage.content : '';
+  const lastUserText =
+    typeof lastUserMessage?.content === 'string'
+      ? lastUserMessage.content
+      : Array.isArray(lastUserMessage?.content)
+        ? (lastUserMessage.content as Array<{ type: string; text?: string }>)
+            .filter((p) => p.type === 'text' && typeof p.text === 'string')
+            .map((p) => p.text as string)
+            .join(' ')
+        : '';
 
   if (checkCrisisKeywords(lastUserText)) {
     return createDataStreamResponse({
@@ -65,6 +73,14 @@ export async function POST(req: Request) {
         } else if (part.type === 'tool-call' && part.toolName === 'flag_crisis') {
           dataStream.write(formatDataStreamPart('text', CRISIS_RESPONSE));
           return;
+        } else if (part.type === 'tool-call') {
+          dataStream.write(
+            formatDataStreamPart('tool_call', {
+              toolCallId: part.toolCallId,
+              toolName: part.toolName,
+              args: part.args,
+            }),
+          );
         } else if (part.type === 'error') {
           throw part.error;
         }
