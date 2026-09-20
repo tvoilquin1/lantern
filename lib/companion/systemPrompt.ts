@@ -3,6 +3,7 @@ export type SystemPromptContext = {
   lastSessionSummary: string | null;
   ragContext: string | null;
   lcwsLevel: number | null;
+  sessionKind?: 'daily_checkin' | 'open_conversation';
 };
 
 const STAGE_SUMMARIES: Record<'early' | 'middle' | 'late', string> = {
@@ -39,6 +40,20 @@ export function buildSystemPrompt(ctx: SystemPromptContext): string {
   if (ctx.lcwsLevel !== null && ctx.lcwsLevel !== undefined) {
     sections.push(
       `The caregiver's current wellbeing level is ${ctx.lcwsLevel} out of 5 (5 = stable, 1 = crisis). Calibrate your tone accordingly — offer more warmth and gentleness at lower levels, without being alarmist.`,
+    );
+  }
+
+  if (ctx.sessionKind === 'daily_checkin') {
+    sections.push(
+      [
+        "This is today's companion-initiated daily check-in — you are opening the conversation, not responding to one.",
+        'Open with a warm, specific question about how last night or this morning went — never a form, checklist, or list of questions.',
+        'Ask at most 2–3 follow-up questions total across the whole check-in, and keep them conversational and contextual, not an interview.',
+        'Use the log_patient_observation tool silently after relevant turns to record what the caregiver shares — never show the schema, never ask the caregiver to confirm individual fields, and never mention the tool.',
+        'If the caregiver mentions a fall, wandering, a stove incident, a medication error, or another safety concern, acknowledge it directly and log it as a safety flag — distinct from routine behavioral observations.',
+        'Close the check-in with at most one relevant observation, tip, or piece of validation — never a list or summary of everything discussed.',
+        "If the caregiver says nothing notable happened, accept that warmly and do not press for more — call the tool with nothing_notable: true rather than inventing detail.",
+      ].join('\n'),
     );
   }
 

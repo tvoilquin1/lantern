@@ -1,7 +1,7 @@
 import { anthropic } from '@ai-sdk/anthropic';
 import { createDataStreamResponse, formatDataStreamPart, streamText, type CoreMessage } from 'ai';
 import { CRISIS_RESPONSE, checkCrisisKeywords, flagCrisisTool } from '@/lib/companion/crisis';
-import { logPatientObservationTool } from '@/lib/companion/tools';
+import { createLogPatientObservationTool } from '@/lib/companion/tools';
 import { buildSystemPrompt } from '@/lib/companion/systemPrompt';
 import { retrieve } from '@/lib/retrieval/retrieve';
 
@@ -16,6 +16,7 @@ const STAGE_ID_TO_NAME: Record<number, 'early' | 'middle' | 'late'> = {
 type ChatRequestBody = {
   messages: CoreMessage[];
   sessionId?: string | null;
+  sessionKind?: 'daily_checkin' | 'open_conversation';
   patientStageId?: number | null;
   lastSessionSummary?: string | null;
   lcwsLevel?: number | null;
@@ -23,7 +24,14 @@ type ChatRequestBody = {
 
 export async function POST(req: Request) {
   const body = (await req.json()) as ChatRequestBody;
-  const { messages, patientStageId = null, lastSessionSummary = null, lcwsLevel = null } = body;
+  const {
+    messages,
+    sessionId = null,
+    sessionKind = 'open_conversation',
+    patientStageId = null,
+    lastSessionSummary = null,
+    lcwsLevel = null,
+  } = body;
 
   const lastUserMessage = [...messages].reverse().find((m) => m.role === 'user');
   const lastUserText =
@@ -52,6 +60,7 @@ export async function POST(req: Request) {
     lastSessionSummary,
     ragContext,
     lcwsLevel,
+    sessionKind,
   });
 
   return createDataStreamResponse({
@@ -63,7 +72,10 @@ export async function POST(req: Request) {
         maxSteps: 3,
         tools: {
           flag_crisis: flagCrisisTool,
-          log_patient_observation: logPatientObservationTool,
+          log_patient_observation: createLogPatientObservationTool({
+            sessionId,
+            source: sessionKind === 'daily_checkin' ? 'check_in' : 'open_conversation',
+          }),
         },
       });
 
