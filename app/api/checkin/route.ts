@@ -54,7 +54,7 @@ export async function GET() {
   });
 }
 
-type StartRequestBody = { sessionId: string };
+type StartRequestBody = { sessionId: string; lastSessionSummary?: string | null };
 
 /**
  * POST marks the pending session active and generates the companion's
@@ -64,7 +64,7 @@ type StartRequestBody = { sessionId: string };
  * normal streaming /api/chat for the rest of the conversation.
  */
 export async function POST(req: Request) {
-  const { sessionId } = (await req.json()) as StartRequestBody;
+  const { sessionId, lastSessionSummary = null } = (await req.json()) as StartRequestBody;
 
   if (!sessionId) {
     return NextResponse.json({ error: 'sessionId is required' }, { status: 400 });
@@ -90,7 +90,7 @@ export async function POST(req: Request) {
 
   const system = buildSystemPrompt({
     patientStage: patientStageId ? (STAGE_ID_TO_NAME[patientStageId] ?? null) : null,
-    lastSessionSummary: null,
+    lastSessionSummary: lastSessionSummary ?? null,
     ragContext: null,
     lcwsLevel: null,
     sessionKind: 'daily_checkin',

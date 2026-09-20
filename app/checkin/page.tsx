@@ -21,7 +21,7 @@ type ScreenState =
   | { phase: "error" }
   | { phase: "nothing_scheduled" }
   | { phase: "already_done" }
-  | { phase: "ready"; sessionId: string; patientStageId: number | null; openingMessage: string };
+  | { phase: "ready"; sessionId: string; patientStageId: number | null; lastSessionSummary: string | null; openingMessage: string };
 
 export default function CheckinPage() {
   const [screen, setScreen] = useState<ScreenState>({ phase: "loading" });
@@ -33,7 +33,7 @@ export default function CheckinPage() {
       try {
         const getRes = await fetch("/api/checkin");
         if (!getRes.ok) throw new Error("failed to load check-in");
-        const { session, patientStageId }: CheckinGetResponse = await getRes.json();
+        const { session, patientStageId, lastSessionSummary }: CheckinGetResponse = await getRes.json();
 
         if (cancelled) return;
 
@@ -50,14 +50,14 @@ export default function CheckinPage() {
         const postRes = await fetch("/api/checkin", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ sessionId: session.id }),
+          body: JSON.stringify({ sessionId: session.id, lastSessionSummary }),
         });
         if (!postRes.ok) throw new Error("failed to start check-in");
         const { message }: { message: string } = await postRes.json();
 
         if (cancelled) return;
 
-        setScreen({ phase: "ready", sessionId: session.id, patientStageId, openingMessage: message });
+        setScreen({ phase: "ready", sessionId: session.id, patientStageId, lastSessionSummary, openingMessage: message });
       } catch (err) {
         console.error("[checkin] failed to initialize", err);
         if (!cancelled) setScreen({ phase: "error" });
@@ -86,7 +86,7 @@ export default function CheckinPage() {
     );
   }
 
-  return <ActiveCheckin sessionId={screen.sessionId} patientStageId={screen.patientStageId} openingMessage={screen.openingMessage} />;
+  return <ActiveCheckin sessionId={screen.sessionId} patientStageId={screen.patientStageId} lastSessionSummary={screen.lastSessionSummary} openingMessage={screen.openingMessage} />;
 }
 
 function CheckinHeader() {
@@ -111,16 +111,18 @@ function CheckinHeader() {
 function ActiveCheckin({
   sessionId,
   patientStageId,
+  lastSessionSummary,
   openingMessage,
 }: {
   sessionId: string;
   patientStageId: number | null;
+  lastSessionSummary: string | null;
   openingMessage: string;
 }) {
   const { messages, input, handleInputChange, handleSubmit, append, isLoading, error } = useChat({
     api: "/api/chat",
     initialMessages: [{ id: "opening", role: "assistant", content: openingMessage }],
-    body: { sessionId, sessionKind: "daily_checkin", patientStageId },
+    body: { sessionId, sessionKind: "daily_checkin", patientStageId, lastSessionSummary },
   });
 
   const showSuggestions = messages.length === 1 && !isLoading;

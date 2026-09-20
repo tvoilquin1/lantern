@@ -18,11 +18,14 @@ type SessionRow = { id: string; status: string; kind: string; scheduled_for: str
  */
 export async function GET(req: Request) {
   const cronSecret = process.env.CRON_SECRET;
+  const isDeployed = process.env.VERCEL_ENV != null || process.env.NODE_ENV === 'production';
   if (cronSecret) {
     const authHeader = req.headers.get('authorization');
     if (authHeader !== `Bearer ${cronSecret}`) {
       return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
     }
+  } else if (isDeployed) {
+    return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
   }
 
   const scheduledFor = new Date().toISOString().slice(0, 10);
