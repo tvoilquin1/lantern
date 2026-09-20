@@ -10,7 +10,7 @@ This repository is a Next.js 14 App Router application (Phase 1 complete). It co
 - `app/` — Next.js App Router pages and layouts
 - `components/` — shared UI components (empty at Phase 0)
 - `features/` — feature-scoped modules (empty at Phase 0)
-- `lib/` — shared utilities; `lib/utils.ts` (`cn()` helper); `lib/supabase/` (browser + server Supabase clients); `lib/voyage/` (embed + rerank helpers); `lib/retrieval/` (vault retrieval — `types.ts`, `retrieve.ts`); `lib/companion/` (crisis protocol — `crisis.ts`; system prompt builder — `systemPrompt.ts`; AI SDK tool defs — `tools.ts`, incl. `logPatientObservationTool`)
+- `lib/` — shared utilities; `lib/utils.ts` (`cn()` helper); `lib/supabase/` (browser + server Supabase clients — see Supabase client convention below); `lib/voyage/` (embed + rerank helpers); `lib/retrieval/` (vault retrieval — `types.ts`, `retrieve.ts`); `lib/companion/` (crisis protocol — `crisis.ts`; system prompt builder — `systemPrompt.ts`; AI SDK tool defs — `tools.ts`, incl. `createLogPatientObservationTool` factory, persists to `patient_log`)
 - `supabase/migrations/` — SQL migration files; `0001_initial_schema.sql` creates all seven MVP tables
 - `data/` — typed data modules (system prompt, staging questions, wellbeing items, crisis keywords, burnout signals); `wellbeingItems.ts` and `stagingQuestions.ts` filled in Phase 3 — see Application scaffold below
 - `constants/` — app-wide constants; `copy.ts` is the single source for all user-facing strings
@@ -32,8 +32,14 @@ This repository is a Next.js 14 App Router application (Phase 1 complete). It co
 **String hygiene:** All user-facing strings must live in `constants/copy.ts`. No hardcoded strings in JSX.  
 **Data:** `data/wellbeingItems.ts` holds the 8 LCWS baseline items verbatim from `lantern_research/wellbeing scale/caregiver_wellbeing_scale.md`; `data/stagingQuestions.ts` holds the Lantern-original staging questions grounded in `lantern_research/stages/`. Both filled in Phase 3 (companion core).  
 **AI SDK version pin:** `ai@4.3.19` / `@ai-sdk/anthropic@1.2.12` are deliberately pinned below npm "latest" (v7 at time of pinning) — an agent's training-cutoff knowledge of the AI SDK's exact API shapes (tool schemas, stream part types, `useChat` return shape) is reliable for v4, not for v5–v7. Confirm exact APIs via `node_modules/ai/dist/index.d.ts` before using; do not bump without re-verifying call sites against the new type declarations.  
-**Environment:** See `.env.local.example` for required keys (Anthropic, Voyage AI, Supabase).  
+**Environment:** See `.env.local.example` for required keys (Anthropic, Voyage AI, Supabase, `CRON_SECRET` for Vercel cron auth).  
 **Dev:** `npm run dev` · **Lint:** `npm run lint`
+
+**Supabase client convention (two clients, not interchangeable):**
+- `lib/supabase/server.ts` (`createClient()`) — cookie-based `@supabase/ssr` client with the full query builder (`.order()`, `.limit()`, `.maybeSingle()`, `.not()`, etc). Use in any route handler invoked directly by the browser (has cookie context), e.g. `app/api/onboard`, `app/api/checkin`.
+- `lib/supabase/rest-client.ts` (`createSupabaseRestClient()`) — lightweight custom REST client, no cookies, reads `NEXT_PUBLIC_SUPABASE_URL`/`NEXT_PUBLIC_SUPABASE_ANON_KEY` directly. Only supports `.eq()`, `.select()`, `.insert()`, `.update()`, `.upsert()`, `.delete()`, `.rpc()` — **no** `.order()`/`.limit()`/`.maybeSingle()`. Use in cookie-less contexts: cron routes (`app/api/cron/*`), server-side tool `execute()` closures (`lib/companion/tools.ts`), `lib/retrieval/retrieve.ts`.
+
+Picking the wrong one fails at the type level (missing methods) rather than silently, but decide up front — don't discover it mid-route.
 
 ---
 
@@ -92,12 +98,14 @@ Full specification: `lantern_research/wellbeing scale/caregiver_wellbeing_scale.
 | Auth (MVP) | No auth, no `user_id` columns, no RLS in Phase 1 MVP; access enforced at the API-route layer. Single-caregiver Supabase Auth is deferred to a post-MVP phase. |
 | Crisis protocol | `CRISIS_KEYWORDS` bypass fires first (LLM skipped); `flag_crisis` LLM tool is the complementary layer for ambiguous cases |
 | Human escalation | Level 2 (3+ consecutive days at red): surfaces human support resources. 5+ missed check-ins: outreach to caregiver-designated emergency contact. Both sit alongside, not in place of, 988 Lifeline |
+| Daily check-in scheduling (Phase 4) | A Vercel cron (`vercel.json`, `app/api/cron/daily-checkin`, ~8am daily) writes a pending `sessions` row (`kind='daily_checkin'`, `scheduled_for=<date>`) rather than pushing a notification; the app surfaces it as a waiting message when the caregiver next opens `/checkin`. One check-in per calendar date enforced by a partial unique index (`sessions_daily_checkin_once_per_day`, `supabase/migrations/0004_add_checkin_scheduling.sql`) since there's no `user_id` at MVP. |
+| Check-in visual design ("Still Water") | Captain-decided 2026-09-20: the check-in screen (`app/checkin/`) uses a visually distinct design direction from the rest of the app's "Lamplight" system — own scoped stylesheet (`app/checkin/checkin.css`, imported only by `app/checkin/layout.tsx`), never `design_system/` tokens. Writing voice/content rules from `design_system/readme.md` still apply; only the visual skin differs. Do not port Still Water tokens elsewhere or Lamplight tokens into `app/checkin/`. |
 
 ## Evaluation set
 
 `eval/golden-conversations/` — four conversation fixtures with expected structured output.
 `eval/validate-golden-conversations.js` — two-pass validator: schema validation, then (Phase 3+) a live pass that POSTs each fixture's conversation to the real `/api/chat` endpoint (`API_BASE_URL`, default `http://localhost:3000`) and asserts 988-mention on crisis fixtures and expected tool calls. Failures are never silenced.
-Known gap: `.github/workflows/golden-conversations.yml` still only runs the validator with no dev server started and no `ANTHROPIC_API_KEY`/Voyage secrets provisioned in CI, so the live pass will fail there until that infra is set up — a follow-up outside Phase 3's scope (the dispatched deliverable was the validator script, not CI infra/secrets).
+Known gap: `.github/workflows/golden-conversations.yml` still only runs the validator with no dev server started and no `ANTHROPIC_API_KEY`/Voyage secrets provisioned in CI, so the live pass will fail there until that infra is set up — a follow-up outside Phase 3's scope (the dispatched deliverable was the validator script, not CI infra/secrets). The same gap means a disposable Phase 4 worktree with no `.env.local` can only run `SKIP_LIVE_PASS=true`; the live pass and a real browser walkthrough of `/checkin` require provisioned Supabase + Anthropic credentials.
 
 ## What not to do
 
@@ -105,7 +113,8 @@ Known gap: `.github/workflows/golden-conversations.yml` still only runs the vali
 - Do not push to the default branch or merge a PR
 - Do not introduce proprietary clinical instrument names (see Clinical models above)
 - Do not add auth (Supabase Auth, login, session cookies, `user_id` FKs, RLS) — deferred to a post-MVP phase
-- Do not add new DB tables or migrations, or new feature UI/API routes, outside a dispatched phase task (Phase 3 added `app/api/chat`, `app/api/onboard`, and `supabase/migrations/0003_add_companion_fields.sql`; Phase 4 is daily check-in + patient log persistence)
+- Do not add new DB tables or migrations, or new feature UI/API routes, outside a dispatched phase task (Phase 3 added `app/api/chat`, `app/api/onboard`, and `supabase/migrations/0003_add_companion_fields.sql`; Phase 4 added `app/api/checkin`, `app/api/cron/daily-checkin`, `app/checkin`, and `supabase/migrations/0004_add_checkin_scheduling.sql`; Phase 5 is burnout/LCWS dashboard signal work, Phase 6 is the dashboard itself — neither is built yet)
+- Do not build a persistent log-review screen for `patient_log` entries — resolved decision is in-conversation confirmation only (at most one observation surfaced back to the caregiver per check-in, never a list)
 
 ## Retrieval pipeline
 

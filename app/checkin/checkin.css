@@ -1,0 +1,261 @@
+/*
+ * "Still Water" — visual direction for the daily check-in screen only.
+ * Captain-decided 2026-09-20 (see AGENTS.md / Ref/phase-3-prd.md context):
+ * distinct from the app's committed "Lamplight" design system in
+ * design_system/, and scoped to this screen alone. Do not reuse these
+ * tokens outside app/checkin/, and do not port Lamplight tokens in here —
+ * extrapolate from the values below instead.
+ *
+ * Reference: design_system/Lantern UI Explorations.dc.html, direction "1b".
+ * Tone/content rules (second person to caregiver, first person for Lantern,
+ * observation before interpretation, no gamification, no clinical scores as
+ * headlines) still apply — see design_system/readme.md.
+ */
+
+.checkin-app {
+  --sw-bg: #f2f5f8;
+  --sw-card: #ffffff;
+  --sw-ink: #1e2733;
+  --sw-ink-muted: #6b7a8c;
+  --sw-ink-faint: #8494a6;
+  --sw-accent: #4a6b8a;
+  --sw-accent-tint: #e3eaf2;
+  --sw-dot: #c99a4e;
+  --sw-hairline: #e7edf3;
+  --sw-border: #e2eaf2;
+  --sw-pill-bg: #f0f4f8;
+  --sw-pill-text: #4a5766;
+  --sw-suggestion-bg: #f5f8fb;
+  --sw-privacy-bg: #e9eef4;
+  --sw-radius-lg: 18px;
+  --sw-radius-md: 16px;
+  --sw-radius-sm: 14px;
+  --sw-radius-pill: 999px;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background: var(--sw-bg);
+  color: var(--sw-ink);
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    system-ui,
+    sans-serif;
+}
+
+.checkin-app__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 22px 20px 16px;
+  background: var(--sw-card);
+  border-bottom: 1px solid var(--sw-hairline);
+}
+
+.checkin-app__mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: var(--sw-accent-tint);
+  flex-shrink: 0;
+}
+
+.checkin-app__mark-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: var(--sw-radius-pill);
+  background: var(--sw-accent);
+}
+
+.checkin-app__identity {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.checkin-app__name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--sw-ink);
+}
+
+.checkin-app__schedule-note {
+  font-size: 12px;
+  color: var(--sw-ink-faint);
+}
+
+.checkin-app__today-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 11px;
+  border-radius: var(--sw-radius-pill);
+  background: var(--sw-pill-bg);
+  flex-shrink: 0;
+}
+
+.checkin-app__today-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--sw-radius-pill);
+  background: var(--sw-dot);
+}
+
+.checkin-app__today-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sw-pill-text);
+}
+
+.checkin-app__today-chevron {
+  font-size: 12px;
+  color: var(--sw-ink-faint);
+}
+
+.checkin-app__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px 20px 24px;
+  overflow-y: auto;
+}
+
+.checkin-app__state-message {
+  margin: auto 0;
+  text-align: center;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--sw-ink-muted);
+  padding: 0 12px;
+}
+
+.checkin-bubble {
+  max-width: 88%;
+  padding: 14px 16px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.checkin-bubble--caregiver {
+  align-self: flex-end;
+  background: var(--sw-accent);
+  color: #ffffff;
+  border-radius: var(--sw-radius-lg) var(--sw-radius-lg) 6px var(--sw-radius-lg);
+}
+
+.checkin-bubble--companion {
+  align-self: flex-start;
+  background: var(--sw-card);
+  color: var(--sw-ink);
+  box-shadow: 0 1px 2px rgba(30, 39, 51, 0.05);
+  border-radius: var(--sw-radius-lg) var(--sw-radius-lg) var(--sw-radius-lg) 6px;
+}
+
+.checkin-suggestions {
+  align-self: flex-start;
+  max-width: 88%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checkin-suggestion-card {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 13px 14px;
+  background: var(--sw-suggestion-bg);
+  border: 1px solid var(--sw-border);
+  border-radius: var(--sw-radius-sm);
+  text-align: left;
+  cursor: pointer;
+  min-height: 44px;
+  font-family: inherit;
+}
+
+.checkin-suggestion-card:hover {
+  border-color: var(--sw-accent);
+}
+
+.checkin-suggestion-card__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--sw-ink);
+}
+
+.checkin-suggestion-card__detail {
+  font-size: 12.5px;
+  color: var(--sw-ink-muted);
+}
+
+.checkin-app__privacy-pill {
+  align-self: center;
+  padding: 8px 14px;
+  border-radius: var(--sw-radius-pill);
+  background: var(--sw-privacy-bg);
+  font-size: 12px;
+  color: var(--sw-ink-muted);
+}
+
+.checkin-app__composer {
+  padding: 14px 20px 22px;
+  background: var(--sw-card);
+  border-top: 1px solid var(--sw-hairline);
+}
+
+.checkin-app__composer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 4px 4px 4px 16px;
+  background: var(--sw-bg);
+  border-radius: var(--sw-radius-md);
+}
+
+.checkin-app__composer-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  font-size: 15px;
+  color: var(--sw-ink);
+  outline: none;
+}
+
+.checkin-app__composer-input::placeholder {
+  color: var(--sw-ink-faint);
+}
+
+.checkin-app__composer-send {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--sw-accent);
+  color: #ffffff;
+  font-size: 15px;
+  border: none;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.checkin-app__composer-send:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.checkin-app__error {
+  padding: 0 20px 12px;
+  font-size: 13px;
+  color: var(--sw-accent);
+}
