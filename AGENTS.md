@@ -6,7 +6,7 @@ Instructions for AI agents (Claude Code, Firstmate, and any future orchestrators
 
 ## Scope
 
-This repository is a Next.js 14 App Router application (Phase 1 complete). It contains:
+This repository is a Next.js 14 App Router application (Phase 4 complete). It contains:
 - `app/` — Next.js App Router pages and layouts
 - `components/` — shared UI components (empty at Phase 0)
 - `features/` — feature-scoped modules (empty at Phase 0)

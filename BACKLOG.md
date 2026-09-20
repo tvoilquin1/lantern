@@ -42,9 +42,12 @@ home). Update this file as phases are dispatched and completed, and as decisions
   assertions (crisis 988-check, tool_calls_expected). CI gap: `.github/workflows/golden-conversations.yml`
   still lacks a dev server and secrets — see AGENTS.md > Evaluation set.
 
-- [ ] **Phase 4 — Daily Check-in + Patient Log Extraction** (P0-3 + P0-4, M2 gate)
-  Companion-initiated check-in (Vercel cron); `log_patient_observation` tool extraction.
-  Blocked by: Phase 3.
+- [x] **Phase 4 — Daily Check-in + Patient Log Extraction** (P0-3 + P0-4, M2 gate)
+  Vercel cron (`vercel.json`, `app/api/cron/daily-checkin`) writes pending `sessions` row daily;
+  `/checkin` screen (Still Water visual direction — see AGENTS.md); `app/api/checkin` (GET/POST);
+  `createLogPatientObservationTool` factory persists structured observations to `patient_log`;
+  `systemPrompt.ts` + `app/api/chat` updated for `sessionKind:'daily_checkin'`; partial unique
+  index in `supabase/migrations/0004_add_checkin_scheduling.sql`.
 
 - [ ] **Phase 5 — Burnout Detection + Gauge** (P0-6, M3)
   Signal aggregation (40/30/30 weighting — settled, do not reopen); amber→red threshold
