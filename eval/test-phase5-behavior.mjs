@@ -328,6 +328,48 @@ function makeMockSupabase(initialRow) {
   assert(result === null, 'aggregateSessionSignals returns null (not throw) when no caregiver_state row exists yet');
 }
 
+{
+  // Idempotency: if score_history already contains an entry for this sessionId,
+  // aggregateSessionSignals must return the prior result without appending a second entry.
+  const priorEntry = {
+    at: '2026-09-21T10:00:00.000Z',
+    type: 'session',
+    compositeScore: 4.2,
+    color: 'green',
+    sentimentScore: 5,
+    behavioralScore: 5,
+    lcwsScore: 5,
+    sessionId: 'session-idempotent',
+  };
+  const mock = makeMockSupabase({
+    id: 'state-idem',
+    burnout_score_current: 4.2,
+    score_history: [priorEntry],
+    last_check_in_at: recentCheckIn(),
+    lcws_baseline_score: 4,
+    lcws_latest_score: 4,
+    red_at: null,
+    amber_at: null,
+    level2_support_surfaced_at: null,
+  });
+
+  const result = await aggregateSessionSignals({
+    supabase: mock,
+    sessionId: 'session-idempotent',
+    sentimentScore: 1,
+    sessionCreatedAt: dayTime,
+  });
+
+  assert(
+    result !== null && result.compositeScore === priorEntry.compositeScore,
+    'idempotent retry returns the prior compositeScore without re-aggregating',
+  );
+  assert(
+    mock.getUpdatePayload() === null,
+    'idempotent retry does not write to caregiver_state a second time',
+  );
+}
+
 // ─── 8. Missed check-in streak — Level 2 emergency-contact trigger threshold ───
 console.log('\n[8] Missed check-in streak — emergency-contact outreach trigger');
 

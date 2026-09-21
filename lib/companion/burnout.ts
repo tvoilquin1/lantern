@@ -198,6 +198,21 @@ export async function aggregateSessionSignals(
   }
 
   const row = state as CaregiverStateRow;
+
+  if (sessionId != null) {
+    const priorHistory = row.score_history ?? [];
+    const prior = priorHistory.find((e) => e.sessionId === sessionId);
+    if (prior) {
+      return {
+        compositeScore: prior.compositeScore,
+        color: prior.color,
+        crossedToRed: false,
+        redStreakDays: countTrailingRedStreak(priorHistory),
+        level2ShouldSurface: false,
+      };
+    }
+  }
+
   const now = new Date().toISOString();
 
   const behavioralScore = computeBehavioralScore({
