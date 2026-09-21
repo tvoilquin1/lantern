@@ -253,7 +253,7 @@ export async function aggregateSessionSignals(
   const level2ShouldSurface =
     color === 'red' && redStreakDays >= RED_STREAK_ESCALATION_DAYS && row.level2_support_surfaced_at == null;
 
-  await supabase
+  const { error: stateUpdateError } = await supabase
     .from('caregiver_state')
     .update({
       burnout_score_current: compositeScore,
@@ -267,6 +267,10 @@ export async function aggregateSessionSignals(
       missed_checkin_streak: 0,
     })
     .eq('id', row.id);
+
+  if (stateUpdateError) {
+    throw new Error(`[burnout] failed to persist gauge state: ${stateUpdateError.message}`);
+  }
 
   return { compositeScore, color, crossedToRed, redStreakDays, level2ShouldSurface };
 }

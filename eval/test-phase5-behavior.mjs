@@ -370,6 +370,50 @@ function makeMockSupabase(initialRow) {
   );
 }
 
+{
+  // DB write failure: if caregiver_state.update returns an error, aggregateSessionSignals must throw.
+  const failingMock = {
+    from(table) {
+      return {
+        select: () => ({
+          limit: () => ({
+            maybeSingle: async () => ({
+              data: {
+                id: 'state-fail',
+                burnout_score_current: 5,
+                score_history: [],
+                last_check_in_at: recentCheckIn(),
+                lcws_baseline_score: 4,
+                lcws_latest_score: 4,
+                red_at: null,
+                amber_at: null,
+                level2_support_surfaced_at: null,
+              },
+              error: null,
+            }),
+          }),
+        }),
+        update: () => ({
+          eq: async () => ({ data: null, error: { message: 'connection timeout', code: '500' } }),
+        }),
+      };
+    },
+  };
+
+  let threw = false;
+  try {
+    await aggregateSessionSignals({
+      supabase: failingMock,
+      sessionId: 'session-fail',
+      sentimentScore: 4,
+      sessionCreatedAt: dayTime,
+    });
+  } catch {
+    threw = true;
+  }
+  assert(threw, 'aggregateSessionSignals throws when caregiver_state update returns an error');
+}
+
 // ─── 8. Missed check-in streak — Level 2 emergency-contact trigger threshold ───
 console.log('\n[8] Missed check-in streak — emergency-contact outreach trigger');
 
