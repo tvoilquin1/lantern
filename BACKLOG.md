@@ -19,7 +19,7 @@ home). Update this file as phases are dispatched and completed, and as decisions
 | Session persistence model | ✅ Resolved — structured log + rolling end-of-session summary; no raw transcript ever stored |
 | Signal weighting (Phase 5) | ✅ Resolved — self-report sentiment 40% / behavioral 30% / LCWS re-screen 30%, named tunable constants in `lib/companion/burnout.ts` (`SIGNAL_WEIGHTS`) |
 | Amber→red threshold (Phase 5) | ✅ Resolved — red requires gauge score < 3 (`RED_THRESHOLD` in `lib/companion/burnout.ts`), amber band is 3–4. Conservative principle: grounded in the wellbeing-scale doc's own Escalation Velocity Logic, which ties human-support escalation to being "stuck at 2" (Overwhelmed-or-worse), not to level 3 (Strained) — so amber stays ordinary companion-coaching territory and does not itself trigger escalation |
-| Emergency-contact recipient (Phase 5) | ⚠️ Open — no caregiver-designated-contact data model exists anywhere in the schema. The 5-missed-check-in trigger is implemented as the narrowest honest version: `caregiver_state.emergency_contact_outreach_triggered_at` timestamp + a structured `console.warn` in `app/api/cron/daily-checkin/route.ts`, with no recipient or notification channel invented. Raised to firstmate as a `needs-decision` gap. |
+| Emergency-contact recipient (Phase 5) | ✅ Resolved 2026-09-21 — captain confirmed shipping Phase 5 as-is with the honest no-op trigger (`caregiver_state.emergency_contact_outreach_triggered_at` timestamp + structured `console.warn` in `app/api/cron/daily-checkin/route.ts`, no invented recipient/channel). Emergency-contact capture + real notification is a separate follow-up task, not Phase 5 scope: capture surface likely lands in onboarding; notification channel is email first, SMS later once the app is paid. |
 
 ## Phases
 
@@ -79,11 +79,17 @@ home). Update this file as phases are dispatched and completed, and as decisions
   Additional acceptance criteria (human escalation path):
   - [x] After 3+ consecutive days of qualifying distress / red-threshold signal, companion surfaces human support resources to the caregiver (caregiver support orgs, respite resources — not 988, which is immediate-crisis only) — `RED_STREAK_ESCALATION_DAYS` in `lib/companion/burnout.ts`, surfaced via `surfaceHumanSupportResources` in `systemPrompt.ts`
   - [x] Human-escalation threshold logic (3-day and 5-missed-check-in triggers) — clinically approved 2026-09-06 (D-1 resolved)
-  - [⚠️] After 5 consecutive missed check-ins, system triggers outreach to caregiver-designated emergency contact — narrowest-honest partial: the trigger itself fires and is recorded (`emergency_contact_outreach_triggered_at`, `app/api/cron/daily-checkin`), but no caregiver-designated-contact data model or actual notification channel exists yet (out of Phase 5's scope to invent) — see Decisions above and status file for the open `needs-decision`
+  - [x] After 5 consecutive missed check-ins, system triggers outreach to caregiver-designated emergency contact — narrowest-honest partial, captain-confirmed ship-as-is 2026-09-21: the trigger itself fires and is recorded (`emergency_contact_outreach_triggered_at`, `app/api/cron/daily-checkin`), but no caregiver-designated-contact data model or actual notification channel exists yet — see Decisions above; tracked as a separate follow-up task (capture surface likely in onboarding, channel = email first / SMS later), not Phase 5 scope
 
 - [ ] **Phase 6 — Dashboard** (P0-8, M4)
   3-panel read-only dashboard: patient stage, burnout gauge, action items.
   Blocked by: Phase 3, Phase 5.
+
+- [ ] **Emergency-contact capture + notification** (follow-up, not yet sequenced)
+  Caregiver-designated-contact data model (name/relationship/phone or email) plus a real
+  notification send when the 5-missed-check-in trigger fires. Captain-decided 2026-09-21:
+  capture surface likely lands in onboarding; notification channel is email first, SMS
+  later once the app is paid. Blocked by: none technically, but not yet dispatched.
 
 - [ ] **Phase 7 — Transition Detection** (P0-5, M2 completion / pre-M5)
   Code can be built once Phase 2 + 4 are done; real validation needs 2+ weeks of live data.
