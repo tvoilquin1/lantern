@@ -95,14 +95,6 @@ export async function POST(req: Request) {
         } else if (part.type === 'tool-call' && part.toolName === 'flag_crisis') {
           dataStream.write(formatDataStreamPart('text', CRISIS_RESPONSE));
           return;
-        } else if (part.type === 'tool-call') {
-          dataStream.write(
-            formatDataStreamPart('tool_call', {
-              toolCallId: part.toolCallId,
-              toolName: part.toolName,
-              args: part.args,
-            }),
-          );
         } else if (part.type === 'error') {
           throw part.error;
         }
