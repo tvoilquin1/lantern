@@ -24,4 +24,28 @@ export const copy = {
     { title: "Rough night", detail: "Up more than usual, or unsettled" },
     { title: "About the same", detail: "No real change either way" },
   ],
+  checkinDoneButtonLabel: "Done for today",
+  checkinEndingLabel: "Wrapping up…",
+  checkinEndedMessage: "Thanks for checking in. I'll see you tomorrow morning.",
+
+  // Gauge (Phase 5) — plain language over bare scores; color follows the word.
+  gaugeLabelGreen: "Steady",
+  gaugeLabelAmber: "Feeling the strain",
+  gaugeLabelRed: "Under real pressure",
+  gaugeSupportingGreen: "Things seem manageable right now.",
+  gaugeSupportingAmber: "It's been a harder stretch lately.",
+  gaugeSupportingRed: "This has been weighing on you for a while now.",
+  gaugeNoDataMessage: "Nothing to show yet — this fills in once onboarding is complete.",
+  gaugeLevel2Message:
+    "You've mentioned feeling overwhelmed for a few days in a row now. That's worth more than what I can offer here — would it help to see some human support options?",
+  gaugeCrossedToRedAcknowledgment:
+    "I want to name that things have felt heavier lately. I'm glad you're here.",
+
+  // Gauge preview (Phase 5 dev scaffold only — not the Phase 6 dashboard)
+  gaugePreviewTitle: "Gauge preview",
+  gaugePreviewSubtitle: "Internal scaffold for Phase 5 — the caregiver-facing dashboard is Phase 6.",
+  gaugePreviewHistoryHeading: "Recent history",
+  gaugePreviewLoading: "Loading…",
+  gaugePreviewMissedStreakLabel: "Missed check-in streak",
+  gaugePreviewErrorMessage: "Couldn't load gauge state.",
 } as const;

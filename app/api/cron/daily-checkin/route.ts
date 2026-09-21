@@ -1,10 +1,38 @@
 import { NextResponse } from 'next/server';
 import { createSupabaseRestClient } from '@/lib/supabase/rest-client';
+import { MISSED_CHECKIN_ESCALATION_DAYS } from '@/lib/companion/burnout';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 type SessionRow = { id: string; status: string; kind: string; scheduled_for: string };
+type CaregiverStateRow = {
+  id: string;
+  missed_checkin_streak: number;
+  emergency_contact_outreach_triggered_at: string | null;
+};
+
+/**
+ * Walks backward from yesterday counting consecutive non-completed daily
+ * check-in days. Stops at the first date with no session row at all (rather
+ * than treating it as a miss) — a missing row means the cron wasn't running
+ * yet that day, not that the caregiver skipped a real prompt.
+ */
+function computeMissedCheckinStreak(sessions: SessionRow[], todayISODate: string): number {
+  const byDate = new Map(sessions.map((s) => [s.scheduled_for, s]));
+  let streak = 0;
+  const cursor = new Date(`${todayISODate}T00:00:00Z`);
+
+  for (;;) {
+    cursor.setUTCDate(cursor.getUTCDate() - 1);
+    const dateStr = cursor.toISOString().slice(0, 10);
+    const row = byDate.get(dateStr);
+    if (!row || row.status === 'completed') break;
+    streak += 1;
+  }
+
+  return streak;
+}
 
 /**
  * Vercel cron target (see vercel.json) — writes a pending daily check-in
@@ -42,25 +70,80 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: selectError.message }, { status: 500 });
   }
 
-  if (existing && existing.length > 0) {
-    return NextResponse.json({ status: 'already_scheduled', scheduledFor, sessionId: existing[0]!.id });
-  }
+  let status: 'already_scheduled' | 'scheduled' = 'already_scheduled';
+  let sessionId: string | null = existing?.[0]?.id ?? null;
 
-  const { data: inserted, error: insertError } = await supabase.from<SessionRow>('sessions').insert({
-    status: 'pending',
-    kind: 'daily_checkin',
-    scheduled_for: scheduledFor,
-  });
+  if (!existing || existing.length === 0) {
+    const { data: inserted, error: insertError } = await supabase.from<SessionRow>('sessions').insert({
+      status: 'pending',
+      kind: 'daily_checkin',
+      scheduled_for: scheduledFor,
+    });
 
-  if (insertError) {
-    // The partial unique index (sessions_daily_checkin_once_per_day) can reject
-    // a duplicate insert from a near-simultaneous cron retry — treat that as success.
-    if (insertError.code === '23505') {
-      return NextResponse.json({ status: 'already_scheduled', scheduledFor });
+    if (insertError) {
+      // The partial unique index (sessions_daily_checkin_once_per_day) can reject
+      // a duplicate insert from a near-simultaneous cron retry — treat that as success.
+      if (insertError.code !== '23505') {
+        console.error('[cron/daily-checkin] failed to write pending check-in session', insertError);
+        return NextResponse.json({ error: insertError.message }, { status: 500 });
+      }
+    } else {
+      status = 'scheduled';
+      sessionId = inserted?.[0]?.id ?? null;
     }
-    console.error('[cron/daily-checkin] failed to write pending check-in session', insertError);
-    return NextResponse.json({ error: insertError.message }, { status: 500 });
   }
 
-  return NextResponse.json({ status: 'scheduled', scheduledFor, sessionId: inserted?.[0]?.id ?? null });
+  await updateMissedCheckinStreak(supabase, scheduledFor);
+
+  return NextResponse.json({ status, scheduledFor, sessionId });
+}
+
+/**
+ * Missed-check-in tracking for the Level-2 human-escalation path
+ * (Ref/phase-3-prd.md Feature 4): 5+ consecutive missed check-ins triggers
+ * emergency-contact outreach. No caregiver-designated emergency contact
+ * exists anywhere in the data model (see AGENTS.md) — this records a
+ * timestamp only, the narrowest-honest implementation of the trigger, and is
+ * flagged to firstmate as a needs-decision gap rather than inventing a
+ * recipient.
+ */
+async function updateMissedCheckinStreak(
+  supabase: ReturnType<typeof createSupabaseRestClient>,
+  scheduledFor: string,
+) {
+  const { data: allCheckins, error: checkinsError } = await supabase
+    .from<SessionRow>('sessions')
+    .eq('kind', 'daily_checkin')
+    .select('id,status,kind,scheduled_for');
+
+  const { data: states, error: stateError } = await supabase
+    .from<CaregiverStateRow>('caregiver_state')
+    .select('id,missed_checkin_streak,emergency_contact_outreach_triggered_at');
+
+  if (checkinsError || stateError || !states || states.length === 0) {
+    if (checkinsError) console.error('[cron/daily-checkin] failed to load session history', checkinsError);
+    if (stateError) console.error('[cron/daily-checkin] failed to load caregiver_state', stateError);
+    return;
+  }
+
+  const streak = computeMissedCheckinStreak(allCheckins ?? [], scheduledFor);
+  const state = states[0]!;
+
+  const shouldTriggerOutreach =
+    streak >= MISSED_CHECKIN_ESCALATION_DAYS && state.emergency_contact_outreach_triggered_at == null;
+
+  if (shouldTriggerOutreach) {
+    console.warn(
+      '[burnout] emergency contact outreach triggered — no caregiver-designated emergency contact exists in the data model; recording only',
+      { missedCheckinStreak: streak, caregiverStateId: state.id },
+    );
+  }
+
+  await supabase
+    .from<CaregiverStateRow>('caregiver_state')
+    .eq('id', state.id)
+    .update({
+      missed_checkin_streak: streak,
+      ...(shouldTriggerOutreach ? { emergency_contact_outreach_triggered_at: new Date().toISOString() } : {}),
+    });
 }

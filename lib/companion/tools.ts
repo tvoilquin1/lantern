@@ -1,6 +1,7 @@
 import { tool } from 'ai';
 import { z } from 'zod';
 import { createSupabaseRestClient } from '@/lib/supabase/rest-client';
+import { wellbeingItems } from '@/data/wellbeingItems';
 
 export { flagCrisisTool } from './crisis';
 
@@ -114,6 +115,77 @@ export function createLogPatientObservationTool(ctx: LogPatientObservationContex
         return { acknowledged: true };
       } catch (error) {
         console.error('[log_patient_observation] unexpected extraction failure', error);
+        return { acknowledged: false };
+      }
+    },
+  });
+}
+
+const lcwsRescreenScoreShape = Object.fromEntries(
+  wellbeingItems.map((item) => [item.id, z.number().min(0).max(4).nullable()]),
+);
+
+const lcwsRescreenParameters = z.object({
+  complete: z.boolean().describe('True only if every wellbeing item below has been discussed and scored'),
+  scores: z.object(lcwsRescreenScoreShape),
+});
+
+export type LcwsRescreenScores = z.infer<typeof lcwsRescreenParameters>;
+
+/**
+ * Fires when the companion has finished conversationally administering the
+ * biweekly LCWS re-screen (see systemPrompt.ts's lcwsRescreenDue section).
+ * Writes lcws_latest_score / lcws_latest_overall_burden_score / last_lcws_at
+ * — distinct from lcws_baseline_score, which stays the onboarding-time value.
+ * Same error-swallowing contract as createLogPatientObservationTool.
+ */
+export function createRecordLcwsRescreenTool() {
+  return tool({
+    description:
+      'Record the biweekly LCWS wellbeing re-screen once every item has been conversationally covered. Only call with complete: true when all items are scored.',
+    parameters: lcwsRescreenParameters,
+    execute: async ({ complete, scores }: LcwsRescreenScores) => {
+      if (!complete) {
+        return { acknowledged: false };
+      }
+
+      try {
+        const domainItems = wellbeingItems.filter((item) => !item.isGlobalItem);
+        const domainScores = domainItems.map((item) => scores[item.id]).filter((s): s is number => s != null);
+
+        if (domainScores.length !== domainItems.length) {
+          return { acknowledged: false };
+        }
+
+        const latestScore = domainScores.reduce((sum, s) => sum + s, 0) / domainScores.length;
+        const globalItem = wellbeingItems.find((item) => item.isGlobalItem);
+        const overallBurdenScore = globalItem ? (scores[globalItem.id] ?? null) : null;
+
+        const supabase = createSupabaseRestClient();
+        const { data: existing, error: selectError } = await supabase.from('caregiver_state').select('id');
+
+        if (selectError || !existing || existing.length === 0) {
+          console.error('[record_lcws_rescreen] no caregiver_state row found', selectError);
+          return { acknowledged: false };
+        }
+
+        const { error } = await supabase
+          .from('caregiver_state')
+          .eq('id', existing[0]!.id as string)
+          .update({
+            lcws_latest_score: latestScore,
+            lcws_latest_overall_burden_score: overallBurdenScore,
+            last_lcws_at: new Date().toISOString(),
+          });
+
+        if (error) {
+          console.error('[record_lcws_rescreen] caregiver_state update failed', error);
+          return { acknowledged: false };
+        }
+
+        return { acknowledged: true };
+      } catch (error) {
+        console.error('[record_lcws_rescreen] unexpected failure', error);
         return { acknowledged: false };
       }
     },

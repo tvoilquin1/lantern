@@ -6,6 +6,7 @@ import { stagingQuestions } from '@/data/stagingQuestions';
 import { wellbeingItems } from '@/data/wellbeingItems';
 import { createClient } from '@/lib/supabase/server';
 import { copy } from '@/constants/copy';
+import { buildScoreHistoryEntry, classifyGaugeColor, gaugeScoreFromLcws } from '@/lib/companion/burnout';
 
 export const runtime = 'nodejs';
 
@@ -204,10 +205,23 @@ export async function POST(req: Request) {
             .limit(1)
             .maybeSingle();
 
+          const gaugeScore = gaugeScoreFromLcws(baselineScore);
+          const initialHistoryEntry = buildScoreHistoryEntry({
+            type: 'baseline',
+            compositeScore: gaugeScore,
+            color: classifyGaugeColor(gaugeScore),
+            lcwsScore: gaugeScore,
+          });
+
           const statePayload = {
             lcws_baseline_score: baselineScore,
             lcws_overall_burden_score: overallBurdenScore,
+            lcws_latest_score: baselineScore,
+            lcws_latest_overall_burden_score: overallBurdenScore,
             last_lcws_at: new Date().toISOString(),
+            burnout_score_baseline: gaugeScore,
+            burnout_score_current: gaugeScore,
+            score_history: [initialHistoryEntry],
           };
 
           if (existingState) {

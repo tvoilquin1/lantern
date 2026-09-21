@@ -79,6 +79,24 @@ function validateFixture(filePath) {
     }
   }
 
+  // Optional: request_overrides is merged into the POST body sent to /api/chat
+  // (lets a fixture simulate server-side gauge state, e.g. gaugeCrossedToRed,
+  // without needing a live Supabase row).
+  if ('request_overrides' in fixture) {
+    if (typeof fixture.request_overrides !== 'object' || fixture.request_overrides === null) {
+      throw new Error('"request_overrides" must be a plain object when present');
+    }
+  }
+
+  // Optional: free-text assertions against the concatenated companion response.
+  for (const field of ['response_includes_any', 'response_excludes']) {
+    if (field in eo) {
+      if (!Array.isArray(eo[field]) || eo[field].some((s) => typeof s !== 'string')) {
+        throw new Error(`"expected_output.${field}" must be an array of strings when present`);
+      }
+    }
+  }
+
   return fixture;
 }
 
@@ -120,13 +138,14 @@ function parseDataStream(rawText) {
 async function validateAgainstLiveEndpoint(fixture) {
   const messages = fixture.conversation.map((turn) => ({ role: turn.role, content: turn.content }));
   const endpoint = `${API_BASE_URL}/api/chat`;
+  const requestBody = { messages, ...(fixture.request_overrides || {}) };
 
   let response;
   try {
     response = await fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages }),
+      body: JSON.stringify(requestBody),
     });
   } catch (e) {
     throw new Error(`Could not reach ${endpoint}: ${e.message}`);
@@ -159,6 +178,25 @@ async function validateAgainstLiveEndpoint(fixture) {
     if (!match) {
       const seen = toolCalls.map((call) => call.tool).join(', ') || '(none)';
       throw new Error(`Expected tool call "${expectedCall.tool}" was not made by the companion. Tool calls seen: ${seen}`);
+    }
+  }
+
+  if (Array.isArray(eo.response_includes_any) && eo.response_includes_any.length > 0) {
+    const lowerText = fullText.toLowerCase();
+    const matched = eo.response_includes_any.some((s) => lowerText.includes(s.toLowerCase()));
+    if (!matched) {
+      throw new Error(
+        `Expected the response to include one of ${JSON.stringify(eo.response_includes_any)}, but got: ${JSON.stringify(fullText.slice(0, 300))}`,
+      );
+    }
+  }
+
+  if (Array.isArray(eo.response_excludes)) {
+    const lowerText = fullText.toLowerCase();
+    for (const s of eo.response_excludes) {
+      if (lowerText.includes(s.toLowerCase())) {
+        throw new Error(`Expected the response to exclude "${s}", but it was present in: ${JSON.stringify(fullText.slice(0, 300))}`);
+      }
     }
   }
 

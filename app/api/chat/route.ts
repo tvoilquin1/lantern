@@ -1,7 +1,7 @@
 import { anthropic } from '@ai-sdk/anthropic';
 import { createDataStreamResponse, formatDataStreamPart, streamText, type CoreMessage } from 'ai';
 import { CRISIS_RESPONSE, checkCrisisKeywords, flagCrisisTool } from '@/lib/companion/crisis';
-import { createLogPatientObservationTool } from '@/lib/companion/tools';
+import { createLogPatientObservationTool, createRecordLcwsRescreenTool } from '@/lib/companion/tools';
 import { buildSystemPrompt } from '@/lib/companion/systemPrompt';
 import { retrieve } from '@/lib/retrieval/retrieve';
 
@@ -20,6 +20,9 @@ type ChatRequestBody = {
   patientStageId?: number | null;
   lastSessionSummary?: string | null;
   lcwsLevel?: number | null;
+  gaugeCrossedToRed?: boolean;
+  surfaceHumanSupportResources?: boolean;
+  lcwsRescreenDue?: boolean;
 };
 
 export async function POST(req: Request) {
@@ -31,6 +34,9 @@ export async function POST(req: Request) {
     patientStageId = null,
     lastSessionSummary = null,
     lcwsLevel = null,
+    gaugeCrossedToRed = false,
+    surfaceHumanSupportResources = false,
+    lcwsRescreenDue = false,
   } = body;
 
   const lastUserMessage = [...messages].reverse().find((m) => m.role === 'user');
@@ -61,6 +67,9 @@ export async function POST(req: Request) {
     ragContext,
     lcwsLevel,
     sessionKind,
+    gaugeCrossedToRed,
+    surfaceHumanSupportResources,
+    lcwsRescreenDue,
   });
 
   return createDataStreamResponse({
@@ -76,6 +85,7 @@ export async function POST(req: Request) {
             sessionId,
             source: sessionKind === 'daily_checkin' ? 'check_in' : 'open_conversation',
           }),
+          record_lcws_rescreen: createRecordLcwsRescreenTool(),
         },
       });
 

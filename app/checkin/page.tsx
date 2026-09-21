@@ -14,6 +14,9 @@ type CheckinGetResponse = {
   session: CheckinSession | null;
   patientStageId: number | null;
   lastSessionSummary: string | null;
+  gaugeCrossedToRed: boolean;
+  surfaceHumanSupportResources: boolean;
+  lcwsRescreenDue: boolean;
 };
 
 type ScreenState =
@@ -21,7 +24,16 @@ type ScreenState =
   | { phase: "error" }
   | { phase: "nothing_scheduled" }
   | { phase: "already_done" }
-  | { phase: "ready"; sessionId: string; patientStageId: number | null; lastSessionSummary: string | null; openingMessage: string };
+  | {
+      phase: "ready";
+      sessionId: string;
+      patientStageId: number | null;
+      lastSessionSummary: string | null;
+      openingMessage: string;
+      gaugeCrossedToRed: boolean;
+      surfaceHumanSupportResources: boolean;
+      lcwsRescreenDue: boolean;
+    };
 
 export default function CheckinPage() {
   const [screen, setScreen] = useState<ScreenState>({ phase: "loading" });
@@ -33,7 +45,14 @@ export default function CheckinPage() {
       try {
         const getRes = await fetch("/api/checkin");
         if (!getRes.ok) throw new Error("failed to load check-in");
-        const { session, patientStageId, lastSessionSummary }: CheckinGetResponse = await getRes.json();
+        const {
+          session,
+          patientStageId,
+          lastSessionSummary,
+          gaugeCrossedToRed,
+          surfaceHumanSupportResources,
+          lcwsRescreenDue,
+        }: CheckinGetResponse = await getRes.json();
 
         if (cancelled) return;
 
@@ -50,14 +69,29 @@ export default function CheckinPage() {
         const postRes = await fetch("/api/checkin", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ sessionId: session.id, lastSessionSummary }),
+          body: JSON.stringify({
+            sessionId: session.id,
+            lastSessionSummary,
+            gaugeCrossedToRed,
+            surfaceHumanSupportResources,
+            lcwsRescreenDue,
+          }),
         });
         if (!postRes.ok) throw new Error("failed to start check-in");
         const { message }: { message: string } = await postRes.json();
 
         if (cancelled) return;
 
-        setScreen({ phase: "ready", sessionId: session.id, patientStageId, lastSessionSummary, openingMessage: message });
+        setScreen({
+          phase: "ready",
+          sessionId: session.id,
+          patientStageId,
+          lastSessionSummary,
+          openingMessage: message,
+          gaugeCrossedToRed,
+          surfaceHumanSupportResources,
+          lcwsRescreenDue,
+        });
       } catch (err) {
         console.error("[checkin] failed to initialize", err);
         if (!cancelled) setScreen({ phase: "error" });
@@ -86,7 +120,17 @@ export default function CheckinPage() {
     );
   }
 
-  return <ActiveCheckin sessionId={screen.sessionId} patientStageId={screen.patientStageId} lastSessionSummary={screen.lastSessionSummary} openingMessage={screen.openingMessage} />;
+  return (
+    <ActiveCheckin
+      sessionId={screen.sessionId}
+      patientStageId={screen.patientStageId}
+      lastSessionSummary={screen.lastSessionSummary}
+      openingMessage={screen.openingMessage}
+      gaugeCrossedToRed={screen.gaugeCrossedToRed}
+      surfaceHumanSupportResources={screen.surfaceHumanSupportResources}
+      lcwsRescreenDue={screen.lcwsRescreenDue}
+    />
+  );
 }
 
 function CheckinHeader() {
@@ -113,19 +157,62 @@ function ActiveCheckin({
   patientStageId,
   lastSessionSummary,
   openingMessage,
+  gaugeCrossedToRed,
+  surfaceHumanSupportResources,
+  lcwsRescreenDue,
 }: {
   sessionId: string;
   patientStageId: number | null;
   lastSessionSummary: string | null;
   openingMessage: string;
+  gaugeCrossedToRed: boolean;
+  surfaceHumanSupportResources: boolean;
+  lcwsRescreenDue: boolean;
 }) {
   const { messages, input, handleInputChange, handleSubmit, append, isLoading, error } = useChat({
     api: "/api/chat",
     initialMessages: [{ id: "opening", role: "assistant", content: openingMessage }],
-    body: { sessionId, sessionKind: "daily_checkin", patientStageId, lastSessionSummary },
+    body: {
+      sessionId,
+      sessionKind: "daily_checkin",
+      patientStageId,
+      lastSessionSummary,
+      gaugeCrossedToRed,
+      surfaceHumanSupportResources,
+      lcwsRescreenDue,
+    },
   });
+  const [ending, setEnding] = useState(false);
+  const [ended, setEnded] = useState(false);
+
+  async function handleEndCheckin() {
+    setEnding(true);
+    try {
+      const res = await fetch("/api/checkin/end", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sessionId, messages }),
+      });
+      if (!res.ok) throw new Error("failed to end check-in");
+      setEnded(true);
+    } catch (err) {
+      console.error("[checkin] failed to end session", err);
+      setEnding(false);
+    }
+  }
 
   const showSuggestions = messages.length === 1 && !isLoading;
+
+  if (ended) {
+    return (
+      <main className="checkin-app">
+        <CheckinHeader />
+        <div className="checkin-app__body">
+          <p className="checkin-app__state-message">{copy.checkinEndedMessage}</p>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="checkin-app">
@@ -175,6 +262,16 @@ function ActiveCheckin({
             &uarr;
           </button>
         </div>
+        {messages.length > 1 ? (
+          <button
+            type="button"
+            onClick={handleEndCheckin}
+            disabled={ending || isLoading}
+            className="checkin-app__done-button"
+          >
+            {copy.checkinDoneButtonLabel}
+          </button>
+        ) : null}
       </form>
     </main>
   );
