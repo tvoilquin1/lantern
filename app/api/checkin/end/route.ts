@@ -46,14 +46,22 @@ export async function POST(req: Request) {
 
   const { summary, sentimentScore } = await summarizeAndScoreSession(messages);
 
-  await supabase.from('sessions').update({ status: 'completed', summary }).eq('id', sessionId);
-
   const result = await aggregateSessionSignals({
     supabase,
     sessionId,
     sentimentScore,
     sessionCreatedAt: session.created_at as string,
   });
+
+  const { error: updateError } = await supabase
+    .from('sessions')
+    .update({ status: 'completed', summary })
+    .eq('id', sessionId);
+
+  if (updateError) {
+    console.error('[api/checkin/end] failed to mark session completed', updateError);
+    return NextResponse.json({ error: 'failed to complete session' }, { status: 500 });
+  }
 
   return NextResponse.json({ status: 'completed', gauge: result });
 }

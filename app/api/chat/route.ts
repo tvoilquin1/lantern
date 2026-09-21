@@ -85,7 +85,7 @@ export async function POST(req: Request) {
             sessionId,
             source: sessionKind === 'daily_checkin' ? 'check_in' : 'open_conversation',
           }),
-          record_lcws_rescreen: createRecordLcwsRescreenTool(),
+          ...(lcwsRescreenDue ? { record_lcws_rescreen: createRecordLcwsRescreenTool() } : {}),
         },
       });
 

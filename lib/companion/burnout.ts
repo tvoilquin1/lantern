@@ -122,6 +122,28 @@ export function computeBehavioralScore(inputs: BehavioralScoreInputs): number {
   return clamp(score, GAUGE_MIN, GAUGE_MAX);
 }
 
+export type CheckinSessionRow = { scheduled_for: string; status: string };
+
+/**
+ * Walks backward from yesterday counting consecutive non-completed daily
+ * check-in days. Stops at the first date with no session row at all (rather
+ * than treating it as a miss) — a missing row means the cron wasn't running
+ * yet that day, not that the caregiver skipped a real prompt.
+ */
+export function computeMissedCheckinStreak(sessions: CheckinSessionRow[], todayISODate: string): number {
+  const byDate = new Map(sessions.map((s) => [s.scheduled_for, s]));
+  let streak = 0;
+  const cursor = new Date(`${todayISODate}T00:00:00Z`);
+  for (;;) {
+    cursor.setUTCDate(cursor.getUTCDate() - 1);
+    const dateStr = cursor.toISOString().slice(0, 10);
+    const row = byDate.get(dateStr);
+    if (!row || row.status === 'completed') break;
+    streak += 1;
+  }
+  return streak;
+}
+
 type CaregiverStateRow = {
   id: string;
   burnout_score_current: number | null;
@@ -228,7 +250,6 @@ export async function aggregateSessionSignals(
       level2_support_pending: level2ShouldSurface,
       level2_support_surfaced_at: color === 'red' ? row.level2_support_surfaced_at : null,
       missed_checkin_streak: 0,
-      emergency_contact_outreach_triggered_at: null,
     })
     .eq('id', row.id);
 

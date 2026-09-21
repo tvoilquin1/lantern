@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createSupabaseRestClient } from '@/lib/supabase/rest-client';
-import { MISSED_CHECKIN_ESCALATION_DAYS } from '@/lib/companion/burnout';
+import { MISSED_CHECKIN_ESCALATION_DAYS, computeMissedCheckinStreak } from '@/lib/companion/burnout';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -11,28 +11,6 @@ type CaregiverStateRow = {
   missed_checkin_streak: number;
   emergency_contact_outreach_triggered_at: string | null;
 };
-
-/**
- * Walks backward from yesterday counting consecutive non-completed daily
- * check-in days. Stops at the first date with no session row at all (rather
- * than treating it as a miss) — a missing row means the cron wasn't running
- * yet that day, not that the caregiver skipped a real prompt.
- */
-function computeMissedCheckinStreak(sessions: SessionRow[], todayISODate: string): number {
-  const byDate = new Map(sessions.map((s) => [s.scheduled_for, s]));
-  let streak = 0;
-  const cursor = new Date(`${todayISODate}T00:00:00Z`);
-
-  for (;;) {
-    cursor.setUTCDate(cursor.getUTCDate() - 1);
-    const dateStr = cursor.toISOString().slice(0, 10);
-    const row = byDate.get(dateStr);
-    if (!row || row.status === 'completed') break;
-    streak += 1;
-  }
-
-  return streak;
-}
 
 /**
  * Vercel cron target (see vercel.json) — writes a pending daily check-in

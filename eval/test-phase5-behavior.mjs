@@ -46,6 +46,7 @@ const {
   countTrailingRedStreak,
   computeBehavioralScore,
   aggregateSessionSignals,
+  computeMissedCheckinStreak,
 } = burnout;
 
 // ─── 1. classifyGaugeColor — threshold crossings ───────────────────────────
@@ -329,20 +330,6 @@ function makeMockSupabase(initialRow) {
 
 // ─── 8. Missed check-in streak — Level 2 emergency-contact trigger threshold ───
 console.log('\n[8] Missed check-in streak — emergency-contact outreach trigger');
-
-function computeMissedCheckinStreak(sessions, todayISODate) {
-  const byDate = new Map(sessions.map((s) => [s.scheduled_for, s]));
-  let streak = 0;
-  const cursor = new Date(`${todayISODate}T00:00:00Z`);
-  for (;;) {
-    cursor.setUTCDate(cursor.getUTCDate() - 1);
-    const dateStr = cursor.toISOString().slice(0, 10);
-    const row = byDate.get(dateStr);
-    if (!row || row.status === 'completed') break;
-    streak += 1;
-  }
-  return streak;
-}
 
 const sessionsAllMissed = [
   { scheduled_for: '2026-09-20', status: 'pending' },
