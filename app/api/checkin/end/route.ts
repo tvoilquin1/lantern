@@ -1,11 +1,11 @@
-import { NextResponse } from 'next/server';
-import type { CoreMessage } from 'ai';
-import { summarizeAndScoreSession } from '@/lib/companion/sessionEnd';
-import { aggregateSessionSignals } from '@/lib/companion/burnout';
-import { createClient } from '@/lib/supabase/server';
+import { NextResponse } from "next/server";
+import type { CoreMessage } from "ai";
+import { summarizeAndScoreSession } from "@/lib/companion/sessionEnd";
+import { aggregateSessionSignals } from "@/lib/companion/burnout";
+import { createClient } from "@/lib/supabase/server";
 
-export const runtime = 'nodejs';
-export const dynamic = 'force-dynamic';
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 type EndRequestBody = {
   sessionId: string;
@@ -23,25 +23,25 @@ export async function POST(req: Request) {
   const { sessionId, messages } = (await req.json()) as EndRequestBody;
 
   if (!sessionId || !Array.isArray(messages)) {
-    return NextResponse.json({ error: 'sessionId and messages are required' }, { status: 400 });
+    return NextResponse.json({ error: "sessionId and messages are required" }, { status: 400 });
   }
 
   const supabase = createClient();
 
   const { data: session, error: sessionError } = await supabase
-    .from('sessions')
-    .select('id,status,created_at')
-    .eq('id', sessionId)
+    .from("sessions")
+    .select("id,status,created_at")
+    .eq("id", sessionId)
     .maybeSingle();
 
   if (sessionError || !session) {
-    console.error('[api/checkin/end] session not found', sessionError);
-    return NextResponse.json({ error: 'session not found' }, { status: 404 });
+    console.error("[api/checkin/end] session not found", sessionError);
+    return NextResponse.json({ error: "session not found" }, { status: 404 });
   }
 
-  if (session.status === 'completed') {
+  if (session.status === "completed") {
     // Idempotent — a re-submitted "done" click should not double-aggregate.
-    return NextResponse.json({ status: 'already_completed' });
+    return NextResponse.json({ status: "already_completed" });
   }
 
   const { summary, sentimentScore } = await summarizeAndScoreSession(messages);
@@ -54,14 +54,14 @@ export async function POST(req: Request) {
   });
 
   const { error: updateError } = await supabase
-    .from('sessions')
-    .update({ status: 'completed', summary })
-    .eq('id', sessionId);
+    .from("sessions")
+    .update({ status: "completed", summary })
+    .eq("id", sessionId);
 
   if (updateError) {
-    console.error('[api/checkin/end] failed to mark session completed', updateError);
-    return NextResponse.json({ error: 'failed to complete session' }, { status: 500 });
+    console.error("[api/checkin/end] failed to mark session completed", updateError);
+    return NextResponse.json({ error: "failed to complete session" }, { status: 500 });
   }
 
-  return NextResponse.json({ status: 'completed', gauge: result });
+  return NextResponse.json({ status: "completed", gauge: result });
 }

@@ -1,5 +1,5 @@
-import type { createClient } from '@/lib/supabase/server';
-import { burnoutSignals } from '@/data/burnoutSignals';
+import type { createClient } from "@/lib/supabase/server";
+import { burnoutSignals } from "@/data/burnoutSignals";
 
 type SupabaseServerClient = ReturnType<typeof createClient>;
 
@@ -43,16 +43,16 @@ export const MISSED_CHECKIN_ESCALATION_DAYS = 5;
 // Biweekly LCWS re-screen cadence.
 export const LCWS_RESCREEN_INTERVAL_DAYS = 14;
 
-export type GaugeColor = 'green' | 'amber' | 'red';
+export type GaugeColor = "green" | "amber" | "red";
 
 export function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value));
 }
 
 export function classifyGaugeColor(score: number): GaugeColor {
-  if (score < RED_THRESHOLD) return 'red';
-  if (score < AMBER_THRESHOLD) return 'amber';
-  return 'green';
+  if (score < RED_THRESHOLD) return "red";
+  if (score < AMBER_THRESHOLD) return "amber";
+  return "green";
 }
 
 /** Converts an LCWS 0-4 domain composite onto the 1-5 gauge scale. */
@@ -62,7 +62,7 @@ export function gaugeScoreFromLcws(lcws0to4: number): number {
 
 export type ScoreHistoryEntry = {
   at: string;
-  type: 'baseline' | 'session' | 'lcws_rescreen';
+  type: "baseline" | "session" | "lcws_rescreen";
   compositeScore: number;
   color: GaugeColor;
   sentimentScore?: number;
@@ -71,7 +71,7 @@ export type ScoreHistoryEntry = {
   sessionId?: string | null;
 };
 
-export function buildScoreHistoryEntry(entry: Omit<ScoreHistoryEntry, 'at'>): ScoreHistoryEntry {
+export function buildScoreHistoryEntry(entry: Omit<ScoreHistoryEntry, "at">): ScoreHistoryEntry {
   return { at: new Date().toISOString(), ...entry };
 }
 
@@ -79,7 +79,7 @@ export function buildScoreHistoryEntry(entry: Omit<ScoreHistoryEntry, 'at'>): Sc
 export function countTrailingRedStreak(history: ScoreHistoryEntry[]): number {
   let streak = 0;
   for (let i = history.length - 1; i >= 0; i -= 1) {
-    if (history[i]!.color === 'red') {
+    if (history[i]!.color === "red") {
       streak += 1;
     } else {
       break;
@@ -100,14 +100,15 @@ export type BehavioralScoreInputs = {
  * data/burnoutSignals.ts's 30% behavioral bucket.
  */
 export function computeBehavioralScore(inputs: BehavioralScoreInputs): number {
-  const missedGapSignal = burnoutSignals.find((s) => s.id === 'missed_checkin_gap');
-  const nightSignal = burnoutSignals.find((s) => s.id === 'night_time_session');
+  const missedGapSignal = burnoutSignals.find((s) => s.id === "missed_checkin_gap");
+  const nightSignal = burnoutSignals.find((s) => s.id === "night_time_session");
   const range = GAUGE_MAX - GAUGE_MIN;
 
   let score = GAUGE_MAX;
 
   const gapDays = inputs.lastCheckInAt
-    ? (new Date(inputs.newCheckInAt).getTime() - new Date(inputs.lastCheckInAt).getTime()) / 86_400_000
+    ? (new Date(inputs.newCheckInAt).getTime() - new Date(inputs.lastCheckInAt).getTime()) /
+      86_400_000
     : 0;
   if (gapDays > 1 && missedGapSignal) {
     score -= missedGapSignal.weight * range;
@@ -130,7 +131,10 @@ export type CheckinSessionRow = { scheduled_for: string; status: string };
  * than treating it as a miss) — a missing row means the cron wasn't running
  * yet that day, not that the caregiver skipped a real prompt.
  */
-export function computeMissedCheckinStreak(sessions: CheckinSessionRow[], todayISODate: string): number {
+export function computeMissedCheckinStreak(
+  sessions: CheckinSessionRow[],
+  todayISODate: string
+): number {
   const byDate = new Map(sessions.map((s) => [s.scheduled_for, s]));
   let streak = 0;
   const cursor = new Date(`${todayISODate}T00:00:00Z`);
@@ -138,7 +142,7 @@ export function computeMissedCheckinStreak(sessions: CheckinSessionRow[], todayI
     cursor.setUTCDate(cursor.getUTCDate() - 1);
     const dateStr = cursor.toISOString().slice(0, 10);
     const row = byDate.get(dateStr);
-    if (!row || row.status === 'completed') break;
+    if (!row || row.status === "completed") break;
     streak += 1;
   }
   return streak;
@@ -179,21 +183,21 @@ export type AggregateSessionSignalsResult = {
  * 0005_add_burnout_tracking.sql.
  */
 export async function aggregateSessionSignals(
-  input: AggregateSessionSignalsInput,
+  input: AggregateSessionSignalsInput
 ): Promise<AggregateSessionSignalsResult | null> {
   const { supabase, sessionId, sentimentScore, sessionCreatedAt } = input;
 
   const { data: state } = await supabase
-    .from('caregiver_state')
+    .from("caregiver_state")
     .select(
-      'id,burnout_score_current,score_history,last_check_in_at,lcws_baseline_score,lcws_latest_score,red_at,amber_at,level2_support_surfaced_at',
+      "id,burnout_score_current,score_history,last_check_in_at,lcws_baseline_score,lcws_latest_score,red_at,amber_at,level2_support_surfaced_at"
     )
     .limit(1)
     .maybeSingle();
 
   if (!state) {
     // Onboarding hasn't completed yet — no gauge row to aggregate into.
-    console.warn('[burnout] aggregateSessionSignals called with no caregiver_state row; skipping');
+    console.warn("[burnout] aggregateSessionSignals called with no caregiver_state row; skipping");
     return null;
   }
 
@@ -229,15 +233,15 @@ export async function aggregateSessionSignals(
       behavioralScore * SIGNAL_WEIGHTS.behavioral +
       lcwsScore * SIGNAL_WEIGHTS.lcwsRescreen,
     GAUGE_MIN,
-    GAUGE_MAX,
+    GAUGE_MAX
   );
 
   const previousColor = classifyGaugeColor(row.burnout_score_current ?? compositeScore);
   const color = classifyGaugeColor(compositeScore);
-  const crossedToRed = previousColor !== 'red' && color === 'red';
+  const crossedToRed = previousColor !== "red" && color === "red";
 
   const entry = buildScoreHistoryEntry({
-    type: 'session',
+    type: "session",
     compositeScore,
     color,
     sentimentScore,
@@ -248,13 +252,16 @@ export async function aggregateSessionSignals(
   const history = [...(row.score_history ?? []), entry];
   const redStreakDays = countTrailingRedStreak(history);
 
-  const redAt = color === 'red' ? (row.red_at ?? now) : null;
-  const amberAt = color === 'amber' ? (row.amber_at ?? now) : color === 'green' ? null : row.amber_at;
+  const redAt = color === "red" ? (row.red_at ?? now) : null;
+  const amberAt =
+    color === "amber" ? (row.amber_at ?? now) : color === "green" ? null : row.amber_at;
   const level2ShouldSurface =
-    color === 'red' && redStreakDays >= RED_STREAK_ESCALATION_DAYS && row.level2_support_surfaced_at == null;
+    color === "red" &&
+    redStreakDays >= RED_STREAK_ESCALATION_DAYS &&
+    row.level2_support_surfaced_at == null;
 
   const { error: stateUpdateError } = await supabase
-    .from('caregiver_state')
+    .from("caregiver_state")
     .update({
       burnout_score_current: compositeScore,
       score_history: history,
@@ -263,10 +270,10 @@ export async function aggregateSessionSignals(
       amber_at: amberAt,
       gauge_crossed_red_pending: crossedToRed,
       level2_support_pending: level2ShouldSurface,
-      level2_support_surfaced_at: color === 'red' ? row.level2_support_surfaced_at : null,
+      level2_support_surfaced_at: color === "red" ? row.level2_support_surfaced_at : null,
       missed_checkin_streak: 0,
     })
-    .eq('id', row.id);
+    .eq("id", row.id);
 
   if (stateUpdateError) {
     throw new Error(`[burnout] failed to persist gauge state: ${stateUpdateError.message}`);

@@ -42,10 +42,13 @@ export function Gauge({ color, className }: GaugeProps) {
       className={cn(
         "flex items-center gap-12 rounded-card border px-card-x py-card-y",
         COLOR_STYLES[color],
-        className,
+        className
       )}
     >
-      <span className={cn("h-11 w-11 flex-shrink-0 rounded-pill", DOT_STYLES[color])} aria-hidden="true" />
+      <span
+        className={cn("h-11 w-11 flex-shrink-0 rounded-pill", DOT_STYLES[color])}
+        aria-hidden="true"
+      />
       <div className="flex flex-col gap-2">
         <span className="text-title font-semibold">{LABEL[color]}</span>
         <span className="text-supporting">{SUPPORTING[color]}</span>
