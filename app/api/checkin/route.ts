@@ -114,21 +114,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'session not found' }, { status: 404 });
   }
 
-  // These pending flags are one-shot: they're surfaced in this opening
-  // message (via buildSystemPrompt below), so clear them here rather than
-  // waiting for the next post-session aggregation to overwrite them.
-  if (state?.id && (gaugeCrossedToRed || surfaceHumanSupportResources)) {
-    await supabase
-      .from('caregiver_state')
-      .update({
-        ...(gaugeCrossedToRed ? { gauge_crossed_red_pending: false } : {}),
-        ...(surfaceHumanSupportResources
-          ? { level2_support_pending: false, level2_support_surfaced_at: new Date().toISOString() }
-          : {}),
-      })
-      .eq('id', state.id);
-  }
-
   const patientStageId = profile?.stage_id ?? null;
 
   const system = buildSystemPrompt({
@@ -147,6 +132,18 @@ export async function POST(req: Request) {
     system,
     prompt: "Begin today's check-in now with your opening question.",
   });
+
+  if (state?.id && (gaugeCrossedToRed || surfaceHumanSupportResources)) {
+    await supabase
+      .from('caregiver_state')
+      .update({
+        ...(gaugeCrossedToRed ? { gauge_crossed_red_pending: false } : {}),
+        ...(surfaceHumanSupportResources
+          ? { level2_support_pending: false, level2_support_surfaced_at: new Date().toISOString() }
+          : {}),
+      })
+      .eq('id', state.id);
+  }
 
   return NextResponse.json({ message: text });
 }
