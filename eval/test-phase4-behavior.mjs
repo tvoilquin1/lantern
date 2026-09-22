@@ -4,13 +4,20 @@
  */
 import { createRequire } from 'module';
 import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import path from 'path';
+
+// Resolve relative to this script's own location so the test runs correctly
+// regardless of which worktree/checkout it lives in.
+const PROJECT_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 const _require = createRequire(import.meta.url);
-// jiti is in the project root's node_modules, not eval/
-const jitiFactory = _require('/Users/home/.no-mistakes/worktrees/bac8b603f6cd/01M30DG3N4GZMRVQKG67A5M49Z/node_modules/jiti/lib/index.js');
+// jiti is in the project root's node_modules, not eval/ — module resolution
+// walks up from PROJECT_ROOT to find it.
+const jitiFactory = _require(_require.resolve('jiti/lib/index.js', { paths: [PROJECT_ROOT] }));
 // Run jiti relative to project root so @/ aliases and imports resolve correctly
-const jiti = jitiFactory('/Users/home/.no-mistakes/worktrees/bac8b603f6cd/01M30DG3N4GZMRVQKG67A5M49Z/', {
-  alias: { '@': '/Users/home/.no-mistakes/worktrees/bac8b603f6cd/01M30DG3N4GZMRVQKG67A5M49Z' },
+const jiti = jitiFactory(PROJECT_ROOT + '/', {
+  alias: { '@': PROJECT_ROOT },
   interopDefault: true,
 });
 
@@ -138,7 +145,7 @@ assert(handleInsertError({ code: '500', message: 'other error' }).httpStatus ===
 console.log('\n[4] buildSystemPrompt — daily_checkin section is conditionally included');
 
 try {
-  const { buildSystemPrompt } = jiti('/Users/home/.no-mistakes/worktrees/bac8b603f6cd/01M30DG3N4GZMRVQKG67A5M49Z/lib/companion/systemPrompt.ts');
+  const { buildSystemPrompt } = jiti(path.join(PROJECT_ROOT, 'lib/companion/systemPrompt.ts'));
 
   const checkinPrompt = buildSystemPrompt({
     patientStage: 'early',
@@ -172,7 +179,7 @@ try {
 console.log('\n[5] constants/copy.ts — all checkin string keys are present');
 
 try {
-  const { copy } = jiti('/Users/home/.no-mistakes/worktrees/bac8b603f6cd/01M30DG3N4GZMRVQKG67A5M49Z/constants/copy.ts');
+  const { copy } = jiti(path.join(PROJECT_ROOT, 'constants/copy.ts'));
   const requiredKeys = [
     'checkinCompanionName',
     'checkinScheduleNote',
@@ -202,7 +209,10 @@ try {
 // ─── 6. Migration SQL — partial unique index semantics ───────────────────────
 console.log('\n[6] Migration SQL — partial unique index semantics');
 
-const migrationSQL = readFileSync('/Users/home/.no-mistakes/worktrees/bac8b603f6cd/01M30DG3N4GZMRVQKG67A5M49Z/supabase/migrations/0004_add_checkin_scheduling.sql', 'utf8');
+const migrationSQL = readFileSync(
+  path.join(PROJECT_ROOT, 'supabase/migrations/0004_add_checkin_scheduling.sql'),
+  'utf8',
+);
 
 const indexMatch = migrationSQL.match(
   /create unique index[^;]+sessions_daily_checkin_once_per_day[^;]+on sessions[^;]+\(scheduled_for\)[^;]+where kind = 'daily_checkin'/si
@@ -218,10 +228,10 @@ import { execSync } from 'child_process';
 try {
   const output = execSync('SKIP_LIVE_PASS=true node eval/validate-golden-conversations.js', {
     encoding: 'utf8',
-    cwd: '/Users/home/.no-mistakes/worktrees/bac8b603f6cd/01M30DG3N4GZMRVQKG67A5M49Z',
+    cwd: PROJECT_ROOT,
   });
-  const allPass = output.includes('4 passed, 0 failed');
-  assert(allPass, 'all 4 golden conversation fixtures pass schema validation');
+  const allPass = /\d+ passed, 0 failed/.test(output);
+  assert(allPass, 'all golden conversation fixtures pass schema validation');
   if (!allPass) console.log(output);
 } catch (e) {
   failed++;

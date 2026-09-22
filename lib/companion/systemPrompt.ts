@@ -1,9 +1,17 @@
+import { wellbeingItems } from '@/data/wellbeingItems';
+
 export type SystemPromptContext = {
   patientStage: 'early' | 'middle' | 'late' | null;
   lastSessionSummary: string | null;
   ragContext: string | null;
   lcwsLevel: number | null;
   sessionKind?: 'daily_checkin' | 'open_conversation';
+  /** Set when the gauge crossed from amber into red since the last session (Phase 5). */
+  gaugeCrossedToRed?: boolean;
+  /** Level 2 human-escalation: 3+ consecutive days at red (Phase 5). */
+  surfaceHumanSupportResources?: boolean;
+  /** Biweekly LCWS re-screen is due — weave the 8 baseline items into this check-in (Phase 5). */
+  lcwsRescreenDue?: boolean;
 };
 
 const STAGE_SUMMARIES: Record<'early' | 'middle' | 'late', string> = {
@@ -54,6 +62,33 @@ export function buildSystemPrompt(ctx: SystemPromptContext): string {
         'Close the check-in with at most one relevant observation, tip, or piece of validation — never a list or summary of everything discussed.',
         "If the caregiver says nothing notable happened, accept that warmly and do not press for more — call the tool with nothing_notable: true rather than inventing detail.",
       ].join('\n'),
+    );
+  }
+
+  if (ctx.gaugeCrossedToRed) {
+    sections.push(
+      "The caregiver's wellbeing signal has recently moved into a harder place since you last spoke. Open this check-in centered on them, not the patient — a warm, specific, proactive question about how they themselves are doing. Lead with acknowledgment, not advice or resources.",
+    );
+  }
+
+  if (ctx.surfaceHumanSupportResources) {
+    sections.push(
+      [
+        "The caregiver has shown sustained signs of being overwhelmed over the last several days (this is Level 2 — distinct from a crisis; do not mention 988 here unless separately warranted).",
+        'Acknowledge how they are doing first, and only once they have responded, gently surface that there are people and resources built for exactly this — caregiver support organizations, local respite care, professional counseling — as categories, not specific named organizations, phone numbers, or URLs you cannot verify.',
+        'Ask permission before going further into specifics ("would it help if I gathered some options together?") rather than launching into a list unprompted.',
+      ].join('\n'),
+    );
+  }
+
+  if (ctx.lcwsRescreenDue) {
+    const itemList = wellbeingItems.map((item) => `- ${item.question}`).join('\n');
+    sections.push(
+      [
+        "It's time for the biweekly wellbeing re-screen. Weave the following questions naturally into today's check-in, one or two at a time — never as a checklist or form, and never show the caregiver a numeric scale:",
+        itemList,
+        'Once every item above has been conversationally covered, call the record_lcws_rescreen tool silently with all scores — never mention the tool or ask the caregiver to confirm individual fields.',
+      ].join('\n\n'),
     );
   }
 

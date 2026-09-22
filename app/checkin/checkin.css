@@ -254,6 +254,23 @@
   cursor: default;
 }
 
+.checkin-app__done-button {
+  display: block;
+  margin: 10px auto 0;
+  padding: 7px 16px;
+  border: none;
+  border-radius: var(--sw-radius-pill);
+  background: transparent;
+  color: var(--sw-ink-muted);
+  font-size: 12.5px;
+  cursor: pointer;
+}
+
+.checkin-app__done-button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
 .checkin-app__error {
   padding: 0 20px 12px;
   font-size: 13px;
