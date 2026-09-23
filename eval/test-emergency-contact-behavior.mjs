@@ -139,7 +139,7 @@ console.log("\n[3] buildEmailBody — email content");
 // ─── 4. EMERGENCY_CONTACT_SCHEMA — validation behavior ────────────────────
 console.log("\n[4] EMERGENCY_CONTACT_SCHEMA — zod validation");
 
-const { EMERGENCY_CONTACT_SCHEMA } = jiti(path.join(PROJECT_ROOT, "app/api/onboard/route.ts"));
+const { EMERGENCY_CONTACT_SCHEMA } = jiti(path.join(PROJECT_ROOT, "lib/companion/emergencyContactSchema.ts"));
 
 {
   const r = EMERGENCY_CONTACT_SCHEMA.safeParse({
