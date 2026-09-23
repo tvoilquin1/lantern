@@ -19,7 +19,7 @@ home). Update this file as phases are dispatched and completed, and as decisions
 | Session persistence model | ✅ Resolved — structured log + rolling end-of-session summary; no raw transcript ever stored |
 | Signal weighting (Phase 5) | ✅ Resolved — self-report sentiment 40% / behavioral 30% / LCWS re-screen 30%, named tunable constants in `lib/companion/burnout.ts` (`SIGNAL_WEIGHTS`) |
 | Amber→red threshold (Phase 5) | ✅ Resolved — red requires gauge score < 3 (`RED_THRESHOLD` in `lib/companion/burnout.ts`), amber band is 3–4. Conservative principle: grounded in the wellbeing-scale doc's own Escalation Velocity Logic, which ties human-support escalation to being "stuck at 2" (Overwhelmed-or-worse), not to level 3 (Strained) — so amber stays ordinary companion-coaching territory and does not itself trigger escalation |
-| Emergency-contact recipient (Phase 5) | ✅ Resolved 2026-09-21 — captain confirmed shipping Phase 5 as-is with the honest no-op trigger (`caregiver_state.emergency_contact_outreach_triggered_at` timestamp + structured `console.warn` in `app/api/cron/daily-checkin/route.ts`, no invented recipient/channel). Emergency-contact capture + real notification is a separate follow-up task, not Phase 5 scope: capture surface likely lands in onboarding; notification channel is email first, SMS later once the app is paid. |
+| Emergency-contact recipient (Phase 5) | ✅ Resolved 2026-09-21 (no-op shipped), then ✅ built out 2026-09-22: real caregiver-designated emergency contact. `supabase/migrations/0006_add_emergency_contact.sql` adds `emergency_contact_name`/`emergency_contact_email`/`emergency_contact_phone`/`emergency_contact_relationship` to `caregiver_state`. Captured conversationally (optional, skippable) in `app/api/onboard/route.ts`'s new `emergency_contact` step; email is zod-validated before persisting. The 5-missed-check-in trigger in `app/api/cron/daily-checkin/route.ts` now sends a real courtesy email via Resend (`lib/notifications/emergencyContactEmail.ts`, `RESEND_API_KEY`/`RESEND_FROM_EMAIL`) when a contact email is on file — see AGENTS.md > Key resolved decisions for full detail. SMS stays out of scope until the app is paid. |
 
 ## Phases
 
@@ -79,17 +79,18 @@ home). Update this file as phases are dispatched and completed, and as decisions
   Additional acceptance criteria (human escalation path):
   - [x] After 3+ consecutive days of qualifying distress / red-threshold signal, companion surfaces human support resources to the caregiver (caregiver support orgs, respite resources — not 988, which is immediate-crisis only) — `RED_STREAK_ESCALATION_DAYS` in `lib/companion/burnout.ts`, surfaced via `surfaceHumanSupportResources` in `systemPrompt.ts`
   - [x] Human-escalation threshold logic (3-day and 5-missed-check-in triggers) — clinically approved 2026-09-06 (D-1 resolved)
-  - [x] After 5 consecutive missed check-ins, system triggers outreach to caregiver-designated emergency contact — narrowest-honest partial, captain-confirmed ship-as-is 2026-09-21: the trigger itself fires and is recorded (`emergency_contact_outreach_triggered_at`, `app/api/cron/daily-checkin`), but no caregiver-designated-contact data model or actual notification channel exists yet — see Decisions above; tracked as a separate follow-up task (capture surface likely in onboarding, channel = email first / SMS later), not Phase 5 scope
+  - [x] After 5 consecutive missed check-ins, system triggers outreach to caregiver-designated emergency contact — built out 2026-09-22 as Phase 5 follow-up: data model (`0006_add_emergency_contact.sql`), conversational capture in onboarding, and real Resend email send in `app/api/cron/daily-checkin`; see Decisions above and the follow-up phase below (now complete)
 
 - [ ] **Phase 6 — Dashboard** (P0-8, M4)
   3-panel read-only dashboard: patient stage, burnout gauge, action items.
   Blocked by: Phase 3, Phase 5.
 
-- [ ] **Emergency-contact capture + notification** (follow-up, not yet sequenced)
-  Caregiver-designated-contact data model (name/relationship/phone or email) plus a real
-  notification send when the 5-missed-check-in trigger fires. Captain-decided 2026-09-21:
-  capture surface likely lands in onboarding; notification channel is email first, SMS
-  later once the app is paid. Blocked by: none technically, but not yet dispatched.
+- [x] **Emergency-contact capture + notification** (Phase 5 follow-up, shipped 2026-09-22)
+  `supabase/migrations/0006_add_emergency_contact.sql` adds four columns to `caregiver_state`.
+  Conversational capture in `app/api/onboard/route.ts` (`emergency_contact` step, optional/skippable).
+  Real Resend courtesy email in `lib/notifications/emergencyContactEmail.ts`, wired into the
+  5-missed-check-in trigger in `app/api/cron/daily-checkin/route.ts`. SMS stays out of scope
+  until the app is paid. Tests: `eval/test-emergency-contact-behavior.mjs`.
 
 - [ ] **Phase 7 — Transition Detection** (P0-5, M2 completion / pre-M5)
   Code can be built once Phase 2 + 4 are done; real validation needs 2+ weeks of live data.
