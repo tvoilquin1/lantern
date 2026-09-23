@@ -70,7 +70,7 @@ const LCWS_SCHEMA = z.object({
   scores: z.object(lcwsScoreShape),
 });
 
-const EMERGENCY_CONTACT_SCHEMA = z.object({
+export const EMERGENCY_CONTACT_SCHEMA = z.object({
   ready: z
     .boolean()
     .describe(

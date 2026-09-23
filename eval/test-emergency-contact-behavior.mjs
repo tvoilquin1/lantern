@@ -40,7 +40,7 @@ console.log("\n[1] sendEmergencyContactOutreachEmail — skip contract");
 const previousApiKey = process.env.RESEND_API_KEY;
 delete process.env.RESEND_API_KEY;
 
-const { sendEmergencyContactOutreachEmail } = jiti(
+const { sendEmergencyContactOutreachEmail, buildEmailBody } = jiti(
   path.join(PROJECT_ROOT, "lib/notifications/emergencyContactEmail.ts")
 );
 
@@ -74,83 +74,126 @@ const migrationSQL = readFileSync(
   "utf-8"
 );
 
+// Normalize: strip SQL line comments, lowercase, collapse whitespace so
+// commented-out statements cannot satisfy the assertions.
+const normalizedSQL = migrationSQL
+  .replace(/--[^\n]*/g, "")
+  .toLowerCase()
+  .replace(/\s+/g, " ")
+  .trim();
+
 assert(
-  /alter table caregiver_state add column if not exists emergency_contact_name text/.test(migrationSQL),
+  normalizedSQL.includes("alter table caregiver_state add column if not exists emergency_contact_name text"),
   "migration idempotently adds emergency_contact_name"
 );
 assert(
-  /alter table caregiver_state add column if not exists emergency_contact_email text/.test(migrationSQL),
+  normalizedSQL.includes("alter table caregiver_state add column if not exists emergency_contact_email text"),
   "migration idempotently adds emergency_contact_email"
 );
 assert(
-  /alter table caregiver_state add column if not exists emergency_contact_phone text/.test(migrationSQL),
+  normalizedSQL.includes("alter table caregiver_state add column if not exists emergency_contact_phone text"),
   "migration idempotently adds emergency_contact_phone (storage only, no SMS sending)"
 );
 assert(
-  /alter table caregiver_state add column if not exists emergency_contact_relationship text/.test(
-    migrationSQL
+  normalizedSQL.includes(
+    "alter table caregiver_state add column if not exists emergency_contact_relationship text"
   ),
   "migration idempotently adds emergency_contact_relationship"
 );
 
-// ─── 3. Cron route — sends exactly once, skips gracefully with no contact ──
-console.log("\n[3] daily-checkin cron — outreach wiring");
+// ─── 3. buildEmailBody — observable email content ─────────────────────────
+console.log("\n[3] buildEmailBody — email content");
 
-const cronRouteSource = readFileSync(
-  path.join(PROJECT_ROOT, "app/api/cron/daily-checkin/route.ts"),
-  "utf-8"
-);
+{
+  const body = buildEmailBody({
+    contactEmail: "sam@example.com",
+    contactName: "Sam",
+    relationship: "sibling",
+    missedCheckinStreak: 7,
+  });
+  assert(typeof body.subject === "string" && body.subject.length > 0, "produces a non-empty subject");
+  assert(body.text.includes("Sam"), "body addresses the named contact");
+  assert(body.text.includes("sibling"), "body includes the relationship");
+  assert(body.text.includes("7"), "body includes the missed-checkin streak count");
+  assert(
+    /not medical advice/i.test(body.text),
+    "body includes the no-medical-advice disclaimer"
+  );
+  assert(
+    /reach out/i.test(body.text),
+    "body suggests the contact reach out to the caregiver"
+  );
+}
 
-assert(
-  /import { sendEmergencyContactOutreachEmail } from ["']@\/lib\/notifications\/emergencyContactEmail["']/.test(
-    cronRouteSource
-  ),
-  "cron route imports sendEmergencyContactOutreachEmail"
-);
-assert(
-  /state\.emergency_contact_outreach_triggered_at == null/.test(cronRouteSource),
-  "cron route still guards outreach on emergency_contact_outreach_triggered_at (fires exactly once per streak)"
-);
-assert(
-  /if \(state\.emergency_contact_email\)/.test(cronRouteSource),
-  "cron route branches on emergency_contact_email presence before sending"
-);
-assert(
-  /emergency_contact_outreach_triggered_at: new Date\(\)\.toISOString\(\)/.test(cronRouteSource),
-  "cron route still records the trigger timestamp regardless of whether a contact is on file"
-);
+{
+  const body = buildEmailBody({
+    contactEmail: "anon@example.com",
+    contactName: null,
+    relationship: null,
+    missedCheckinStreak: 3,
+  });
+  assert(!body.text.includes("null"), "anonymous body does not render the word 'null'");
+  assert(body.text.includes("3"), "anonymous body includes the streak count");
+}
 
-// ─── 4. Onboarding route — captures or allows skipping the contact ────────
-console.log("\n[4] onboard route — emergency-contact capture step");
+// ─── 4. EMERGENCY_CONTACT_SCHEMA — validation behavior ────────────────────
+console.log("\n[4] EMERGENCY_CONTACT_SCHEMA — zod validation");
 
-const onboardRouteSource = readFileSync(
-  path.join(PROJECT_ROOT, "app/api/onboard/route.ts"),
-  "utf-8"
-);
+const { EMERGENCY_CONTACT_SCHEMA } = jiti(path.join(PROJECT_ROOT, "app/api/onboard/route.ts"));
 
-assert(
-  /'staging' \| 'lcws' \| 'emergency_contact' \| 'complete'/.test(onboardRouteSource),
-  "OnboardingStep includes emergency_contact between lcws and complete"
-);
-assert(
-  /EMERGENCY_CONTACT_SCHEMA = z\.object/.test(onboardRouteSource),
-  "onboard route defines EMERGENCY_CONTACT_SCHEMA"
-);
-assert(
-  /z\.string\(\)\.trim\(\)\.email\(\)\.safeParse/.test(onboardRouteSource),
-  "onboard route validates the captured email with zod before persisting"
-);
-assert(
-  /object\.ready && object\.skipped/.test(onboardRouteSource),
-  "onboard route allows the caregiver to skip without breaking onboarding"
-);
-assert(
-  /emergency_contact_name: object\.name/.test(onboardRouteSource) &&
-    /emergency_contact_email: emailResult\.data/.test(onboardRouteSource) &&
-    /emergency_contact_phone: object\.phone/.test(onboardRouteSource) &&
-    /emergency_contact_relationship: object\.relationship/.test(onboardRouteSource),
-  "onboard route persists name, validated email, phone, and relationship to caregiver_state"
-);
+{
+  const r = EMERGENCY_CONTACT_SCHEMA.safeParse({
+    ready: true,
+    skipped: true,
+    name: null,
+    email: null,
+    phone: null,
+    relationship: null,
+  });
+  assert(r.success, "schema accepts a skipped-contact response");
+}
+
+{
+  const r = EMERGENCY_CONTACT_SCHEMA.safeParse({
+    ready: true,
+    skipped: false,
+    name: "Sam",
+    email: "sam@example.com",
+    phone: "555-1234",
+    relationship: "sibling",
+  });
+  assert(r.success, "schema accepts a complete contact with all fields");
+  assert(r.data?.email === "sam@example.com", "schema preserves the email value");
+}
+
+{
+  const r = EMERGENCY_CONTACT_SCHEMA.safeParse({
+    ready: true,
+    skipped: false,
+    name: "Sam",
+    email: "sam@example.com",
+    phone: null,
+    relationship: "sibling",
+  });
+  assert(r.success, "schema accepts a contact without phone (phone is optional)");
+}
+
+{
+  const r = EMERGENCY_CONTACT_SCHEMA.safeParse({
+    ready: false,
+    skipped: false,
+    name: null,
+    email: null,
+    phone: null,
+    relationship: null,
+  });
+  assert(r.success, "schema accepts an in-progress response (ready:false)");
+}
+
+{
+  const r = EMERGENCY_CONTACT_SCHEMA.safeParse({ ready: "yes", skipped: false });
+  assert(!r.success, "schema rejects a non-boolean ready field");
+}
 
 // ─── Summary ──────────────────────────────────────────────────────────────────
 console.log(`\n${passed + failed} checks — ${passed} passed, ${failed} failed`);

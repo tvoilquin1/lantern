@@ -15,7 +15,7 @@ export type EmergencyContactOutreachInput = {
 
 export type EmergencyContactOutreachResult = { sent: true } | { sent: false; reason: string };
 
-function buildEmailBody(input: EmergencyContactOutreachInput): { subject: string; text: string } {
+export function buildEmailBody(input: EmergencyContactOutreachInput): { subject: string; text: string } {
   const greeting = input.contactName ? `Hi ${input.contactName},` : "Hello,";
   const relationshipNote = input.relationship
     ? ` (you're listed as their ${input.relationship})`
