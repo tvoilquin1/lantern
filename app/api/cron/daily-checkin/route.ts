@@ -4,6 +4,7 @@ import {
   MISSED_CHECKIN_ESCALATION_DAYS,
   computeMissedCheckinStreak,
 } from "@/lib/companion/burnout";
+import { sendEmergencyContactOutreachEmail } from "@/lib/notifications/emergencyContactEmail";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -13,6 +14,9 @@ type CaregiverStateRow = {
   id: string;
   missed_checkin_streak: number;
   emergency_contact_outreach_triggered_at: string | null;
+  emergency_contact_name: string | null;
+  emergency_contact_email: string | null;
+  emergency_contact_relationship: string | null;
 };
 
 /**
@@ -84,11 +88,11 @@ export async function GET(req: Request) {
 /**
  * Missed-check-in tracking for the Level-2 human-escalation path
  * (Ref/phase-3-prd.md Feature 4): 5+ consecutive missed check-ins triggers
- * emergency-contact outreach. No caregiver-designated emergency contact
- * exists anywhere in the data model (see AGENTS.md) — this records a
- * timestamp only, the narrowest-honest implementation of the trigger, and is
- * flagged to firstmate as a needs-decision gap rather than inventing a
- * recipient.
+ * emergency-contact outreach — a real email via Resend to the
+ * caregiver-designated contact (0006_add_emergency_contact.sql), captured
+ * during onboarding. The outreach fires exactly once per streak, guarded by
+ * emergency_contact_outreach_triggered_at; when no contact is on file the
+ * timestamp still records the trigger, but the send is skipped.
  */
 async function updateMissedCheckinStreak(
   supabase: ReturnType<typeof createSupabaseRestClient>,
@@ -101,7 +105,9 @@ async function updateMissedCheckinStreak(
 
   const { data: states, error: stateError } = await supabase
     .from<CaregiverStateRow>("caregiver_state")
-    .select("id,missed_checkin_streak,emergency_contact_outreach_triggered_at");
+    .select(
+      "id,missed_checkin_streak,emergency_contact_outreach_triggered_at,emergency_contact_name,emergency_contact_email,emergency_contact_relationship"
+    );
 
   if (checkinsError || stateError || !states || states.length === 0) {
     if (checkinsError)
@@ -119,10 +125,25 @@ async function updateMissedCheckinStreak(
     state.emergency_contact_outreach_triggered_at == null;
 
   if (shouldTriggerOutreach) {
-    console.warn(
-      "[burnout] emergency contact outreach triggered — no caregiver-designated emergency contact exists in the data model; recording only",
-      { missedCheckinStreak: streak, caregiverStateId: state.id }
-    );
+    if (state.emergency_contact_email) {
+      const result = await sendEmergencyContactOutreachEmail({
+        contactEmail: state.emergency_contact_email,
+        contactName: state.emergency_contact_name,
+        relationship: state.emergency_contact_relationship,
+        missedCheckinStreak: streak,
+      });
+      if (!result.sent) {
+        console.warn("[burnout] emergency contact outreach email not sent", {
+          reason: result.reason,
+          caregiverStateId: state.id,
+        });
+      }
+    } else {
+      console.warn(
+        "[burnout] emergency contact outreach triggered — no emergency contact on file; recording only",
+        { missedCheckinStreak: streak, caregiverStateId: state.id }
+      );
+    }
   }
 
   await supabase
