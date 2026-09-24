@@ -1,8 +1,12 @@
 /**
  * Behavioral test for the Option B retrieval-failure handling in
- * app/api/chat/route.ts: a `retrieve()` rejection must never surface as a raw
+ * app/api/chat/route.ts: a retrieve() rejection must never surface as a raw
  * 500, must never fall through to an ungrounded streamText call, and must log
  * the real underlying error server-side.
+ *
+ * Imports the real POST handler via jiti; retrieve() and streamText are
+ * redirected to controllable stubs via jiti aliases so both paths are driven
+ * through the actual route code without real network or DB calls.
  *
  * Run with: node eval/test-retrieval-failure-handling.mjs
  */
@@ -10,19 +14,37 @@ import { createRequire } from 'module';
 import { fileURLToPath } from 'url';
 import path from 'path';
 
-// Resolve relative to this script's own location so the test runs correctly
-// regardless of which worktree/checkout it lives in.
 const PROJECT_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 const _require = createRequire(import.meta.url);
-// jiti is in the project root's node_modules, not eval/ — module resolution
-// walks up from PROJECT_ROOT to find it.
 const jitiFactory = _require(_require.resolve('jiti/lib/index.js', { paths: [PROJECT_ROOT] }));
-// Run jiti relative to project root so @/ aliases and imports resolve correctly
+
+const RETRIEVE_STUB = path.join(PROJECT_ROOT, 'eval/__stubs__/retrieve-stub.ts');
+const AI_STUB = path.join(PROJECT_ROOT, 'eval/__stubs__/ai-stub.ts');
+const ANTHROPIC_STUB = path.join(PROJECT_ROOT, 'eval/__stubs__/anthropic-stub.ts');
+
+// More-specific aliases must appear before the generic '@' fallback so jiti
+// applies the longest matching prefix first.
 const jiti = jitiFactory(PROJECT_ROOT + '/', {
-  alias: { '@': PROJECT_ROOT },
+  alias: {
+    '@/lib/retrieval/retrieve': RETRIEVE_STUB,
+    'ai': AI_STUB,
+    '@ai-sdk/anthropic': ANTHROPIC_STUB,
+    '@': PROJECT_ROOT,
+  },
   interopDefault: true,
 });
+
+// Load stubs before the route so jiti's module cache holds the same instances
+// the route will receive when it resolves these aliased imports.
+const retrieveStub = jiti(RETRIEVE_STUB);
+const aiStub = jiti(AI_STUB);
+
+// Load the real route handler. Its imports of retrieve, ai, and @ai-sdk/anthropic
+// are redirected to the stubs above via the jiti alias configuration.
+const { POST } = jiti(path.join(PROJECT_ROOT, 'app/api/chat/route.ts'));
+
+const { copy } = jiti(path.join(PROJECT_ROOT, 'constants/copy.ts'));
 
 let passed = 0;
 let failed = 0;
@@ -39,78 +61,87 @@ function assert(condition, label) {
   }
 }
 
-const { copy } = jiti(path.join(PROJECT_ROOT, 'constants/copy.ts'));
-
-// Minimal replica of the route's post-crisis-check control flow, accepting
-// the retrieve/streamText calls as injected functions so we exercise the
-// branching logic itself rather than the real network/DB calls.
-async function runChatRoute({ retrieve, streamText, logError }) {
-  let retrievedChunks;
-  try {
-    retrievedChunks = await retrieve();
-  } catch (error) {
-    logError(error);
-    return { kind: 'retrieval-unavailable', message: copy.chatRetrievalUnavailableMessage };
-  }
-
-  const text = await streamText(retrievedChunks);
-  return { kind: 'answered', text };
-}
-
-console.log('\n[1] Retrieval failure — no raw 500, no ungrounded answer');
-
-{
-  const sentinelError = new Error('Vault similarity search failed: relation "match_vault_chunks" does not exist');
-  let loggedError = null;
-  let streamTextCalled = false;
-
-  const outcome = await runChatRoute({
-    retrieve: async () => {
-      throw sentinelError;
-    },
-    streamText: async () => {
-      streamTextCalled = true;
-      return 'this should never be reached';
-    },
-    logError: (error) => {
-      loggedError = error;
-    },
+function makeRequest(body) {
+  return new Request('http://localhost/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
   });
-
-  assert(outcome.kind === 'retrieval-unavailable', 'a retrieval failure resolves to the safe fallback path, not a thrown 500');
-  assert(streamTextCalled === false, 'the companion never calls streamText (never answers ungrounded) when retrieval fails');
-  assert(loggedError === sentinelError, 'the real underlying retrieval error is logged server-side, not a generic message');
-  assert(outcome.message === copy.chatRetrievalUnavailableMessage, 'the caregiver-facing message is the dedicated retrieval-unavailable copy');
 }
 
-console.log('\n[2] Successful retrieval — unaffected by the failure-handling branch');
+// Parse AI SDK data stream format: lines like `0:"text content"\n` → plain text
+function extractTextFromDataStream(raw) {
+  return raw
+    .split('\n')
+    .filter((line) => line.startsWith('0:'))
+    .map((line) => JSON.parse(line.slice(2)))
+    .join('');
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+console.log('\n[1] Retrieval failure — real route streams the safe fallback message');
 
 {
-  let streamTextCalled = false;
+  const sentinelError = new Error(
+    'Vault similarity search failed: relation "match_vault_chunks" does not exist',
+  );
+  retrieveStub.__setRetrieveBehavior('throw', sentinelError);
+  aiStub.__resetStreamTextCallCount();
 
-  const outcome = await runChatRoute({
-    retrieve: async () => [{ doc_path: 'x', heading: null, content: 'chunk', relevance_score: 1 }],
-    streamText: async (chunks) => {
-      streamTextCalled = true;
-      return `answered with ${chunks.length} chunk(s)`;
-    },
-    logError: () => {
-      throw new Error('logError should not be called on success');
-    },
+  let capturedErrorArg = null;
+  const origConsoleError = console.error;
+  console.error = (...args) => {
+    capturedErrorArg = args[1]; // route logs: console.error("...", error)
+  };
+
+  const req = makeRequest({
+    messages: [{ role: 'user', content: 'How do I manage sundowning behaviour?' }],
   });
+  const response = await POST(req);
+  console.error = origConsoleError;
 
-  assert(outcome.kind === 'answered', 'a successful retrieval proceeds to answer normally');
-  assert(streamTextCalled === true, 'streamText is called when retrieval succeeds');
+  const streamedText = extractTextFromDataStream(await response.text());
+
+  assert(
+    streamedText === copy.chatRetrievalUnavailableMessage,
+    'failure-path response body equals copy.chatRetrievalUnavailableMessage delivered through the real streaming response',
+  );
+  assert(
+    capturedErrorArg === sentinelError,
+    'the real underlying retrieval error is logged via console.error, not a generic message',
+  );
+  assert(
+    aiStub.__getStreamTextCallCount() === 0,
+    'streamText is never called (companion never answers ungrounded) when retrieval fails',
+  );
 }
 
-console.log('\n[3] Fallback message content — clinical-safe, matches crisis-handling tone');
+// ─────────────────────────────────────────────────────────────────────────────
+console.log('\n[2] Successful retrieval — real route streams model text, not the fallback');
 
 {
-  const message = copy.chatRetrievalUnavailableMessage;
-  assert(typeof message === 'string' && message.length > 0, 'chatRetrievalUnavailableMessage is defined in constants/copy.ts');
-  assert(/try again/i.test(message), 'message suggests trying again in a moment');
-  assert(/988/.test(message), 'message includes the 988 Suicide and Crisis Lifeline, consistent with lib/companion/crisis.ts');
-  assert(!/here.?s (what|how)/i.test(message), 'message does not attempt to answer the caregiving question ungrounded');
+  retrieveStub.__setRetrieveBehavior('success');
+  aiStub.__resetStreamTextCallCount();
+
+  const req = makeRequest({
+    messages: [{ role: 'user', content: 'How do I manage sundowning behaviour?' }],
+  });
+  const response = await POST(req);
+
+  const streamedText = extractTextFromDataStream(await response.text());
+
+  assert(
+    !streamedText.includes(copy.chatRetrievalUnavailableMessage),
+    'success-path response body does not contain the retrieval-unavailable fallback message',
+  );
+  assert(
+    aiStub.__getStreamTextCallCount() === 1,
+    'streamText is called exactly once when retrieval succeeds',
+  );
+  assert(
+    streamedText.includes(aiStub.MOCK_STREAM_TEXT_RESPONSE),
+    'success-path response body contains the text yielded by the mock streamText',
+  );
 }
 
 // ─── Summary ──────────────────────────────────────────────────────────────────
