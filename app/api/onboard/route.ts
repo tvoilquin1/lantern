@@ -7,10 +7,11 @@ import { wellbeingItems } from '@/data/wellbeingItems';
 import { createClient } from '@/lib/supabase/server';
 import { copy } from '@/constants/copy';
 import { buildScoreHistoryEntry, classifyGaugeColor, gaugeScoreFromLcws } from '@/lib/companion/burnout';
+import { EMERGENCY_CONTACT_SCHEMA } from '@/lib/companion/emergencyContactSchema';
 
 export const runtime = 'nodejs';
 
-type OnboardingStep = 'staging' | 'lcws' | 'complete';
+type OnboardingStep = 'staging' | 'lcws' | 'emergency_contact' | 'complete';
 
 type OnboardRequestBody = {
   messages: CoreMessage[];
@@ -37,6 +38,16 @@ function buildLcwsSystemPrompt(): string {
     'You are the Lantern companion, checking in with a family caregiver about their own wellbeing as part of a short baseline conversation.',
     'Weave the following questions into a warm, natural conversation, one or two at a time — do not read them as a checklist, and do not show the caregiver a numeric scale.',
     itemList,
+    'This is not medical advice.',
+  ].join('\n\n');
+}
+
+function buildEmergencyContactSystemPrompt(): string {
+  return [
+    'You are the Lantern companion, wrapping up a short onboarding conversation with a family caregiver.',
+    "Gently ask if there's someone they'd trust as an emergency contact — someone Lantern could reach, only if the caregiver goes quiet for an unusually long stretch (several daily check-ins missed in a row).",
+    "If they'd like to add someone, get that person's name, their relationship to the caregiver, an email address, and a phone number for them — one at a time, in natural conversation. The phone number is stored for reference only; Lantern does not text or call yet.",
+    "Make clear this is entirely optional. If they'd rather skip it, that's completely fine — let them know they can add a contact later, and move on without pressing.",
     'This is not medical advice.',
   ].join('\n\n');
 }
@@ -118,7 +129,12 @@ export async function POST(req: Request) {
     });
   }
 
-  const system = currentStep === 'staging' ? buildStagingSystemPrompt() : buildLcwsSystemPrompt();
+  const system =
+    currentStep === 'staging'
+      ? buildStagingSystemPrompt()
+      : currentStep === 'lcws'
+        ? buildLcwsSystemPrompt()
+        : buildEmergencyContactSystemPrompt();
 
   return createDataStreamResponse({
     execute: async (dataStream) => {
@@ -230,9 +246,56 @@ export async function POST(req: Request) {
             await supabase.from('caregiver_state').insert(statePayload);
           }
 
-          await writeProgress(supabase, progressRow?.id, 'complete', {});
+          await writeProgress(supabase, progressRow?.id, 'emergency_contact', {});
         } else {
           await writeProgress(supabase, progressRow?.id, 'lcws', { scores: object.scores });
+        }
+      } else if (currentStep === 'emergency_contact') {
+        const { object } = await generateObject({
+          model: anthropic('claude-sonnet-4-6'),
+          schema: EMERGENCY_CONTACT_SCHEMA,
+          system:
+            'Given this onboarding conversation, determine whether the caregiver has just finished either providing an emergency contact (name, relationship, email, and optionally a phone number) or explicitly declining to add one.',
+          messages: conversation,
+        });
+
+        if (object.ready && object.skipped) {
+          await writeProgress(supabase, progressRow?.id, 'complete', {});
+        } else if (object.ready) {
+          const emailResult = z.string().trim().email().safeParse(object.email ?? '');
+
+          if (!object.name || !object.relationship || !emailResult.success) {
+            dataStream.write(formatDataStreamPart('error', 'incomplete_emergency_contact'));
+            await writeProgress(supabase, progressRow?.id, 'emergency_contact', {
+              emergencyContact: object,
+            });
+            return;
+          }
+
+          const { data: existingState } = await supabase
+            .from('caregiver_state')
+            .select('id')
+            .limit(1)
+            .maybeSingle();
+
+          const contactPayload = {
+            emergency_contact_name: object.name,
+            emergency_contact_email: emailResult.data,
+            emergency_contact_phone: object.phone,
+            emergency_contact_relationship: object.relationship,
+          };
+
+          if (existingState) {
+            await supabase.from('caregiver_state').update(contactPayload).eq('id', existingState.id);
+          } else {
+            await supabase.from('caregiver_state').insert(contactPayload);
+          }
+
+          await writeProgress(supabase, progressRow?.id, 'complete', {});
+        } else {
+          await writeProgress(supabase, progressRow?.id, 'emergency_contact', {
+            emergencyContact: object,
+          });
         }
       }
     },
