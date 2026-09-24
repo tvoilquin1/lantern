@@ -2,6 +2,7 @@
 
 import { useChat } from "ai/react";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { copy } from "@/constants/copy";
 
 type CheckinSession = {
@@ -108,6 +109,7 @@ export default function CheckinPage() {
     return (
       <main className="checkin-app">
         <CheckinHeader />
+        <CheckinNav />
         <div className="checkin-app__body">
           <p className="checkin-app__state-message">
             {screen.phase === "loading" && copy.checkinLoadingState}
@@ -149,6 +151,25 @@ function CheckinHeader() {
         <span className="checkin-app__today-chevron">&rsaquo;</span>
       </div>
     </header>
+  );
+}
+
+// Still Water's own equivalent of SiteNav — kept in this file's own tokens
+// rather than importing components/SiteNav, since this route does not use
+// Lamplight styling (see AGENTS.md, checkin.css).
+function CheckinNav() {
+  return (
+    <nav className="checkin-app__nav" aria-label={copy.navLabel}>
+      <Link href="/" className="checkin-app__nav-link">
+        {copy.navCompanionLabel}
+      </Link>
+      <span className="checkin-app__nav-link checkin-app__nav-link--active" aria-current="page">
+        {copy.navCheckinLabel}
+      </span>
+      <Link href="/gauge-preview" className="checkin-app__nav-link">
+        {copy.navGaugeLabel}
+      </Link>
+    </nav>
   );
 }
 
@@ -207,6 +228,7 @@ function ActiveCheckin({
     return (
       <main className="checkin-app">
         <CheckinHeader />
+        <CheckinNav />
         <div className="checkin-app__body">
           <p className="checkin-app__state-message">{copy.checkinEndedMessage}</p>
         </div>
@@ -217,6 +239,7 @@ function ActiveCheckin({
   return (
     <main className="checkin-app">
       <CheckinHeader />
+      <CheckinNav />
 
       <div className="checkin-app__body">
         {messages.map((message) => (

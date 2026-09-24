@@ -118,6 +118,27 @@
   color: var(--sw-ink-faint);
 }
 
+.checkin-app__nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 20px;
+  background: var(--sw-card);
+  border-bottom: 1px solid var(--sw-hairline);
+}
+
+.checkin-app__nav-link {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--sw-ink-faint);
+  text-decoration: none;
+}
+
+.checkin-app__nav-link--active {
+  color: var(--sw-accent);
+  font-weight: 600;
+}
+
 .checkin-app__body {
   flex: 1;
   display: flex;

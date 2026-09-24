@@ -9,7 +9,7 @@ export default function Home() {
   });
 
   return (
-    <main className="flex min-h-dvh flex-col bg-paper-app">
+    <main className="flex flex-1 flex-col bg-paper-app">
       <header className="border-b border-paper-hairline bg-paper-app px-screen-gutter py-16">
         <h1 className="text-headline font-semibold text-ink-900">{copy.appName}</h1>
       </header>

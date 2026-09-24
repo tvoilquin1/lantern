@@ -2,6 +2,12 @@
 // Populated as features are built.
 export const copy = {
   appName: "Lantern",
+
+  // Navigation — shared across all three routes (SiteNav + checkin's own CheckinNav)
+  navLabel: "Lantern navigation",
+  navCompanionLabel: "Companion",
+  navCheckinLabel: "Check-in",
+  navGaugeLabel: "Gauge",
   chatEmptyState: "Ask your Lantern companion anything about caregiving — this conversation is always here.",
   chatInputPlaceholder: "Type a message…",
   chatSendButton: "Send",

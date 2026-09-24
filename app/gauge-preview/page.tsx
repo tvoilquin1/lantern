@@ -15,7 +15,7 @@ type GaugeState = {
 /**
  * Phase 5 dev scaffold — a minimal, internal way to see the gauge render
  * during this phase. Not the Phase 6 caregiver-facing dashboard (out of
- * scope here) and not linked from any caregiver-facing navigation.
+ * scope here); reachable via SiteNav ("Gauge") alongside the other routes.
  */
 export default function GaugePreviewPage() {
   const [state, setState] = useState<GaugeState>(undefined as unknown as GaugeState);
@@ -46,7 +46,7 @@ export default function GaugePreviewPage() {
   const history = [...(state?.score_history ?? [])].reverse();
 
   return (
-    <main className="flex min-h-dvh flex-col gap-card-gap bg-paper-app px-screen-gutter py-20">
+    <main className="flex flex-1 flex-col gap-card-gap bg-paper-app px-screen-gutter py-20">
       <header className="flex flex-col gap-2">
         <h1 className="text-headline font-semibold text-ink-900">{copy.gaugePreviewTitle}</h1>
         <p className="text-supporting text-ink-500">{copy.gaugePreviewSubtitle}</p>

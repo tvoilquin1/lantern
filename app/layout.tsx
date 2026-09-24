@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SiteNav } from "@/components/SiteNav";
 
 // Lamplight design system tokens — imported in dependency order
 import "@/design_system/tokens/fonts.css";
@@ -24,7 +25,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className="flex min-h-dvh flex-col">
+        <SiteNav />
+        {children}
+      </body>
     </html>
   );
 }
