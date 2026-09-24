@@ -1,5 +1,6 @@
 import { anthropic } from "@ai-sdk/anthropic";
 import { createDataStreamResponse, formatDataStreamPart, streamText, type CoreMessage } from "ai";
+import { copy } from "@/constants/copy";
 import { CRISIS_RESPONSE, checkCrisisKeywords, flagCrisisTool } from "@/lib/companion/crisis";
 import {
   createLogPatientObservationTool,
@@ -7,6 +8,7 @@ import {
 } from "@/lib/companion/tools";
 import { buildSystemPrompt } from "@/lib/companion/systemPrompt";
 import { retrieve } from "@/lib/retrieval/retrieve";
+import type { RetrievedChunk } from "@/lib/retrieval/types";
 
 export const runtime = "nodejs";
 
@@ -61,7 +63,18 @@ export async function POST(req: Request) {
     });
   }
 
-  const retrievedChunks = await retrieve(lastUserText, patientStageId ?? undefined, 3);
+  let retrievedChunks: RetrievedChunk[];
+  try {
+    retrievedChunks = await retrieve(lastUserText, patientStageId ?? undefined, 3);
+  } catch (error) {
+    console.error("Retrieval failure in /api/chat — companion cannot answer ungrounded:", error);
+    return createDataStreamResponse({
+      execute: (dataStream) => {
+        dataStream.write(formatDataStreamPart("text", copy.chatRetrievalUnavailableMessage));
+      },
+    });
+  }
+
   const ragContext =
     retrievedChunks.length > 0 ? retrievedChunks.map((c) => c.content).join("\n\n") : null;
 

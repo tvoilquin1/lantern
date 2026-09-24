@@ -7,6 +7,8 @@ export const copy = {
   chatSendButton: "Send",
   chatSendingLabel: "Sending…",
   chatErrorMessage: "Something went wrong reaching your companion. Please try again.",
+  chatRetrievalUnavailableMessage:
+    "I'm having trouble reaching my reference material right now, so I don't want to guess at something this important. Please try again in a moment. If this feels urgent or you're in crisis, the 988 Suicide and Crisis Lifeline is available 24/7 — call or text 988.",
   onboardingCompleteMessage:
     "Onboarding is already complete — head back to the main conversation to keep talking with your Lantern companion.",
   checkinCompanionName: "Lantern",
